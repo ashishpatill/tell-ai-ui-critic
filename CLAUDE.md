@@ -14,7 +14,7 @@ Read [USER_STORY.md](./USER_STORY.md) before planning.
 
 ## Stack
 
-TypeScript · pnpm workspaces · Playwright capture · Next.js 14 · Tailwind · Gemini (taste + voice refinement) · deterministic reconciliation · MCP stdio · zod · vitest
+TypeScript · pnpm workspaces · Playwright capture · Next.js 14 · Tailwind · Gemini (taste + voice refinement) · Cursor SDK (agentic draft enhancement) · deterministic reconciliation · MCP stdio · zod · vitest
 
 ## Architecture
 
@@ -27,6 +27,7 @@ Shared by web app and MCP. Deterministic through detection; LLM only for judgmen
 **Web-only conveniences (local dev):**
 - `/api/setup/*` — clone a GitHub repo, install, verify a reachable dev server, capture localhost (trusted repos only)
 - `/api/voice` — parse compound text/voice direction into action items with deterministic fallback
+- `/api/redesign` — use Cursor SDK for richer JSON-only patch drafts when `CURSOR_API_KEY` is present; deterministic fallback otherwise
 - `packages/redesign/reconcile.ts` — token-grounded before/after from captured CSS variables with contrast-floor reporting (no LLM)
 - Live seam — replays captured `snapshotHtml` with reconciled CSS custom properties
 
