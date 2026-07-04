@@ -419,20 +419,25 @@ Follow exactly. Each milestone has a DoD; do not advance until met.
   motion, backup demo video recorded.
 - **M10 · dogfood** — run Tell on `apps/web`; fix real findings; land "Tell runs on itself: 0 tells."
 
-**Cut line (if behind):** drop `packages/redesign` full-diff (M8) and live arbitrary-URL capture;
-ship capture on fixture only + fingerprint + detectors + taste + Tell Report + seam + inspector.
-That alone beats token-differs and codebase maps in the room.
+**Cut line (if behind):** fall back to the committed `fixtures/reports/tell-report.json` artifact and the seeded fixture. Live URL capture, GitHub setup, and token reconciliation are shipped — do not rip them out under demo pressure; use the offline artifact as backup only.
 
 ---
 
 ## 9. Frontend notes (`apps/web`)
 
-- Read `fixtures/reports/tell-report.json` at build/dev for deterministic demo; add `/api/diagnose`
-  route that runs capture+fingerprint+detectors+taste on the fixture, guarded by timeout (fall back to
-  committed artifact).
-- BeforeAfterSeam: left = screenshot from report; right = same screenshot with CSS variable overlay
-  from `activeDirection.tokenOverrides` applied via a wrapper div (filter/font-family/radius). Good
-  enough for demo; stretch = re-capture fixture after applying diff.
+- `/api/diagnose` runs the full pipeline via `packages/core/src/scripts/diagnose-url.ts` (Playwright
+  subprocess). On failure, returns the committed `fixtures/reports/tell-report.json` artifact with
+  `meta.live: false`.
+- `/api/setup/start|status|stop` — local-only GitHub repo runner (`repo-runner.ts`). Clones to a temp
+  dir, parses README + `package.json`, installs, spawns dev server, polls for localhost URL. **Never
+  expose publicly** — executes arbitrary install/dev scripts from cloned repos.
+- BeforeAfterSeam: when `capture.snapshotHtml` is present, renders the captured page in an iframe and
+  applies reconciled CSS custom properties from `packages/redesign/reconcile.ts` on the "after" side.
+  Fallback: screenshot + CSS overlay when no snapshot.
+- `discover-routes.ts` parses anchor tags from snapshot HTML for the Pages strip; user can add routes
+  manually and scan all (up to 8).
+- ReconciliationTable shows token before/after rows grounded in captured CSS variables.
+- Draft fix calls `buildOverridesPatch(reconciliation)` client-side — emits `tell-overrides.css` diff.
 - Evidence pins: absolute-positioned proof-mark SVGs over screenshot using `evidence.region` coords.
 - All colors/spacing/fonts via tokens from `01_DESIGN_SYSTEM.md`. No Inter. No violet gradient.
 - Accessibility floor from design system §9 is a merge gate.
@@ -477,18 +482,30 @@ correctly. `tell_apply` never writes files — it returns the patch for the huma
 
 | Route | Method | Purpose |
 |---|---|---|
-| `/api/capture` | POST `{ url }` | Run Playwright capture; return `CapturePayload` |
-| `/api/diagnose` | POST `{ url? }` | Full pipeline → `TellReport`; timeout → artifact |
-| `/api/redesign` | POST `{ direction, findingId? }` | `RedesignProposal` |
+| `/api/diagnose` | POST `{ url? }` | Full pipeline → `{ report, meta }`; timeout/error → offline artifact |
+| `/api/redesign` | POST `{ report?, direction, findingId? }` | `RedesignProposal` (uses passed report or demo fallback) |
+| `/api/setup/start` | POST `{ repoUrl }` | Clone GitHub repo, begin install/run job → `{ job }` |
+| `/api/setup/status` | GET `?id=` | Poll setup job state, logs, detected URL |
+| `/api/setup/stop` | POST | Stop spawned dev server, clear job |
 | `/api/voice` | POST `{ transcript }` | Parse → `ArtDirection` |
+
+**Setup job states:** `cloning` → `installing` → `detecting` → `starting` → `waiting` → `ready` |
+`needs-manual` (user pastes localhost URL) | `error`.
 
 ---
 
 ## 13. Redesign diff strategy (`packages/redesign`)
 
+**`reconcile.ts`** — deterministic token reconciliation from captured CSS variables + findings. Powers
+the live before/after seam and `ReconciliationTable`. No LLM. Direction presets: editorial, precision,
+warm-minimal, brutalist.
+
+**`buildOverridesPatch`** — emits a site-wide `tell-overrides.css` with CSS custom properties derived
+from the reconciliation. One apply covers every page in the Pages strip.
+
 Priority order for generating diffs:
 1. If repo path known: emit token changes in `tailwind.config.ts` + CSS variables in `globals.css`.
-2. If only URL: emit a standalone `tell-overrides.css` with CSS custom properties to paste.
+2. If only URL (default web flow): emit standalone `tell-overrides.css` with CSS custom properties.
 3. Per-finding fix: minimal diff targeting the specific tell (e.g. add display font import + apply
    to `h1–h3`).
 
