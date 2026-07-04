@@ -22,7 +22,9 @@ function normalizeHex(value: string): string {
 function isNeutral(hex: string): boolean {
   const m = hex.match(/^#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$/i);
   if (!m) return false;
-  const [, r, g, b] = m.map((x) => parseInt(x, 16));
+  const r = parseInt(m[1] ?? "0", 16);
+  const g = parseInt(m[2] ?? "0", 16);
+  const b = parseInt(m[3] ?? "0", 16);
   return Math.max(r, g, b) - Math.min(r, g, b) < 18;
 }
 

@@ -14,6 +14,9 @@
     "capture:fixture": "pnpm -F @tell/core capture:fixture",
     "diagnose:fixture": "pnpm -F @tell/core diagnose:fixture"
   },
+  "devDependencies": {
+    "vitest": "^2.1.9"
+  },
   "engines": {
     "node": ">=20"
   },
