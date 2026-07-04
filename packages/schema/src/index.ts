@@ -1,7 +1,28 @@
 import { z } from "zod";
 
+/** The rendered role of a sampled element — lets the redesign engine target it precisely. */
+export const ElementRole = z.enum([
+  "display",  // hero headline / largest type
+  "heading",  // section headings
+  "body",     // paragraph / running text
+  "button",   // buttons + CTA-ish links
+  "link",     // inline / nav links
+  "card",     // panels, cards, feature tiles (surfaces that may float)
+  "surface",  // large section/background containers
+  "nav",      // top-level navigation container
+  "input",    // form controls
+  "other",
+]);
+export type ElementRole = z.infer<typeof ElementRole>;
+
 export const ComputedStyleSample = z.object({
   selector: z.string(),
+  // Unique handle stamped on the live element during capture (survives into snapshotHtml),
+  // so the redesign can restyle THIS exact element via [data-tell-id="…"] — no selector guessing.
+  tellId: z.string().default(""),
+  tag: z.string().default(""),
+  role: ElementRole.default("other"),
+  rect: z.object({ x: z.number(), y: z.number(), w: z.number(), h: z.number() }).optional(),
   fontFamily: z.string(),
   fontSize: z.string(),
   fontWeight: z.string(),
@@ -149,6 +170,51 @@ export const ArtDirection = z.object({
 });
 export type ArtDirection = z.infer<typeof ArtDirection>;
 
+/**
+ * One axis of the 6-axis genericness scorecard (docs/05_GENERICNESS_METHODOLOGY.md §8).
+ * `before`/`after` are 0..1 QUALITY sub-scores (1 = best). Genericness inverts them.
+ */
+export const ScoreAxis = z.object({
+  key: z.enum(["contrast", "typescale", "spacing", "depth", "accent", "identity"]),
+  label: z.string(),
+  weight: z.number(),
+  before: z.number(),       // 0..1 quality of the captured page
+  after: z.number(),        // 0..1 quality after Tell's redesign
+  beforeText: z.string(),   // human-readable measured value, e.g. "1 family · Inter"
+  afterText: z.string(),
+  rationale: z.string(),    // the rule that justifies the move (cites the methodology)
+});
+export type ScoreAxis = z.infer<typeof ScoreAxis>;
+
+/** 0..100 genericness (LOWER = better) + the axes that produced it. */
+export const Scorecard = z.object({
+  score: z.number(),        // 0..100 genericness, lower is better
+  band: z.enum(["distinctive", "conservative", "template", "slop"]),
+  axes: z.array(ScoreAxis),
+  tellScore: z.number().default(0),   // 0..1 cliché-flag modifier
+  scoredAgainst: z.enum(["baseline", "brand-dna"]).default("baseline"),
+});
+export type Scorecard = z.infer<typeof Scorecard>;
+
+/**
+ * A project's distinctive design fingerprint — learned once (from a reference URL or explicit
+ * choices) and used as the TARGET the redesign steers toward and the yardstick the scorecard
+ * measures against. When absent, Tell scores against the generic baseline.
+ */
+export const BrandDNA = z.object({
+  displayFont: z.string(),
+  bodyFont: z.string(),
+  monoFont: z.string().default(""),
+  accent: z.string(),                 // hex
+  radius: z.string().default("8px"),
+  spacingBase: z.number().default(8),
+  typeScaleRatio: z.number().default(1.25),
+  maxElevationLevels: z.number().default(3),
+  directionId: z.string().default("editorial"),
+  source: z.string().default("manual"),
+});
+export type BrandDNA = z.infer<typeof BrandDNA>;
+
 /** One before→after token change, grounded in the real captured values. */
 export const ReconTokenRow = z.object({
   key: z.string(),
@@ -177,6 +243,12 @@ export const Reconciliation = z.object({
   accentAfter: z.string(),
   surfaceAfter: z.string(),
   textAfter: z.string(),
+  // ── measured proof: the number that provably drops ──
+  scoreBefore: z.number().default(0),   // 0..100 genericness of captured page
+  scoreAfter: z.number().default(0),    // 0..100 genericness after redesign
+  axes: z.array(ScoreAxis).default([]), // per-axis before/after
+  elementsRestyled: z.number().default(0),
+  scoredAgainst: z.enum(["baseline", "brand-dna"]).default("baseline"),
 });
 export type Reconciliation = z.infer<typeof Reconciliation>;
 
@@ -204,6 +276,8 @@ export const TellReport = z.object({
     intentional: z.number(),
     uncertain: z.number(),
   }),
+  // The captured page's genericness scorecard (before any redesign). See docs/05.
+  measures: Scorecard.optional(),
   activeDirection: ArtDirection.optional(),
 });
 export type TellReport = z.infer<typeof TellReport>;
