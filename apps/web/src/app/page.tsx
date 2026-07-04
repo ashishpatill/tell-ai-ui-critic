@@ -7,6 +7,7 @@ import {
   Clipboard,
   ExternalLink,
   Eye,
+  Fingerprint,
   Github,
   Layers,
   Loader2,
@@ -18,9 +19,9 @@ import {
   TerminalSquare,
   Wand2,
 } from "lucide-react";
-import type { Reconciliation, RedesignProposal, TellReport, Verdict } from "@tell/schema";
+import type { BrandDNA, Reconciliation, RedesignProposal, TellReport, Verdict } from "@tell/schema";
 import { DIRECTION_PRESETS, parseDirectionPlan, type DirectionPlan } from "@tell/taste";
-import { RECONCILE_DIRECTIONS, buildOverridesPatch, reconcile, resolveDirection } from "@tell/redesign";
+import { RECONCILE_DIRECTIONS, buildOverridesPatch, learnBrandDNA, reconcile, resolveDirection } from "@tell/redesign";
 import { demoReport } from "@/lib/demo-report";
 import { BeforeAfterSeam } from "@/components/BeforeAfterSeam";
 import { useVoice } from "@/lib/use-voice";
@@ -100,9 +101,20 @@ export default function HomePage() {
   const [pageInput, setPageInput] = useState("");
   const [scanningAll, setScanningAll] = useState(false);
 
+  // ── Brand DNA memory (learned once, used as the redesign target + scoring yardstick) ──
+  const [brandDna, setBrandDna] = useState<BrandDNA | null>(null);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("tell:brand-dna");
+      if (raw) setBrandDna(JSON.parse(raw) as BrandDNA);
+    } catch {
+      /* ignore malformed cache */
+    }
+  }, []);
+
   const reconciliation = useMemo(
-    () => reconcile(report.capture, report.fingerprint, report.findings, directionId),
-    [report, directionId],
+    () => reconcile(report.capture, report.fingerprint, report.findings, directionId, brandDna ?? undefined),
+    [report, directionId, brandDna],
   );
 
   const verdictOf = useCallback(
@@ -164,6 +176,35 @@ export default function HomePage() {
     if (noticeTimerRef.current) clearTimeout(noticeTimerRef.current);
     noticeTimerRef.current = setTimeout(() => setUiNotice(null), notice.tone === "error" ? 12_000 : 7000);
   }, []);
+
+  const learnDna = useCallback(() => {
+    const dna = learnBrandDNA(report.capture, report.fingerprint, siteLabel(report.capture.url));
+    setBrandDna(dna);
+    try {
+      localStorage.setItem("tell:brand-dna", JSON.stringify(dna));
+    } catch {
+      /* storage unavailable — keep it in memory for this session */
+    }
+    setProposal(null);
+    setDraftState("idle");
+    showNotice({
+      tone: "success",
+      title: "Brand DNA saved",
+      message: `Tell now scores against ${dna.displayFont} / ${dna.bodyFont} · ${dna.accent}. Redesigns steer toward this brand.`,
+    });
+  }, [report, showNotice]);
+
+  const clearDna = useCallback(() => {
+    setBrandDna(null);
+    try {
+      localStorage.removeItem("tell:brand-dna");
+    } catch {
+      /* ignore */
+    }
+    setProposal(null);
+    setDraftState("idle");
+    showNotice({ tone: "info", title: "Brand DNA cleared", message: "Back to scoring against the generic baseline." });
+  }, [showNotice]);
 
   useEffect(() => {
     return () => {
@@ -378,10 +419,28 @@ export default function HomePage() {
     setScanningAll(false);
   }
 
-  function draftFix() {
+  async function draftFix() {
     setDraftState("drafting");
     setDraftError("");
     try {
+      const res = await fetch("/api/redesign", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          report,
+          direction: directionPlan?.summary || directionId,
+          findingId: selectedFinding?.id,
+          dna: brandDna ?? undefined,
+        }),
+      });
+      if (!res.ok) throw new Error("redesign request failed");
+      const payload = (await res.json()) as RedesignProposal;
+      setProposal({
+        ...payload,
+        reconciliation: payload.reconciliation ?? reconciliation,
+      });
+      setDraftState("ready");
+    } catch {
       const files = buildOverridesPatch(reconciliation, report.capture.url);
       setProposal({
         findingId: selectedFinding?.id,
@@ -396,10 +455,7 @@ export default function HomePage() {
         files,
       });
       setDraftState("ready");
-    } catch {
-      setProposal(null);
-      setDraftError("Could not build a patch from this capture. Try recapturing.");
-      setDraftState("error");
+      setDraftError("Cursor-backed draft was unavailable, so Tell used the deterministic patch.");
     }
   }
 
@@ -561,6 +617,10 @@ export default function HomePage() {
                 : "Drag the seam · ←/→ to nudge · double-click to reset · click a proof mark to inspect its finding"}
             </p>
           </section>
+
+          <BrandDnaBar dna={brandDna} onLearn={learnDna} onClear={clearDna} live={liveCapture} />
+
+          <Scorecard reconciliation={reconciliation} live={liveCapture} />
 
           <ReconciliationTable reconciliation={reconciliation} live={liveCapture} />
 
@@ -965,6 +1025,118 @@ function PagesStrip({
       </div>
       <p className="mt-2 font-mono text-[11px] text-muted">
         Scan each route to catch drift that only shows on some pages. The drafted patch is a site-wide stylesheet — one apply covers every page here.
+      </p>
+    </section>
+  );
+}
+
+const BAND_COPY: Record<string, string> = {
+  distinctive: "distinctive",
+  conservative: "competent, conservative",
+  template: "template-grade",
+  slop: "reads as AI-generated",
+};
+
+function AxisBar({ before, after }: { before: number; after: number }) {
+  // Axes are 0..1 QUALITY (higher = better). Ghost = before, filled = after.
+  return (
+    <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-border/60">
+      <span className="absolute inset-y-0 left-0 rounded-full bg-secondary/40" style={{ width: `${Math.round(before * 100)}%` }} />
+      <span className="absolute inset-y-0 left-0 rounded-full bg-accent" style={{ width: `${Math.round(after * 100)}%` }} />
+    </div>
+  );
+}
+
+/** Learn / show / clear the Brand DNA that the redesign steers toward and the scorecard scores against. */
+function BrandDnaBar({ dna, onLearn, onClear, live }: { dna: BrandDNA | null; onLearn: () => void; onClear: () => void; live: boolean }) {
+  return (
+    <section className="rounded-card border border-border bg-surface p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="min-w-0">
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Brand DNA</p>
+          {dna ? (
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-text">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="inline-block h-3 w-3 rounded-full border border-border" style={{ background: dna.accent }} />
+                <span className="font-mono text-[12px]">{dna.accent}</span>
+              </span>
+              <span className="text-muted">·</span>
+              <span>{dna.displayFont} / {dna.bodyFont}</span>
+              <span className="text-muted">·</span>
+              <span className="font-mono text-[11px] text-muted">radius {dna.radius} · from {dna.source}</span>
+            </p>
+          ) : (
+            <p className="mt-1 text-sm text-secondary">
+              No brand learned yet — Tell scores against the generic baseline. Capture a page whose look you trust, then remember it.
+            </p>
+          )}
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          {dna ? (
+            <button
+              onClick={onClear}
+              className="rounded-md border border-border px-3 py-2 font-mono text-xs text-muted transition hover:text-text"
+            >
+              Clear
+            </button>
+          ) : null}
+          <button
+            onClick={onLearn}
+            className="inline-flex items-center gap-2 rounded-md border border-accent/40 bg-accent/10 px-3 py-2 font-mono text-xs text-accent transition hover:bg-accent/20"
+            title={live ? "Learn this captured page's fonts, accent, radius, and rhythm as your Brand DNA" : "Capture a page first for a real Brand DNA"}
+          >
+            <Fingerprint className="h-4 w-4" />
+            {dna ? "Relearn from this page" : "Remember as Brand DNA"}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** The measured before→after genericness scorecard — the number that provably drops. */
+function Scorecard({ reconciliation, live }: { reconciliation: Reconciliation; live: boolean }) {
+  if (!reconciliation || !reconciliation.axes.length) return null;
+  const { scoreBefore, scoreAfter, axes, scoredAgainst } = reconciliation;
+  const drop = Math.max(0, scoreBefore - scoreAfter);
+  return (
+    <section className="rounded-card border border-accent/40 bg-surface-raised p-5 shadow-signal">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Genericness score</p>
+          <p className="mt-1 font-mono text-[11px] text-muted">
+            0 = fully distinctive · lower is better · scored {scoredAgainst === "brand-dna" ? "against your Brand DNA" : "vs the generic baseline"} · docs/05 methodology
+          </p>
+        </div>
+        <span className="font-mono text-[11px] text-muted">{live ? "measured from your capture" : "capture to measure live"}</span>
+      </div>
+
+      <div className="flex items-end gap-4">
+        <div className="flex items-baseline gap-3">
+          <span className="font-display text-5xl text-secondary line-through decoration-secondary/40">{scoreBefore}</span>
+          <span className="font-mono text-secondary">→</span>
+          <span className="font-display text-6xl leading-none text-accent">{scoreAfter}</span>
+        </div>
+        <div className="mb-1 flex flex-col">
+          <span className="font-mono text-xs uppercase tracking-[0.14em] text-accent">−{drop} points</span>
+          <span className="font-mono text-[11px] text-muted">{BAND_COPY[reconciliation.scoreAfter <= 25 ? "distinctive" : reconciliation.scoreAfter <= 45 ? "conservative" : "template"]}</span>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3">
+        {axes.map((a) => (
+          <div key={a.key} className="grid gap-1.5">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-sm text-text">{a.label}</span>
+              <span className="font-mono text-[11px] text-muted">{a.beforeText} <span className="text-accent">→</span> {a.afterText}</span>
+            </div>
+            <AxisBar before={a.before} after={a.after} />
+            <p className="text-[11px] text-muted">{a.rationale}</p>
+          </div>
+        ))}
+      </div>
+      <p className="mt-4 font-mono text-[11px] text-muted">
+        {reconciliation.elementsRestyled} real elements restyled by <span className="text-secondary">data-tell-id</span> — the preview transforms the page itself, not a filter.
       </p>
     </section>
   );
