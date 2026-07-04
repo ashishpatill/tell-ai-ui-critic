@@ -58,7 +58,5 @@ When I paste status, give ONE next action and what to cut if behind. Protect BUI
 
 1. `docs/01_DESIGN_SYSTEM.md`
 2. `docs/02_CURSOR_BUILD_INSTRUCTIONS.md` (or BUILD.md)
-3. `docs/03_CLAUDE_DESIGN_BRIEF.md`
-4. `docs/04_CLAUDE_PROJECT.md`
-5. `USER_STORY.md`
-6. This file
+3. `USER_STORY.md`
+4. This file

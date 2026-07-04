@@ -13,3 +13,10 @@ test-results/
 
 # Next generated
 next-env.d.ts
+
+# Generated capture/diagnose output
+output/
+
+# Internal planning notes (kept local, not shipped)
+docs/03_CLAUDE_DESIGN_BRIEF.md
+docs/04_CLAUDE_PROJECT.md
