@@ -6,7 +6,8 @@ import { z } from "zod";
 import { captureUrl, diagnoseCapture } from "@tell/core";
 import { CapturePayload, TellReport } from "@tell/schema";
 import { OfflineRedesignGenerator } from "@tell/redesign";
-import { parseDirection } from "@tell/taste";
+import { classifyWithTaste, parseDirection } from "@tell/taste";
+import type { Finding, TasteVerdict } from "@tell/schema";
 
 const server = new McpServer({
   name: "tell",
@@ -38,7 +39,13 @@ server.tool(
     }
     if (url) {
       const capture = await captureUrl(url);
-      lastReport = diagnoseCapture(capture);
+      const base = diagnoseCapture(capture);
+      // Enrich with the real taste engine when a key is present; otherwise
+      // classifyWithTaste returns the same deterministic verdicts as base.
+      const verdicts = await classifyWithTaste(base.findings, base.fingerprint, {
+        apiKey: process.env.GEMINI_API_KEY,
+      });
+      lastReport = TellReport.parse({ ...base, verdicts, score: scoreOf(verdicts, base.findings) });
       return asJson(lastReport);
     }
     const artifact = process.env.TELL_REPORT_ARTIFACT ?? "fixtures/reports/tell-report.json";
@@ -77,6 +84,16 @@ server.tool(
 );
 
 await server.connect(new StdioServerTransport());
+
+function scoreOf(verdicts: TasteVerdict[], findings: Finding[]) {
+  return {
+    total: findings.length,
+    generic: verdicts.filter((v) => v.verdict === "generic").length,
+    drift: verdicts.filter((v) => v.verdict === "drift").length,
+    intentional: verdicts.filter((v) => v.verdict === "intentional").length,
+    uncertain: verdicts.filter((v) => v.verdict === "uncertain").length,
+  };
+}
 
 function asJson(value: unknown) {
   return {

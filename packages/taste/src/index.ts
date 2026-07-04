@@ -1,4 +1,7 @@
-import { ArtDirection, Finding, TasteVerdict } from "@tell/schema";
+import { ArtDirection, DesignFingerprint, Finding, TasteVerdict } from "@tell/schema";
+import { createTasteEngine, deterministicVerdict, type TasteEngine } from "./engine";
+
+export * from "./engine";
 
 export const DIRECTION_PRESETS = {
   editorial: {
@@ -51,18 +54,42 @@ export const DIRECTION_PRESETS = {
   },
 } satisfies Record<string, ArtDirection>;
 
+/** Deterministic single-finding verdict (offline-safe). */
 export function classifyFinding(finding: Finding): TasteVerdict {
-  return TasteVerdict.parse({
-    findingId: finding.id,
-    verdict: finding.verdictHint,
-    confidence: finding.severity === "high" ? 0.84 : 0.72,
-    rationale: rationaleFor(finding),
-    intentionalReason: finding.verdictHint === "intentional" ? "The pattern is documented as a deliberate art direction." : undefined,
-  });
+  return deterministicVerdict(finding);
 }
 
 export function classifyFindings(findings: Finding[]): TasteVerdict[] {
   return findings.map(classifyFinding);
+}
+
+/** One-line, model-friendly digest of the fingerprint used to ground taste calls. */
+export function summarizeFingerprint(fp: DesignFingerprint): string {
+  const fonts = fp.fontFamilies.slice(0, 3).map((f) => `${f.family}×${f.count}`).join(", ");
+  return [
+    `fonts: ${fonts || "n/a"}`,
+    `type sizes: ${fp.typeScale.length}`,
+    `radii: ${fp.radii.length}`,
+    `gradient: ${fp.gradientDetected}`,
+    `centered: ${fp.centeredBlockRatio.toFixed(2)}`,
+    `emoji: ${fp.emojiInUiCount}`,
+    `focus-ring coverage: ${fp.focusRingCoverage.toFixed(2)}`,
+  ].join(" · ");
+}
+
+/**
+ * Classify a whole finding set. Uses the real (Gemini) engine when an api key
+ * is supplied, else the deterministic engine. Reflection + fallback are handled
+ * inside the engine, so every finding always gets a valid verdict.
+ */
+export async function classifyWithTaste(
+  findings: Finding[],
+  fingerprint: DesignFingerprint,
+  opts: { apiKey?: string; engine?: TasteEngine } = {},
+): Promise<TasteVerdict[]> {
+  const engine = opts.engine ?? createTasteEngine(opts.apiKey);
+  const ctx = { fingerprintSummary: summarizeFingerprint(fingerprint) };
+  return Promise.all(findings.map((f) => engine.classify(f, ctx)));
 }
 
 export function parseDirection(input: string): ArtDirection {
@@ -71,15 +98,4 @@ export function parseDirection(input: string): ArtDirection {
   if (normalized.includes("minimal")) return ArtDirection.parse(DIRECTION_PRESETS["warm-minimal"]);
   if (normalized.includes("bold") || normalized.includes("contrast")) return ArtDirection.parse(DIRECTION_PRESETS["bold-contrast"]);
   return ArtDirection.parse(DIRECTION_PRESETS.editorial);
-}
-
-function rationaleFor(finding: Finding): string {
-  const detector = String(finding.detector);
-  if (finding.verdictHint === "generic") {
-    return `${detector} matches a common AI-built UI tell. The evidence is rendered, not guessed, so the fix can target the surface users actually see.`;
-  }
-  if (finding.verdictHint === "drift") {
-    return `${detector} found a split in the visual system. Normalize it into one semantic treatment before future agent edits widen the fracture.`;
-  }
-  return `${detector} looks deliberate in context. Keep it if this is part of the product's stated direction.`;
 }
