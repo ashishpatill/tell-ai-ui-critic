@@ -24,7 +24,10 @@ Capture rendered UI → deterministic fingerprint → detect tells + drift → t
 | `packages/taste` | Gemini taste + voice direction |
 | `packages/redesign` | Diff generation |
 | `packages/mcp` | Cursor MCP server |
-| `apps/web` | Priya-facing UI |
+| `apps/web` | Priya-facing UI + `/api/diagnose`, `/api/setup/*`, `/api/redesign` |
+| `apps/web/src/lib/repo-runner.ts` | GitHub clone → install → dev server (local only) |
+| `apps/web/src/lib/discover-routes.ts` | Multi-page route discovery from snapshot HTML |
+| `packages/redesign/src/reconcile.ts` | Deterministic token reconciliation for live seam |
 | `fixtures/generic-app` | Demo "before" (labeled input, not our work) |
 | `fixtures/reports/` | Offline demo artifacts |
 
@@ -60,12 +63,13 @@ pnpm -F @tell/web typecheck
 
 ## Demo narrative (do not lead with architecture)
 
-1. Priya's bland app → Capture
-2. Named tells with evidence
-3. Seam drag before/after
-4. Voice: "warmer, editorial"
-5. Apply in Cursor
-6. Dogfood: zero tells on Tell itself
+1. Paste a live URL **or** `github.com/owner/repo` → Set up & run / Capture
+2. Named tells with evidence on the real rendered page
+3. Pages strip — scan `/pricing` or other routes for drift
+4. Seam drag — live reconciliation of the captured page (not a mock overlay)
+5. Voice: "warmer, editorial" → reconciliation table updates
+6. Draft fix → copy patch → Apply in Cursor
+7. Dogfood: zero tells on Tell itself
 
 ## Docs authority
 
