@@ -6,11 +6,27 @@ const SAMPLE_SELECTORS = [
   "h1",
   "h2",
   "h3",
+  "h4",
+  "p",
+  "li",
   "button",
   "a",
   "input",
+  "select",
+  "textarea",
   "nav",
+  "header",
+  "footer",
+  "main",
+  "section",
+  "article",
   "[class*='card']",
+  "[class*='panel']",
+  "[class*='tile']",
+  "[class*='feature']",
+  "[class*='btn']",
+  "[class*='button']",
+  "[class*='cta']",
   "[class*='hero']",
 ].join(",");
 
@@ -21,19 +37,52 @@ export async function captureUrl(url: string): Promise<CapturePayload> {
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
-    await page.goto(url, { waitUntil: "networkidle", timeout: 10_000 });
+    // `networkidle` is defeated by a dev server's HMR websocket, so navigate on DOM-ready and then
+    // actively wait for real content to hydrate. This makes capturing a freshly-booted localhost dev
+    // server (the GitHub-repo-setup flow) reliable, while still working on static/production pages.
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 });
+    await page.waitForLoadState("networkidle", { timeout: 4_000 }).catch(() => {});
+    await page
+      .waitForFunction(() => document.querySelectorAll("h1,h2,article,section,main [class*='card'],button,nav a").length >= 3, undefined, { timeout: 6_000 })
+      .catch(() => {});
+    await page.waitForTimeout(350); // let webfonts + late paints settle
     const screenshotBase64 = await page.screenshot({ fullPage: true, type: "png" }).then((b) => b.toString("base64"));
 
     const payload = await page.evaluate(
       ([selector, maxInlineCss, maxSnapshot]) => {
         // NOTE: no named inner functions here — esbuild/tsx would wrap them in a
         // `__name` helper that does not exist inside the serialized browser scope.
-        const samples = Array.from(document.querySelectorAll<HTMLElement>(selector)).slice(0, 200).map((el) => {
+        // Stamp a unique data-tell-id on each sampled element on the LIVE dom (before we clone
+        // the tree for the snapshot), classify its rendered role, and record its box. The redesign
+        // engine then restyles THIS exact element via [data-tell-id="…"] — no selector guessing.
+        const samples = Array.from(document.querySelectorAll<HTMLElement>(selector)).slice(0, 320).map((el, i) => {
           const cs = getComputedStyle(el);
-          const selectorLabel =
-            el.id ? `#${el.id}` : el.className ? `${el.tagName.toLowerCase()}.${String(el.className).split(" ")[0]}` : el.tagName.toLowerCase();
+          const tellId = "t" + i;
+          el.setAttribute("data-tell-id", tellId);
+          const tag = el.tagName.toLowerCase();
+          const cls = (typeof el.className === "string" ? el.className : "").toLowerCase();
+          const fs = parseFloat(cs.fontSize) || 16;
+          const txt = (el.textContent || "").trim();
+          const wordCount = txt ? txt.split(/\s+/).length : 0;
+          const r = el.getBoundingClientRect();
+          const interactive = tag === "button" || tag === "a" || tag === "input" || tag === "select" || tag === "textarea";
+          // Inline role classification (no named fns allowed in this browser scope).
+          let role = "other";
+          if (tag === "button" || (tag === "a" && /(^|[^a-z])(btn|button|cta|primary|action)([^a-z]|$)/.test(cls))) role = "button";
+          else if (tag === "input" || tag === "select" || tag === "textarea") role = "input";
+          else if (tag === "nav") role = "nav";
+          else if (tag === "a") role = "link";
+          else if (tag === "h1" || fs >= 34) role = "display";
+          else if (tag === "h2" || tag === "h3" || tag === "h4" || fs >= 22) role = "heading";
+          else if (/(card|panel|tile|feature)/.test(cls)) role = "card";
+          else if (tag === "section" || tag === "article" || tag === "header" || tag === "footer" || tag === "main" || /(hero|section|container|wrap)/.test(cls)) role = "surface";
+          else if (tag === "p" || tag === "li" || (wordCount >= 3 && !interactive)) role = "body";
           return {
-            selector: selectorLabel,
+            selector: el.id ? "#" + el.id : cls ? tag + "." + cls.split(" ")[0] : tag,
+            tellId,
+            tag,
+            role,
+            rect: { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) },
             fontFamily: cs.fontFamily,
             fontSize: cs.fontSize,
             fontWeight: cs.fontWeight,
