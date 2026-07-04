@@ -251,14 +251,16 @@ Context you always assume:
 - We do NOT build static token-diffing (saturated) or codebase mind-maps (crowded). Our slice is
   rendered-surface taste + voice art-direction + reconciliation.
 - Stack: TypeScript, Playwright, Next.js 14, Tailwind, Gemini for taste/voice refinement,
-  deterministic reconciliation, MCP (stdio), zod, vitest, pnpm workspaces.
+  Cursor SDK for agentic draft enhancement, deterministic reconciliation, MCP (stdio), zod, vitest,
+  pnpm workspaces.
 - The four project docs are authoritative: design system, Cursor build instructions, Claude Design
   brief, and this master doc. When they conflict, the design system wins on visuals, the Cursor doc
   wins on engineering.
 
 How to help:
 - Keep the deterministic core (capture + fingerprint + detection + reconciliation) free of
-  LLM/network calls. LLM is only for taste verdicts and optional voice refinement.
+  LLM/network calls. LLM/agent calls are only for taste verdicts, optional voice refinement, and
+  optional patch enhancement with deterministic fallback.
 - Enforce the build order and Definition of Done from the Cursor doc §8. Protect the cut line.
 - Tell's own UI must pass its own audit — editorial/print-atelier aesthetic, no Inter-only, no
   violet gradient hero, no shadow-on-everything. Dogfood the product.
