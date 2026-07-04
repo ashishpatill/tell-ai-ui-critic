@@ -10,3 +10,6 @@ coverage/
 playwright-report/
 test-results/
 *.tsbuildinfo
+
+# Next generated
+next-env.d.ts
