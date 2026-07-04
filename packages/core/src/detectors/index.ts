@@ -1,6 +1,18 @@
 import { CapturePayload, DesignFingerprint, Finding } from "@tell/schema";
+import { hexToRgb, saturation } from "../fingerprint/build-fingerprint";
 
 const evidence = (label: string, value: string, selector?: string) => [{ kind: "computed" as const, label, value, selector }];
+
+function lightness(hex: string): number {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return 1;
+  const [r, g, b] = rgb.map((v) => v / 255) as [number, number, number];
+  return (Math.max(r, g, b) + Math.min(r, g, b)) / 2;
+}
+
+function pxNumbers(paddingValues: string[]): number[] {
+  return paddingValues.flatMap((p) => (p.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number));
+}
 
 export function detectFindings(fingerprint: DesignFingerprint, capture: CapturePayload): Finding[] {
   const findings: Finding[] = [];
@@ -148,6 +160,40 @@ export function detectFindings(fingerprint: DesignFingerprint, capture: CaptureP
       severity: "high",
       facts: { stateCoverage: fingerprint.stateCoverage },
       evidence: [{ kind: "probe", label: "State coverage", value: JSON.stringify(fingerprint.stateCoverage) }],
+    }));
+  }
+
+  // AcidAccentTell — a single high-saturation accent on a near-black surface.
+  const darkSurface = fingerprint.colors.find((c) => lightness(c.normalizedHex) < 0.2);
+  const acidAccent = fingerprint.colors.find((c) => {
+    const rgb = hexToRgb(c.normalizedHex);
+    return rgb ? saturation(rgb) > 0.7 && lightness(c.normalizedHex) > 0.2 : false;
+  });
+  if (darkSurface && acidAccent) {
+    findings.push(Finding.parse({
+      id: "tell-acid-accent",
+      family: "tell",
+      detector: "AcidAccentTell",
+      verdictHint: "generic",
+      severity: "medium",
+      facts: { accent: acidAccent.normalizedHex, usageCount: acidAccent.count, surface: darkSurface.normalizedHex },
+      evidence: evidence("Acid accent on near-black", `${acidAccent.normalizedHex} on ${darkSurface.normalizedHex}`),
+    }));
+  }
+
+  // TokenBypass — repeated one-off spacing literals that ignore the 4px grid.
+  const offGrid = Array.from(new Set(pxNumbers(fingerprint.spacingValues.map((s) => s.value)))).filter(
+    (n) => n !== 0 && n % 4 !== 0,
+  );
+  if (offGrid.length >= 3) {
+    findings.push(Finding.parse({
+      id: "drift-token-bypass",
+      family: "drift",
+      detector: "TokenBypass",
+      verdictHint: "drift",
+      severity: "medium",
+      facts: { offGridValues: offGrid, gridBase: 4 },
+      evidence: evidence("Off-grid spacing literals", offGrid.map((n) => `${n}px`).join(", ")),
     }));
   }
 

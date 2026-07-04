@@ -42,19 +42,51 @@ export async function captureUrl(url: string): Promise<CapturePayload> {
         };
       });
 
+      // Rendered-truth interactive state: collect base selectors that carry
+      // :hover / :focus rules from same-origin stylesheets (works for plain CSS
+      // and utility classes alike). A :focus rule that only suppresses the ring
+      // (outline:none, no shadow) does NOT count as a visible focus style.
+      const hoverSelectors: string[] = [];
+      const focusSelectors: string[] = [];
+      for (const sheet of Array.from(document.styleSheets)) {
+        let rules: CSSRuleList | null = null;
+        try { rules = sheet.cssRules; } catch { continue; } // cross-origin sheet
+        if (!rules) continue;
+        for (const rule of Array.from(rules)) {
+          const sr = rule as CSSStyleRule;
+          const sel = sr.selectorText;
+          if (!sel) continue;
+          if (/:hover\b/.test(sel)) {
+            hoverSelectors.push(...sel.split(",").map((s) => s.replace(/:hover\b/g, "").trim()).filter(Boolean));
+          }
+          if (/:focus(-visible)?\b/.test(sel)) {
+            const outline = `${sr.style?.getPropertyValue("outline")} ${sr.style?.getPropertyValue("outline-style")}`;
+            const shadow = sr.style?.getPropertyValue("box-shadow");
+            const suppresses = /\b(none|0px|0)\b/.test(outline) && !shadow;
+            if (!suppresses) focusSelectors.push(...sel.split(",").map((s) => s.replace(/:focus(-visible)?\b/g, "").trim()).filter(Boolean));
+          }
+        }
+      }
+
       const probes = Array.from(document.querySelectorAll<HTMLElement>("button,a[href],input,select")).slice(0, 80).map((el, index) => ({
         role: el.getAttribute("role") ?? el.tagName.toLowerCase(),
         selector: el.id ? `#${el.id}` : `${el.tagName.toLowerCase()}:nth-of-type(${index + 1})`,
-        hasHoverDiff: /\bhover:|hover-|data-hover/i.test(el.className),
-        hasFocusVisibleDiff: /focus-visible|focus:ring|outline/i.test(el.className),
+        hasHoverDiff: hoverSelectors.some((s) => { try { return el.matches(s); } catch { return false; } }),
+        hasFocusVisibleDiff: focusSelectors.some((s) => { try { return el.matches(s); } catch { return false; } }),
         hasDisabledAttr: el.hasAttribute("disabled"),
         ariaDisabled: el.getAttribute("aria-disabled") === "true",
       }));
 
-      const blockEls = Array.from(document.querySelectorAll<HTMLElement>("section,div,main,header"));
-      const centered = blockEls.filter((el) => getComputedStyle(el).textAlign === "center").length;
-      const text = document.body?.innerText ?? "";
-      const emojiMatches = text.match(/[\u{1F300}-\u{1FAFF}]/gu) ?? [];
+      // Emoji only in UI chrome (headings, buttons, nav, links) — not body prose.
+      const chrome = Array.from(document.querySelectorAll<HTMLElement>("h1,h2,h3,button,nav,nav a,a"));
+      const emojiRe = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu;
+      const emojiInUiCount = chrome.reduce((n, el) => n + ((el.textContent?.match(emojiRe) ?? []).length), 0);
+
+      // Centered ratio over text-bearing blocks, not every div on the page.
+      const blocks = Array.from(document.querySelectorAll<HTMLElement>("section,header,footer,article,main,div")).filter((el) =>
+        Array.from(el.childNodes).some((n) => n.nodeType === 3 && (n.textContent ?? "").trim().length > 0),
+      );
+      const centered = blocks.filter((el) => getComputedStyle(el).textAlign === "center").length;
 
       return {
         styles: samples,
@@ -62,8 +94,8 @@ export async function captureUrl(url: string): Promise<CapturePayload> {
         domSummary: {
           headingCount: document.querySelectorAll("h1,h2,h3").length,
           buttonCount: document.querySelectorAll("button").length,
-          centeredBlockRatio: blockEls.length ? centered / blockEls.length : 0,
-          emojiInUiCount: emojiMatches.length,
+          centeredBlockRatio: blocks.length ? centered / blocks.length : 0,
+          emojiInUiCount,
         },
       };
     }, SAMPLE_SELECTORS);
