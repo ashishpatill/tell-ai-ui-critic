@@ -130,8 +130,11 @@ pnpm dev:fixture   # a deliberately bland sample app → http://localhost:3001
 Copy `.env.example` to `.env` and fill in what you have. Tell runs fully without keys — the taste and redesign steps simply fall back to their deterministic behavior.
 
 ```bash
-GEMINI_API_KEY=      # powers the taste engine's richer rationales
-ANTHROPIC_API_KEY=   # reserved for richer source-aware diffs (optional)
+GEMINI_API_KEY=            # powers richer taste/voice direction parsing
+CURSOR_API_KEY=            # enables Cursor-SDK-backed redesign drafts
+CURSOR_MODEL=composer-2.5  # optional; defaults to composer-2.5
+CURSOR_AGENT_TIMEOUT_MS=75000
+ANTHROPIC_API_KEY=         # reserved for richer source-aware diffs (optional)
 ```
 
 </details>
