@@ -12,7 +12,7 @@ Everything under these paths is **original hackathon work**:
 - `packages/redesign/` — contrast-grounded reconciliation and redesign diff generation
 - `packages/mcp/` — Cursor MCP server
 - `apps/web/` — Tell product UI (editorial/print-atelier design system) + live capture/setup/voice API routes
-- `apps/web/src/lib/repo-runner.ts`, `discover-routes.ts`, `run-diagnose.ts`, `use-voice.ts` — local repo runner and live pipeline helpers
+- `apps/web/src/lib/repo-runner.ts`, `discover-routes.ts`, `run-diagnose.ts`, `use-voice.ts`, `cursor-redesign.ts` — local repo runner, Cursor-SDK patch enhancement, and live pipeline helpers
 - `packages/redesign/src/reconcile.ts` — deterministic token reconciliation for live seam, including contrast-floor reporting
 - `.cursor/` — rules, hooks, MCP config
 - `AGENTS.md`, `CLAUDE.md`, `USER_STORY.md`, `README.md`, `BUILD.md`
