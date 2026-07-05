@@ -44,7 +44,13 @@ const PRESET_CHIPS: { key: string; label: string }[] = [
 
 type CaptureState = "idle" | "capturing" | "done";
 type DraftState = "idle" | "drafting" | "ready" | "copied" | "error";
-type CaptureMeta = { live: boolean; requestedUrl: string; capturedUrl: string; error?: string };
+type CaptureMeta = {
+  live: boolean;
+  requestedUrl: string;
+  capturedUrl: string;
+  error?: string;
+  backend?: "render" | "local";
+};
 type UiNotice = { tone: "success" | "error" | "info"; title: string; message: string };
 
 function isGitHubRepoUrl(url: string) {
@@ -85,6 +91,7 @@ export default function HomePage() {
   const [draftError, setDraftError] = useState("");
   const [directionPlan, setDirectionPlan] = useState<DirectionPlan | null>(null);
   const [directionParsing, setDirectionParsing] = useState(false);
+  const [directionSource, setDirectionSource] = useState<"gemini" | "local" | null>(null);
   const parseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [uiNotice, setUiNotice] = useState<UiNotice | null>(null);
   const noticeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -135,10 +142,12 @@ export default function HomePage() {
       const trimmed = text.trim();
       if (trimmed.length < 2) {
         setDirectionPlan(null);
+        setDirectionSource(null);
         return;
       }
 
       applyDirectionPlan(parseDirectionPlan(trimmed));
+      setDirectionSource("local");
 
       parseTimerRef.current = setTimeout(async () => {
         setDirectionParsing(true);
@@ -149,8 +158,9 @@ export default function HomePage() {
             body: JSON.stringify({ transcript: trimmed }),
           });
           if (res.ok) {
-            const plan = (await res.json()) as DirectionPlan;
-            applyDirectionPlan(plan);
+            const payload = (await res.json()) as DirectionPlan & { source?: "gemini" | "local" };
+            applyDirectionPlan(payload);
+            setDirectionSource(payload.source ?? "local");
           }
         } catch {
           /* local parse already applied */
@@ -236,7 +246,13 @@ export default function HomePage() {
           body: JSON.stringify({ url: target }),
         });
         const payload = (await res.json()) as { report: TellReport; meta: CaptureMeta };
-        setCaptureNote(payload.meta.live ? "Capture complete." : "Capture failed — loaded offline demo.");
+        setCaptureNote(
+          payload.meta.live
+            ? payload.meta.backend === "render"
+              ? "Capture complete — live diagnosis via Render."
+              : "Capture complete."
+            : "Capture failed — loaded offline demo.",
+        );
         setReport(payload.report);
         setCaptureMeta(payload.meta);
         setSelectedId(payload.report.findings[0]?.id ?? "");
@@ -429,6 +445,7 @@ export default function HomePage() {
         body: JSON.stringify({
           report,
           direction: directionPlan?.summary || directionId,
+          directionPlan: directionPlan ?? undefined,
           findingId: selectedFinding?.id,
           dna: brandDna ?? undefined,
         }),
@@ -633,7 +650,7 @@ export default function HomePage() {
               {directionPlan ? (
                 <span className="font-mono text-[11px] text-muted">
                   direction: {resolveDirection(directionPlan.presetId).label.toLowerCase()}
-                  {directionParsing ? " · refining…" : null}
+                  {directionParsing ? " · refining…" : directionSource === "gemini" ? " · gemini" : null}
                 </span>
               ) : null}
             </div>

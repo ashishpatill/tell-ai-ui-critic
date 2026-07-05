@@ -49,7 +49,15 @@ TELL_CAPTURE_TIMEOUT_MS=90000
 
 4. Deploy. **Share the Vercel URL with judges** — live capture works via Render proxy.
 
-### Step 4 — Demo flow (60 seconds)
+### Step 4 — Wire with Cursor MCP (optional)
+
+Once both are live, ask in Cursor Agent chat:
+
+> "Using Render MCP, set env vars on tell-capture. Using Vercel MCP, set `TELL_CAPTURE_API_URL` to the Render URL and redeploy."
+
+Render MCP must be authenticated (Cursor Settings → MCP → Render → sign in). Same for Vercel.
+
+### Step 5 — Demo flow (60 seconds)
 
 1. Open **Vercel URL** → paste any public site → **Capture** (Render runs Playwright).
 2. Drag the **before/after seam**.
