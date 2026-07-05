@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { runDiagnose } from "@/lib/run-diagnose";
+import { hasRemoteCaptureBackend, runDiagnoseRemote } from "@/lib/run-diagnose-remote";
 import { demoReport } from "@/lib/demo-report";
+
+/** Proxy to Render capture backend can take ~90s (Playwright cold start). */
+export const maxDuration = 90;
 
 function captureErrorMessage(url: string, error: unknown) {
   const detail = error instanceof Error ? error.message : String(error);
@@ -18,10 +22,17 @@ export async function POST(request: Request) {
   const url = typeof body.url === "string" && body.url.trim() ? body.url.trim() : demoReport.capture.url;
 
   try {
-    const report = await runDiagnose(url);
+    const report = hasRemoteCaptureBackend()
+      ? await runDiagnoseRemote(url)
+      : await runDiagnose(url);
     return NextResponse.json({
       report,
-      meta: { live: true, requestedUrl: url, capturedUrl: report.capture.url },
+      meta: {
+        live: true,
+        requestedUrl: url,
+        capturedUrl: report.capture.url,
+        backend: hasRemoteCaptureBackend() ? "render" : "local",
+      },
     });
   } catch (error) {
     console.error("[/api/diagnose]", error);

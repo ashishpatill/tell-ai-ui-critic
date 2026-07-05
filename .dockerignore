@@ -1,0 +1,16 @@
+node_modules
+.next
+dist
+.turbo
+coverage
+output
+playwright-report
+test-results
+*.log
+.env
+.env.local
+.git
+.gitignore
+.DS_Store
+docs/03_CLAUDE_DESIGN_BRIEF.md
+docs/04_CLAUDE_PROJECT.md

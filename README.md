@@ -6,7 +6,7 @@
 
 **Tell is an open-source design critic that reads the *rendered* UI of your product, names exactly what makes it look AI-generated, and helps you art-direct a distinctive redesign — without leaving Cursor.**
 
-[Quick start](#quick-start) · [Features](#features) · [How it works](#how-it-works) · [Use it in Cursor](#use-it-in-cursor) · [Project structure](#project-structure)
+[Quick start](#quick-start) · [Features](#features) · [How it works](#how-it-works) · [Deploy](#deploy) · [Use it in Cursor](#use-it-in-cursor) · [Project structure](#project-structure)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](./LICENSE)
 [![Built for Cursor](https://img.shields.io/badge/built%20for-Cursor-black.svg)](https://cursor.com)
@@ -150,6 +150,22 @@ pnpm diagnose:fixture  # diagnose the sample app from a capture
 ```
 
 </details>
+
+---
+
+## Deploy
+
+**Best hackathon setup:** **Vercel** (judge-facing URL) + **Render** (Playwright capture). Set `TELL_CAPTURE_API_URL` on Vercel → live capture on the fast UI.
+
+| Layer | Platform | Role |
+|---|---|---|
+| UI | Vercel | Share this URL with judges |
+| Capture | Render (Docker) | Live URL diagnosis via proxy |
+| MCP | Local Cursor | `tell_diagnose` in Agent chat |
+
+Full hybrid walkthrough: **[docs/DEPLOY.md](./docs/DEPLOY.md)**
+
+Configs: `apps/web/vercel.json`, `Dockerfile`, `render.yaml`
 
 ---
 

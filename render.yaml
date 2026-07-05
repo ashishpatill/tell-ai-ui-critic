@@ -1,0 +1,25 @@
+# Render — Option B (Docker, live capture)
+# Docs: docs/DEPLOY.md
+services:
+  - type: web
+    name: tell-capture
+    runtime: docker
+    plan: starter
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TELL_REPO_ROOT
+        value: /app
+      - key: TELL_DISABLE_REPO_SETUP
+        value: "1"
+      - key: TELL_CAPTURE_TIMEOUT_MS
+        value: "90000"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CURSOR_API_KEY
+        sync: false
+      - key: CURSOR_MODEL
+        value: composer-2.5
+      - key: CURSOR_AGENT_TIMEOUT_MS
+        value: "75000"

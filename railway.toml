@@ -1,0 +1,11 @@
+# Railway — Option B (Docker, live capture)
+# Docs: docs/DEPLOY.md
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "cd ../.. && pnpm -F @tell/web build",
+  "framework": "nextjs",
+  "env": {
+    "TELL_DISABLE_REPO_SETUP": "1"
+  },
+  "functions": {
+    "src/app/api/diagnose/route.ts": {
+      "maxDuration": 90
+    }
+  }
+}
