@@ -1,0 +1,23 @@
+---
+description: Zod schema contracts — packages/schema
+globs: "packages/schema/**/*"
+alwaysApply: false
+---
+
+# Schema contract rules
+
+- `@tell/schema` is the single source of truth for cross-package data shapes.
+- Edit schemas before changing capture, detectors, taste, redesign, MCP, or web API code.
+- Export inferred TS types from zod; consumers import types, never duplicate shapes.
+- Parse at every boundary: MCP tools, API routes, file reads, model JSON responses.
+- Schema changes are a merge gate — freeze before parallel subagent work.
+- Prefer additive changes; breaking renames require updating all packages in one pass.
+
+## Core types
+
+`CapturePayload`, `DesignFingerprint`, `Finding`, `TasteVerdict`, `ArtDirection`, `RedesignProposal`, `TellReport`
+
+## DoD
+
+- `pnpm -F @tell/schema build` passes
+- Downstream packages typecheck without loose `any` at boundaries
