@@ -1,0 +1,15 @@
+---
+description: Tell documentation authority and planning order
+alwaysApply: true
+---
+
+# Docs authority
+
+- Start with `AGENTS.md` and `USER_STORY.md`: Priya's journey is the north star.
+- Visual and interaction contract: `docs/01_DESIGN_SYSTEM.md`.
+- Engineering rules, stack, milestones, and cut line: `BUILD.md`.
+- Screen/design prompt details: `docs/03_CLAUDE_DESIGN_BRIEF.md`.
+- Vision, scope, demo script, and compliance: `docs/04_CLAUDE_PROJECT.md`.
+- Genericness definitions and detector methodology: `docs/05_GENERICNESS_METHODOLOGY.md`.
+- If `BUILD.md` and `docs/02_CURSOR_BUILD_INSTRUCTIONS.md` drift, treat root `BUILD.md` as the working source.
+- Do not read `.env` or `.env.local` for routine work; use `.env.example` and README docs for configuration.
