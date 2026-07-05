@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Finding, Reconciliation } from "@tell/schema";
+import type { LlmSheet, RestyleMode, RestyleStatus } from "@/lib/use-llm-restyle";
 
 const SLANT = 5;
 const MIN = 0;
@@ -28,10 +29,10 @@ function ProofMark({ className = "" }: { className?: string }) {
   );
 }
 
-/** Inject the reconciliation stylesheet last so it wins the cascade in the "after" render. */
-function injectReconcile(html: string, recon?: Reconciliation): string {
-  if (!recon) return html;
-  const style = `<style data-tell-reconcile>\n${recon.fontImport}\n${recon.css}\n</style>`;
+/** Inject a stylesheet last so it wins the cascade in the "after" render. */
+function injectReconcile(html: string, sheet?: { css: string; fontImport: string }): string {
+  if (!sheet) return html;
+  const style = `<style data-tell-reconcile>\n${sheet.fontImport}\n${sheet.css}\n</style>`;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, `${style}</body>`);
   if (/<\/html>/i.test(html)) return html.replace(/<\/html>/i, `${style}</html>`);
   return html + style;
@@ -62,6 +63,11 @@ type Props = {
   onSelectFinding: (id: string) => void;
   snapshotHtml?: string;
   screenshotBase64?: string;
+  // ── v2: background LLM-refined sheet (optional, additive — deterministic still ships instantly) ──
+  llmStatus?: RestyleStatus;
+  llmSheet?: LlmSheet | null;
+  llmMode?: RestyleMode;
+  onLlmModeChange?: (mode: RestyleMode) => void;
 };
 
 export function BeforeAfterSeam({
@@ -73,6 +79,10 @@ export function BeforeAfterSeam({
   onSelectFinding,
   snapshotHtml,
   screenshotBase64,
+  llmStatus = "idle",
+  llmSheet = null,
+  llmMode = "recipes",
+  onLlmModeChange,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.6);
@@ -110,7 +120,19 @@ export function BeforeAfterSeam({
   const afterClip = `polygon(${seam + SLANT}% 0%, 100% 0%, 100% 100%, ${seam - SLANT}% 100%)`;
   const hasLive = Boolean(snapshotHtml);
   const beforeDoc = snapshotHtml ?? "";
-  const afterDoc = injectReconcile(beforeDoc, reconciliation);
+
+  // "ai" only actually wins once the sheet has landed — otherwise we're still on recipes.
+  const usingLlm = llmMode === "ai" && Boolean(llmSheet);
+  const activeCss = usingLlm ? llmSheet!.css : reconciliation?.css ?? "";
+  const activeFontImport = usingLlm ? llmSheet!.fontImport : reconciliation?.fontImport ?? "";
+  const activeSheet = reconciliation ? { css: activeCss, fontImport: activeFontImport } : undefined;
+
+  // afterDoc rebuilds a multi-MB snapshot string — only redo the concat when the
+  // underlying page or the winning CSS sheet actually changes.
+  const afterDoc = useMemo(
+    () => injectReconcile(beforeDoc, activeSheet),
+    [beforeDoc, activeSheet?.css, activeSheet?.fontImport],
+  );
   const iframeStyle: React.CSSProperties = {
     width: DESIGN_W,
     height: FRAME_H / scale,
@@ -144,6 +166,32 @@ export function BeforeAfterSeam({
                   → <span className="inline-block h-3 w-3 rounded-full ring-1 ring-white/40" style={{ background: reconciliation.accentAfter }} />
                   {reconciliation.accentBefore} → {reconciliation.accentAfter}
                 </p>
+                {onLlmModeChange && (llmSheet || llmStatus === "pending") ? (
+                  <div className="pointer-events-auto mt-2.5 flex items-center gap-1.5 border-t border-white/15 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => onLlmModeChange("recipes")}
+                      className={`rounded px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] transition ${
+                        !usingLlm ? "bg-white/25 text-white" : "text-white/60 hover:text-white/90"
+                      }`}
+                    >
+                      Recipes
+                    </button>
+                    <button
+                      type="button"
+                      disabled={!llmSheet}
+                      onClick={() => onLlmModeChange("ai")}
+                      className={`rounded px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                        usingLlm ? "bg-white/25 text-white" : "text-white/60 hover:text-white/90"
+                      }`}
+                    >
+                      AI-refined
+                    </button>
+                    {llmStatus === "pending" ? (
+                      <span className="ml-0.5 h-1.5 w-1.5 animate-pulse rounded-full bg-accent" aria-label="Refining with AI…" title="Refining with AI…" />
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
             ) : null}
           </div>
@@ -215,9 +263,14 @@ export function BeforeAfterSeam({
       <span className="absolute left-4 top-4 z-[21] rounded bg-black/55 px-2 py-1 font-mono text-xs uppercase tracking-[0.16em] text-white/90">
         {hasLive ? "Captured" : "Before"}
       </span>
-      <span className="absolute right-4 top-4 z-[21] rounded px-2 py-1 font-mono text-xs uppercase tracking-[0.16em]"
+      <span className="absolute right-4 top-4 z-[21] flex items-center gap-1.5 rounded px-2 py-1 font-mono text-xs uppercase tracking-[0.16em]"
         style={{ background: reconciliation?.surfaceAfter ?? "rgba(255,255,255,.85)", color: reconciliation?.textAfter ?? "#181614" }}>
         Reconciled
+        {reconciliation ? (
+          <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-[9px] normal-case tracking-normal">
+            {usingLlm ? "Gemini-refined" : "Recipe engine"}
+          </span>
+        ) : null}
       </span>
     </div>
   );
