@@ -29,6 +29,7 @@ COPY fixtures/generic-app/package.json ./fixtures/generic-app/
 RUN pnpm install --frozen-lockfile
 
 # Source + fixtures (offline demo artifact)
+COPY tsconfig.base.json ./
 COPY packages ./packages
 COPY apps ./apps
 COPY fixtures ./fixtures
