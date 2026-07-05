@@ -132,11 +132,18 @@ build_image() {
   commit="$(current_commit)"
   mkdir -p "$STATE_DIR"
   info "Building Docker image (commit $commit) — Playwright layer cached unless deps changed..."
-  # DO NOT use --no-cache unless forcing; BuildKit reuses layers 1–17 on code-only changes.
-  DOCKER_BUILDKIT=1 docker build \
-    --build-arg "GIT_COMMIT=$commit" \
-    -t "$IMAGE_NAME" \
-    "$APP_DIR"
+  # DO NOT use --no-cache unless forcing; layer cache reuses deps/Playwright on code-only changes.
+  if docker buildx version >/dev/null 2>&1; then
+    DOCKER_BUILDKIT=1 docker build \
+      --build-arg "GIT_COMMIT=$commit" \
+      -t "$IMAGE_NAME" \
+      "$APP_DIR"
+  else
+    docker build \
+      --build-arg "GIT_COMMIT=$commit" \
+      -t "$IMAGE_NAME" \
+      "$APP_DIR"
+  fi
   echo "$commit" >"$DEPLOYED_COMMIT_FILE"
   pass "Image built and tagged $IMAGE_NAME @ $commit"
 }
