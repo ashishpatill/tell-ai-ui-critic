@@ -273,25 +273,50 @@ export function sanitizeLlmSelectors(css: string): string {
     if (!trimmed || trimmed.startsWith("@")) return full;
     const fixed = selectorPart.split(",").map((sel: string) => {
       let s = sel.trim();
+      // Models reliably shorthand stamped ids as #t7 — expand back to the attribute form.
+      s = s.replace(/#(t\d+)\b/g, '[data-tell-id="$1"]');
       const pseudoMatch = s.match(/((?:\s*::?[a-zA-Z-]+(?:\([^)]*\))?)+)$/);
       const pseudo = pseudoMatch?.[1] ?? "";
       let base = pseudo ? s.slice(0, s.length - pseudo.length).trim() : s;
       base = base.replace(/\[(?!data-tell-id\s*=)[^\]]+\]/gi, "").trim();
+      // A selector that was ONLY a stripped attribute (e.g. [aria-hidden]) has no base
+      // left — drop it rather than emitting a naked pseudo or an empty selector.
+      if (!base) return "";
       return (base + pseudo).trim();
-    });
+    }).filter(Boolean);
+    // Every selector in the list vanished → mark the rule so the final pass removes it.
+    if (!fixed.length) return `.__tell-drop__ {`;
     return `${fixed.join(", ")} {`;
-  });
+  })
+    // Remove rules whose selector list was emptied by sanitization.
+    .replace(/\.__tell-drop__\s*\{[^{}]*\}/g, "");
 }
 
-/** Drop banned declarations the model occasionally emits so validation can pass safely. */
+/** True when every selector in the list is a ::before/::after decoration rule. */
+export function isPseudoDecoration(selectorList: string): boolean {
+  const parts = selectorList.split(",").map((s) => s.trim()).filter(Boolean);
+  return parts.length > 0 && parts.every((s) => /::?(before|after)\b/i.test(s));
+}
+
+/**
+ * Drop banned declarations the model occasionally emits so validation can pass safely.
+ * Block-aware: `position:absolute` is a legitimate technique inside ::before/::after
+ * decoration rules (corner ticks, eyebrows) and survives there; everywhere else it goes,
+ * along with the universally banned declarations. Handles declarations terminated by `}`
+ * as well as `;`, and strips every occurrence, not just the first.
+ */
 function stripBannedDeclarations(css: string): string {
   const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
-  let out = withoutComments;
-  for (const { re } of BANNED_PROPERTY_VALUE_PATTERNS) {
-    out = out.replace(new RegExp(`${re.source}[^;]*;`, re.flags), "");
-  }
-  out = out.replace(/(?<![a-z-])transform\s*:[^;]*;/gi, "");
-  return out;
+  return withoutComments.replace(/([^{}]+)(\{[^{}]*\})/g, (_full, selPart: string, body: string) => {
+    if (selPart.trim().startsWith("@")) return selPart + body;
+    let b = body;
+    for (const { re, label } of BANNED_PROPERTY_VALUE_PATTERNS) {
+      if (label === "position:absolute" && isPseudoDecoration(selPart.trim())) continue;
+      b = b.replace(new RegExp(`${re.source}[^;}]*;?`, "gi"), "");
+    }
+    b = b.replace(/(?<![a-z-])transform\s*:[^;}]*;?/gi, "");
+    return selPart + b;
+  });
 }
 
 // ── Tiny local color parser + WCAG contrast ratio (self-contained, ~40 lines) ──
@@ -391,9 +416,18 @@ export function validateLlmSheet(css: string, capture: CapturePayload): Validate
   }
   if (depth > 0) violations.push("unbalanced braces: missing closing '}'");
 
-  // Banned properties/values.
+  // Banned properties/values. `position:absolute` gets a block-aware pass: it is a
+  // legitimate technique inside ::before/::after decoration rules and banned elsewhere.
   for (const { re, label } of BANNED_PROPERTY_VALUE_PATTERNS) {
+    if (label === "position:absolute") continue;
     if (re.test(css)) violations.push(`banned rule present: ${label}`);
+  }
+  for (const block of css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)(\{[^{}]*\})/g)) {
+    const sel = block[1]!.trim();
+    if (sel.startsWith("@")) continue;
+    if (/position\s*:\s*absolute/i.test(block[2]!) && !isPseudoDecoration(sel)) {
+      violations.push(`banned rule present: position:absolute outside ::before/::after (${sel})`);
+    }
   }
   // transform on content: any transform declaration at all is disallowed (hero/decorative scale
   // moves belong to font-size/spacing, not transform, per the brief).
@@ -528,7 +562,14 @@ export async function restyleWithGemini(
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           contents: [{ role: "user", parts: [{ text: prompt }] }],
-          generationConfig: { responseMimeType: "application/json", temperature: 0.6 },
+          generationConfig: {
+            responseMimeType: "application/json",
+            temperature: 0.6,
+            maxOutputTokens: 16384,
+            // 2.5-flash reasons by default; a grounded CSS transcription task doesn't need it
+            // and with it enabled a full sheet routinely blows the 60s budget.
+            thinkingConfig: { thinkingBudget: 0 },
+          },
         }),
         signal: controller.signal,
       });
