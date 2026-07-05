@@ -11,6 +11,11 @@ function stripFences(text: string): string {
   return text.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
 }
 
+function truncateForPrompt(text: string, maxLen: number): string {
+  if (text.length <= maxLen) return text;
+  return `${text.slice(0, maxLen)}… [truncated]`;
+}
+
 function summarizeReport(report: TellReport, findingId?: string) {
   const selected = findingId ? report.findings.find((finding) => finding.id === findingId) : undefined;
   return {
@@ -115,7 +120,7 @@ export async function proposeWithCursorAgent(
             .join("\n")
             .slice(0, 120_000)}`
         : "Project sources: unavailable. Return the deterministic fallback.",
-      `Deterministic fallback proposal: ${JSON.stringify(deterministic.files)}`,
+      `Deterministic fallback proposal: ${truncateForPrompt(JSON.stringify(deterministic.files), 20_000)}`,
     ].join("\n");
 
     const result = await withTimeout(
