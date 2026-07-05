@@ -1,0 +1,17 @@
+#cloud-config
+#
+# Paste this file into Vultr's "Cloud-Init User-Data" field when creating an
+# Ubuntu 24.04 instance. API keys are deliberately not included here because
+# Vultr stores user data separately from the instance filesystem.
+
+package_update: true
+packages:
+  - ca-certificates
+  - curl
+  - git
+
+runcmd:
+  - [bash, -lc, "curl -fsSL https://raw.githubusercontent.com/ashishpatill/tell-ai-ui-critic/master/scripts/vultr/setup.sh -o /tmp/tell-setup.sh"]
+  - [bash, /tmp/tell-setup.sh]
+
+final_message: "Tell capture installation finished. Add keys to /etc/tell-capture.env, then restart tell-capture."
