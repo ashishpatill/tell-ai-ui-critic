@@ -8,11 +8,12 @@ alwaysApply: true
 Read USER_STORY.md: we build for **Priya** (solo founder, AI-built UI looks generic, demo tomorrow).
 
 ## Golden rules
-1. Deterministic core — zero LLM in `packages/core`
-2. Never auto-apply fixes — human applies in Cursor
-3. Zod schemas at every boundary (`@tell/schema`)
-4. Tokens only in `apps/web` — no raw hex in classNames
-5. Product = capture → diagnose → art-direct → reconcile loop (not a dashboard)
+1. Product = capture -> diagnose -> art-direct -> reconcile; the report serves the loop, not a dashboard.
+2. Deterministic through capture, fingerprint, detection, and baseline reconciliation; LLM only in taste, voice refinement, or enhanced diff paths.
+3. Never auto-apply fixes. MCP/web returns patches; a human or Cursor agent reviews and applies.
+4. Zod schemas at every package/API/MCP boundary via `@tell/schema`.
+5. Tell's own UI must dogfood the detector rules: tokens, state coverage, contrast, no generic SaaS tells.
+6. Preserve demo reliability: live path first, committed fixture/report fallback always works.
 
 ## Model routing (see ORCHESTRATION.md)
 - **Composer 2.5** — orchestrate, UI, MCP, fixtures
@@ -20,4 +21,7 @@ Read USER_STORY.md: we build for **Priya** (solo founder, AI-built UI looks gene
 - **GPT 5.5** — user copy, demo narrative
 
 ## Delegate to subagents
-`.cursor/agents/` — use role-specific agents proactively.
+`.cursor/agents/` — 11 role-specific agents. Use proactively by feature area.
+
+## Project skills
+`.cursor/skills/` — 12 feature workflows. Invoke with `@skill-name` or let Cursor auto-attach.
