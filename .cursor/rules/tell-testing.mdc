@@ -1,0 +1,15 @@
+---
+description: Tell testing and verification expectations
+globs: "**/*.test.ts,packages/**/*,apps/web/**/*,fixtures/**/*"
+alwaysApply: false
+---
+
+# Testing rules
+
+- Before claiming done, prefer `pnpm test`, `pnpm -F @tell/schema build`, and `pnpm -F @tell/web typecheck`.
+- Root TypeScript is strict with `noUncheckedIndexedAccess`; avoid unchecked array/object access.
+- Vitest includes `packages/**/*.test.ts`; package tests should stay close to the package they verify.
+- Detector changes require golden assertions against `fixtures/reports/capture.json`.
+- Taste tests must mock model calls and validate zod/reflection fallback behavior.
+- UI changes should preserve keyboard access, `focus-visible`, reduced motion, and non-color verdict encoding.
+- Known lower-coverage areas: redesign diffs, seam drag math, and the monolithic web page. Add focused tests when touching them.
