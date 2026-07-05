@@ -1,0 +1,15 @@
+---
+description: Tell deployment rules — Vercel, Docker, Render
+globs: "apps/web/vercel.json,Dockerfile,render.yaml,railway.toml,docs/DEPLOY.md"
+alwaysApply: false
+---
+
+# Deploy rules
+
+- Option A (Vercel): fast public demo; UI + offline fixture always works; no live Playwright capture.
+- Option B (Docker on Render/Railway): adds live URL capture with headless Chromium.
+- Bind HTTP servers to `0.0.0.0:$PORT` on Render; filesystem is ephemeral.
+- Set `TELL_DISABLE_REPO_SETUP=1` in production — GitHub setup runs arbitrary repo scripts.
+- Never commit `.env` or `.env.local`; use hosting dashboard for secrets.
+- MCP stays local-only; share web URL for judges, README for Cursor MCP setup.
+- If live capture fails in prod, offline `fixtures/reports/tell-report.json` fallback must still load.
