@@ -1,0 +1,15 @@
+---
+description: GitHub repo setup — local-only security rules
+globs: "apps/web/src/lib/repo-runner.ts,apps/web/src/lib/setup-guard.ts,apps/web/src/app/api/setup/**/*"
+alwaysApply: false
+---
+
+# GitHub setup rules
+
+- `/api/setup/*` clones repos, runs install scripts, and spawns dev servers — local dev only.
+- Guard with `setup-guard.ts` and `TELL_DISABLE_REPO_SETUP=1` for production/deploy.
+- Never expose setup endpoints on public deploy without the guard enabled.
+- Job states: cloning → installing → detecting → starting → waiting → ready | needs-manual | error.
+- Block duplicate setup clicks; hide stale captures while a job is running.
+- Surface plain-language success/failure; never leave Priya guessing which localhost URL is active.
+- On failure, show what was detected from README/package.json and offer manual URL paste.
