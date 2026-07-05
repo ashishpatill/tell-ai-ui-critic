@@ -1,6 +1,6 @@
 # Deploy Tell
 
-**Recommended for the hackathon:** deploy **Vercel (UI)** + **Vultr or Render (capture)** and wire them together.
+**Recommended production setup:** deploy **Vercel (UI)** + **Vultr or Render (capture)** and wire them together.
 
 | Layer | Platform | Role |
 |---|---|---|
@@ -49,7 +49,7 @@ TELL_CAPTURE_API_URL=https://YOUR-RENDER-URL.onrender.com
 TELL_CAPTURE_TIMEOUT_MS=90000
 ```
 
-4. Deploy. **Share the Vercel URL with judges** — live capture works via Render proxy.
+4. Deploy. **Share the Vercel URL** — live capture works via Render proxy.
 
 ### Step 4 — Wire with Cursor MCP (optional)
 
@@ -95,7 +95,7 @@ Repo configs added for you:
 
 ### 1. Push to GitHub
 
-Judges need a stable URL. Vercel and Render both deploy from Git.
+A stable public URL is useful for demos. Vercel and Render both deploy from Git.
 
 ```bash
 cd tell
@@ -104,7 +104,7 @@ git commit -m "Add Vercel and Docker deployment configs"
 git push origin main
 ```
 
-If the repo root is `Raise Hackathon/` and `tell/` is a subfolder, note that path — you'll set it as the **Root Directory** in Vercel/Render.
+If the repo root is `Raise Build sprint/` and `tell/` is a subfolder, note that path — you'll set it as the **Root Directory** in Vercel/Render.
 
 ### 2. Prepare secrets (never commit these)
 
@@ -124,13 +124,13 @@ Copy keys from your local `.env` into the hosting dashboard only:
 - **Vercel (Option A):** Full UI, seam, voice direction, redesign, offline demo report. Live capture falls back to `fixtures/reports/tell-report.json`.
 - **Docker (Option B):** Everything above **plus** live capture of any public HTTP URL.
 - **Both:** GitHub repo setup is off (`TELL_DISABLE_REPO_SETUP=1`) — it runs arbitrary code and is local-dev only.
-- **Cursor MCP:** Always local. Share the Vercel/Docker URL for the web demo; point judges at README → “Use it in Cursor” for MCP.
+- **Cursor MCP:** Always local. Share the Vercel/Docker URL for the web demo; point viewers at README → “Use it in Cursor” for MCP.
 
 ---
 
 ## Option A — Vercel (recommended first)
 
-Best for: **a public link in under 10 minutes** for hackathon judges.
+Best for: **a public link in under 10 minutes** for demo viewers.
 
 ### Step 1 — Create the project
 
@@ -165,7 +165,7 @@ Click **Deploy**. First build takes ~2–4 minutes (pnpm monorepo).
 
 You get: `https://tell-xxxx.vercel.app` (or your custom domain).
 
-### Step 4 — Demo script for judges
+### Step 4 — Demo script for viewers
 
 1. Open the Vercel URL.
 2. The app loads with the committed fixture report — drag the seam, pick a direction, draft a diff.
@@ -258,7 +258,7 @@ Free tier may spin down after idle — first request after sleep is slow (~30–
 
 ---
 
-## Hackathon demo checklist
+## Production demo checklist
 
 When you're back:
 
@@ -267,10 +267,10 @@ When you're back:
 - [ ] **Option B (optional):** Docker service live, capture works on a public URL
 - [ ] Env vars set on host (not in git)
 - [ ] README demo GIF loads on GitHub
-- [ ] Cursor MCP path documented for judges who clone the repo
+- [ ] Cursor MCP path documented for viewers who clone the repo
 - [ ] Practice 60-second pitch: problem → capture → tells → seam → diff → Cursor
 
-### Suggested judge flow (60 seconds)
+### Suggested demo flow (60 seconds)
 
 1. **Web (Vercel):** “Every AI-built UI has a tell — paste a URL, get evidence-backed findings.”
 2. **Seam:** Drag before/after — same page, reconciled tokens.
@@ -293,5 +293,5 @@ After changing env vars, **redeploy** so runtime picks them up.
 ## What not to deploy
 
 - **Supabase / Neon / Grafana** — not app hosts; use only if you add a database later (Tell doesn't need one today).
-- **MCP server** — stdio-only, runs inside Cursor on the judge's machine.
+- **MCP server** — stdio-only, runs inside Cursor on the reviewer's machine.
 - **`.env` files** — secrets belong in the host dashboard only.

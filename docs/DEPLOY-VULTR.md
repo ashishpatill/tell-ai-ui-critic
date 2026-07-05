@@ -59,6 +59,16 @@ The script pulls latest code, builds (cached layers), starts the container, and 
 - First build: **~15 min** (Playwright download)
 - Code-only updates: **~3–5 min** (Playwright layer cached)
 - Force rebuild: `TELL_FORCE_REBUILD=1 bash /opt/tell/scripts/vultr/deploy-and-verify.sh`
+- Vercel check/deploy: enabled by default. If the Vercel CLI is installed/authenticated on the VPS, the script deploys production when its recorded frontend commit is stale, then verifies the public Vercel URL still returns live capture. Set `TELL_VERCEL_AUTO_DEPLOY=0` to verify only.
+
+If the script says GitHub must be updated first, run this from your local repo before rerunning the VPS deploy:
+
+```bash
+git status --short
+git add .
+git commit -m "Prepare demo deployment"
+git push origin master
+```
 
 ---
 
@@ -101,7 +111,7 @@ You should get JSON with `"live": true` in `meta` (may take ~30s first run).
 2. Set **`TELL_CAPTURE_API_URL`** = `http://YOUR_VULTR_IP:3000`
 3. **Redeploy** production
 
-Judges still use **https://tell-five.vercel.app** — capture runs on your Vultr VPS in the background.
+Viewers still use **https://tell-five.vercel.app** — capture runs on your Vultr VPS in the background.
 
 ---
 
@@ -154,9 +164,10 @@ Then set `TELL_CAPTURE_API_URL=https://capture.yourdomain.com` on Vercel.
 | Capture timeout | Increase `TELL_CAPTURE_TIMEOUT_MS=120000` in `/etc/tell-capture.env` |
 | Cloud-init is still running | `cloud-init status --wait`, then check `/var/log/cloud-init-output.log` |
 | Vercel still offline demo | Confirm `TELL_CAPTURE_API_URL` is set for Production and redeploy Vercel |
+| Vercel CLI missing on VPS | Install/authenticate `vercel`, or deploy frontend locally with `vercel deploy --prod --yes` |
 
 ---
 
 ## Cost note
 
-~$24/mo for 4 GB RAM → **~8 months** on $200 credits for the hackathon demo window.
+~$24/mo for 4 GB RAM → **~8 months** on $200 credits for the demo window.
