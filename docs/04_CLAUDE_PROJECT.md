@@ -5,7 +5,7 @@
 > the risks, the rules-compliance checklist, and a live tracker. §14 is a copy-paste block for the
 > Project's **Custom Instructions**.
 
-Project: **Tell** · Track: **Cursor** · Format: 2-day hackathon build · Repo: _public, TBD_
+Project: **Tell** · Track: **Cursor** · Format: 2-day build sprint · Repo: _public, TBD_
 
 ---
 
@@ -55,7 +55,7 @@ fix.
   the same visual defaults. The industry joke — "you can tell it was built with AI" — is now a
   product problem, not a meme.
 - **Static token-diffing is saturated** (designlang, Atomize, Token Auditor, Firebender, Figma's
-  checker). Nobody guards the *rendered* surface — what users actually see — nor judges whether
+  checker). Nobody guards the *rendered* surface — what users actually see — nor assesses whether
   divergence is generic vs intentional.
 - **Codebase-viz + voice onboarding is crowded** (CodeMap, Codelore, Understand-Anything, Nexo,
   GENIE). We do not compete there. Tell reads *design*, not architecture.
@@ -88,7 +88,7 @@ month."
 
 **Primary target:** win the Cursor track.
 
-**Judge-facing success:**
+**Demo-facing success:**
 - The demo shows a real capture → diagnose → art-direct → contrast-grounded reconcile loop, runnable from Cursor via MCP.
 - The taste layer visibly distinguishes a generic tell from an intentional design choice, with a reason.
 - The **before/after seam reveal** lands — the "aha" is visual, not a spreadsheet.
@@ -168,7 +168,7 @@ flowchart LR
 - **Visual regression** (Chromatic, Percy): pixel diffs without judgment — no "this is generic" or
   "this is intentional."
 - **Design-context-for-agents** (skills, DESIGN.md): feeds rules *to* agents; does not *detect*
-  rendered genericness or judge drift on the live surface.
+  rendered genericness or reviewer drift on the live surface.
 
 Tell's defensible slice: **rendered-surface genericness detection + consistency drift + taste verdicts
 + voice art-direction + measurable reconciliation, in Cursor.** No shipped product occupies it.
@@ -240,7 +240,7 @@ Day 1 = spine (schema, capture, fingerprint, detectors, taste, MCP diagnose). Da
 ## 14. Custom Instructions for this Claude Project (paste into the Project settings)
 
 ```
-You are the build partner for Tell, an AI taste critic for the Cursor hackathon track. Your job is
+You are the build partner for Tell, an AI taste critic for the Cursor-native product track. Your job is
 to help ship a winning 2-day build.
 
 Context you always assume:
@@ -269,7 +269,7 @@ How to help:
 - When I paste the tracker, tell me the single most important next action and what to cut if I'm
   behind.
 - Keep everything reproducible for the live demo; prefer the committed report artifact as fallback.
-- Watch the hackathon rules: public repo, original-work attribution, and stay clear of the banned
+- Watch the project originality rules: public repo, original-work attribution, and stay clear of the banned
   "dashboard as the main feature" framing — the loop is the product, the report serves it.
 ```
 

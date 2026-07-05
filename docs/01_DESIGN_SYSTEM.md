@@ -5,7 +5,7 @@
 > token, every interactive component declares a complete state matrix, and nothing reads as a default.
 > Demo beat: *Tell runs on itself and reports zero tells.*
 
-Version 0.1 · Warm editorial · Hackathon build (Cursor track)
+Version 0.1 · Warm editorial · Build sprint (Cursor track)
 
 ---
 

@@ -1,7 +1,7 @@
 # Tell — Claude Design Brief
 
 > Use this in **Claude Design** to produce the hi-fi screens, the clickable capture → diagnose →
-> art-direct → fix prototype, and the judge-facing landing/demo one-pager. It inherits every token
+> art-direct → fix prototype, and the demo-facing landing/demo one-pager. It inherits every token
 > from `01_DESIGN_SYSTEM.md` — treat that file as law and this file as the art direction on top of
 > it. Where this brief and the design system disagree, the design system wins.
 
@@ -15,7 +15,7 @@
 3. **Before/After Seam** — the draggable reveal (can be embedded in #1 or standalone frame).
 4. **Reconciliation / Diff** — the proposed redesign patch, including measurable contrast/token changes.
 5. **Voice Director** — mic + presets + active direction tag + parsed action items.
-6. **Landing / demo one-pager** — for judges: thesis, problem, live demo, dogfood proof, tech, team.
+6. **Landing / demo one-pager** — for viewers: thesis, problem, live demo, dogfood proof, tech, team.
 7. A **clickable prototype** stitching 1 → 2 → 4 with a seam drag moment.
 
 Deliverable format: hi-fi frames + a prototype flow. Keep components consistent so they map 1:1
@@ -158,7 +158,7 @@ Single-column printable report. Top: score line. Then findings grouped by verdic
 one-line rationale each. Footer: `Tell · captured generic-app · 8 findings`. No KPI cards, no pie
 charts. A report you'd paste in a PR comment.
 
-### 3.11 Landing / demo one-pager (for judges)
+### 3.11 Landing / demo one-pager (for viewers)
 
 Single scroll. Sections in order:
 1. **Hero thesis** — the reveal seam animating across the wordmark. Headline (Instrument Serif):
@@ -277,4 +277,4 @@ Wire these hotspots:
 5. **Inspector** → click `Draft fix` → **Diff** view
 6. **Diff** → click `Apply in Cursor` → toast
 
-Keep transitions ≤300ms; seam drag is the interaction judges should try first.
+Keep transitions ≤300ms; seam drag is the interaction viewers should try first.

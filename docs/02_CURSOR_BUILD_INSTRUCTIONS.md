@@ -5,7 +5,7 @@
 > build Tell. Read `01_DESIGN_SYSTEM.md` for the visual contract and `04_CLAUDE_PROJECT.md`
 > for vision, scope, and tracking.
 
-Target: win the **Cursor track** of the hackathon in a 2-day build. Solo/remote-eligible.
+Target: win the **Cursor track** of a focused 2-day build. Solo/remote-eligible.
 
 ---
 
