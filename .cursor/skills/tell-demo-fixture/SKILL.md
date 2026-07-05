@@ -1,6 +1,6 @@
 ---
 name: tell-demo-fixture
-description: Maintains Tell demo fixtures, planted genericness tells, and offline report artifacts. Use when working on fixtures/generic-app, fixtures/reports, capture.json, tell-report.json, CONTRIBUTIONS.md, demo hardening, or hackathon demo fallback paths.
+description: Maintains Tell demo fixtures, planted genericness tells, and offline report artifacts. Use when working on fixtures/generic-app, fixtures/reports, capture.json, tell-report.json, CONTRIBUTIONS.md, demo hardening, or build sprint demo fallback paths.
 ---
 
 # Tell demo fixtures
@@ -32,9 +32,9 @@ description: Maintains Tell demo fixtures, planted genericness tells, and offlin
 
 - Live capture first; offline artifact always works
 - If capture/API fails, web returns committed `tell-report.json` with clear non-live state
-- Record backup demo video for judge presentation
+- Record backup demo video for reviewer presentation
 
-## Hackathon compliance
+## Build sprint compliance
 
 - Generic app is labeled demo input in `CONTRIBUTIONS.md`
 - Lead demo with capture → diagnose → art-direct → reconcile loop, not KPI cards

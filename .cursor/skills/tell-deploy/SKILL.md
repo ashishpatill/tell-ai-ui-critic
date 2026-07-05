@@ -1,6 +1,6 @@
 ---
 name: tell-deploy
-description: Deploys Tell for hackathon judges on Vercel or Docker (Render/Railway). Use when working on vercel.json, Dockerfile, render.yaml, railway.toml, docs/DEPLOY.md, or production env vars.
+description: Deploys Tell for demo viewers on Vercel or Docker (Render/Railway). Use when working on vercel.json, Dockerfile, render.yaml, railway.toml, docs/DEPLOY.md, or production env vars.
 ---
 
 # Tell deployment

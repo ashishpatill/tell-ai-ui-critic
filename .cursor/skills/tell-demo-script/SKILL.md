@@ -1,6 +1,6 @@
 ---
 name: tell-demo-script
-description: Prepares Tell hackathon demo script, judge narrative, and rules compliance. Use when rehearsing the demo, writing landing copy, updating CONTRIBUTIONS.md, or ensuring the capture-diagnose-art-direct-reconcile loop lands in under 3 minutes.
+description: Prepares Tell build sprint demo script, reviewer narrative, and rules compliance. Use when rehearsing the demo, writing landing copy, updating CONTRIBUTIONS.md, or ensuring the capture-diagnose-art-direct-reconcile loop lands in under 3 minutes.
 ---
 
 # Tell demo script
@@ -13,7 +13,7 @@ description: Prepares Tell hackathon demo script, judge narrative, and rules com
 4. **Before/after (40s)** — Drag reveal seam; call out contrast floor.
 5. **Voice + reconcile (40s)** — "Warmer, more editorial." Draft fix → Apply in Cursor.
 
-## Judge-facing success
+## Demo-facing success
 
 - Loop is visual, not architectural
 - Before/after seam is the aha moment
