@@ -33,8 +33,8 @@ COPY packages ./packages
 COPY apps ./apps
 COPY fixtures ./fixtures
 
-# Chromium for capture pipeline
-RUN pnpm exec playwright install --with-deps chromium
+# Chromium for capture pipeline (playwright is a dep of @tell/core, not the workspace root)
+RUN pnpm --filter @tell/core exec playwright install --with-deps chromium
 
 RUN pnpm -F @tell/web build
 
