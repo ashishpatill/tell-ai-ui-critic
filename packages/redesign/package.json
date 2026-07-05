@@ -9,17 +9,23 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./llm": {
+      "types": "./dist/llm-restyle.d.ts",
+      "import": "./dist/llm-restyle.js"
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts",
-    "typecheck": "tsc --noEmit"
+    "build": "tsup src/index.ts --format esm --dts; tsup src/llm-restyle.ts --format esm --dts",
+    "typecheck": "tsc --noEmit",
+    "smoke:llm": "tsx scripts/llm-smoke.ts"
   },
   "dependencies": {
     "@tell/schema": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   }
 }
