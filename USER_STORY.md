@@ -1,6 +1,6 @@
 # User Story — Tell
 
-> Judges should feel Priya's problem before they see the pipeline. Lead demos with her journey.
+> Viewers should feel Priya's problem before they see the pipeline. Lead demos with her journey.
 
 ---
 
@@ -109,7 +109,7 @@ journey
 
 ---
 
-## What Tell is NOT (for judges)
+## What Tell is NOT (for viewers)
 
 - Not a codebase mind-map (crowded space)
 - Not a Figma token differ (saturated space)

@@ -1,10 +1,10 @@
 # CONTRIBUTIONS.md
 
-> Hackathon requirement: clearly distinguish work created during the event from demo inputs.
+> Project attribution requirement: clearly distinguish work created during the event from demo inputs.
 
-## Original work (Tell team — built during hackathon)
+## Original work (Tell team — built for Tell)
 
-Everything under these paths is **original hackathon work**:
+Everything under these paths is **original Tell work**:
 
 - `packages/schema/` — zod data contracts
 - `packages/core/` — capture, fingerprint, detectors
