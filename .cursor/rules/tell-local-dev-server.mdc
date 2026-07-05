@@ -1,0 +1,12 @@
+---
+description: Tell local dev server startup rules
+alwaysApply: true
+---
+
+# Local Dev Server Runs
+
+- This rule applies only when starting a local dev server for this Tell project.
+- Before running `pnpm dev`, `pnpm -F @tell/web dev`, `pnpm dev:fixture`, `pnpm -F @tell/generic-app dev`, or an equivalent local server command, first stop any existing local instance of this project.
+- Check active terminals and listening processes for the expected project ports: web on `3000`, fixture app on `3001`.
+- Only kill processes that are clearly this project's dev servers, such as `next dev` processes with cwd under this repo. Do not kill unrelated apps that happen to use the same port; report the conflict instead.
+- After the old project instance is stopped and the port is free, start the requested local dev command.
