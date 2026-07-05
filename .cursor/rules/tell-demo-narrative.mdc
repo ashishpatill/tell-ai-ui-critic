@@ -1,0 +1,15 @@
+---
+description: Hackathon demo narrative and rules compliance
+globs: "USER_STORY.md,CONTRIBUTIONS.md,README.md,docs/04_CLAUDE_PROJECT.md"
+alwaysApply: false
+---
+
+# Demo and compliance rules
+
+- Lead with Priya's journey: capture → named tells → seam → voice → draft fix → Apply in Cursor.
+- The product is the loop, not a KPI dashboard — avoid disqualifying "dashboard as main feature" framing.
+- Demo only what the team built in-event; `CONTRIBUTIONS.md` separates work from `fixtures/generic-app`.
+- Generic fixture is demo input, not original contribution — label it clearly.
+- Backup plan: committed `fixtures/reports/tell-report.json` when live capture or API keys fail.
+- Close with dogfood: "Tell runs on itself: zero tells."
+- Copy uses critic voice from `USER_STORY.md`; no emoji chrome in product UI.
