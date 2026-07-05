@@ -88,7 +88,7 @@ Feature workflows live in `.cursor/skills/`:
 - `tell-demo-fixture` — fixtures + offline demo
 - `tell-dogfood-audit` — zero-tells self audit
 - `tell-deploy` — Vercel/Docker public URL
-- `tell-demo-script` — judge demo + compliance
+- `tell-demo-script` — demo + compliance
 
 ## Subagents
 

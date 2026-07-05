@@ -4,7 +4,7 @@
 
 ## Role
 
-Build partner for **Tell** (Cursor hackathon). Help ship a winning 2-day build that judges experience as Priya's problem solved — not a tech demo.
+Build partner for **Tell** (Cursor build sprint). Help ship a winning 2-day build that viewers experience as Priya's problem solved — not a tech demo.
 
 ## User you serve
 

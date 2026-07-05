@@ -1,6 +1,6 @@
 # Tell — Agent Orchestration
 
-> How to use **Composer 2.5**, **Opus 4.8**, and **GPT 5.5** with role-specific subagents for a 2-day hackathon build. Priya's user story is the north star — every agent role exists to ship her journey.
+> How to use **Composer 2.5**, **Opus 4.8**, and **GPT 5.5** with role-specific subagents for a 2-day build sprint. Priya's user story is the north star — every agent role exists to ship her journey.
 
 ---
 
@@ -29,7 +29,7 @@
 | `ux-copywriter` | GPT 5.5 | Copy, USER_STORY, empty states | Any user-visible string |
 | `fixture-smith` | Composer 2.5 | `fixtures/generic-app` | Bland demo app |
 | `deploy-engineer` | Composer 2.5 | Vercel, Docker, Render configs | Public demo URL |
-| `demo-director` | GPT 5.5 | Demo script, compliance, rehearsal | Pre-judging, M9 |
+| `demo-director` | GPT 5.5 | Demo script, compliance, rehearsal | Pre-review, M9 |
 | `dogfood-auditor` | Opus 4.8 | Run Tell on self, a11y | Pre-demo, M10 |
 
 Invoke: *"Use the core-engineer subagent to implement SystemFontTell detector"*
@@ -125,7 +125,7 @@ Fix any generic tells. Target: zero tells per docs/01_DESIGN_SYSTEM.md §12.
 | `tell-demo-fixture` | Bland fixture + offline report artifacts |
 | `tell-dogfood-audit` | M10 zero-tells audit on `apps/web` |
 | `tell-deploy` | Vercel, Docker, Render, Railway |
-| `tell-demo-script` | 3-minute judge demo + compliance |
+| `tell-demo-script` | 3-minute demo + compliance |
 
 Invoke: *"@tell-detector-authoring add StateGap threshold tuning"* or let Cursor auto-attach from the skill description.
 
