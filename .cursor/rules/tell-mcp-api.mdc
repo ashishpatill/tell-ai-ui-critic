@@ -1,0 +1,15 @@
+---
+description: MCP server and web API boundary rules
+globs: "packages/mcp/**/*,apps/web/src/app/api/**/*,apps/web/src/lib/repo-runner.ts,apps/web/src/lib/setup-guard.ts"
+alwaysApply: false
+---
+
+# MCP and API rules
+
+- MCP and web API routes wrap the same engine contracts; parse inputs/outputs with `@tell/schema`.
+- `tell_capture`, `tell_diagnose`, `tell_redesign`, and `tell_apply` are the public Cursor surface.
+- `tell_apply` returns patch text and instructions only. It must never write to the user's repo.
+- Web `/api/diagnose` may use deterministic subprocess output; MCP `tell_diagnose` may add taste when keys exist.
+- All API failures should return plain-language state and preserve the offline report fallback.
+- `/api/setup/*` and `repo-runner.ts` execute cloned repo scripts and are local-dev only.
+- Keep `.cursor/mcp.json` registered as `pnpm -F @tell/mcp start` unless the package script changes.
