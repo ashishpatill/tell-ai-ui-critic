@@ -10,9 +10,21 @@ loadEnvConfig(tellRoot);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@tell/schema", "@tell/taste", "@tell/redesign", "@tell/core"],
+  transpilePackages: ["@tell/schema", "@tell/taste", "@tell/redesign"],
   experimental: {
-    serverComponentsExternalPackages: ["playwright"],
+    // Playwright + @tell/core must stay external (native binaries + dist runtime).
+    serverComponentsExternalPackages: ["playwright", "playwright-core", "@tell/core"],
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [
+        ...(Array.isArray(config.externals) ? config.externals : [config.externals].filter(Boolean)),
+        "playwright",
+        "playwright-core",
+        "@tell/core",
+      ];
+    }
+    return config;
   },
 };
 
