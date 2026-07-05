@@ -10,10 +10,10 @@ loadEnvConfig(tellRoot);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@tell/schema", "@tell/taste", "@tell/redesign"],
+  transpilePackages: ["@tell/schema", "@tell/taste", "@tell/redesign", "@tell/core"],
   experimental: {
-    // Playwright + @tell/core must stay external (native binaries + dist runtime).
-    serverComponentsExternalPackages: ["playwright", "playwright-core", "@tell/core"],
+    // Playwright must stay external so Next does not try to bundle browser binaries.
+    serverComponentsExternalPackages: ["playwright", "playwright-core"],
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
@@ -21,7 +21,6 @@ const nextConfig = {
         ...(Array.isArray(config.externals) ? config.externals : [config.externals].filter(Boolean)),
         "playwright",
         "playwright-core",
-        "@tell/core",
       ];
     }
     return config;
