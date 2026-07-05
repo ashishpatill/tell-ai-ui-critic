@@ -249,6 +249,9 @@ export const Reconciliation = z.object({
   axes: z.array(ScoreAxis).default([]), // per-axis before/after
   elementsRestyled: z.number().default(0),
   scoredAgainst: z.enum(["baseline", "brand-dna"]).default("baseline"),
+  // ── v2: which engine produced the sheet, and what the direction did (UI bullets) ──
+  cssSource: z.enum(["recipes", "llm"]).default("recipes"),
+  directionNotes: z.array(z.string()).default([]),
 });
 export type Reconciliation = z.infer<typeof Reconciliation>;
 
