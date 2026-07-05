@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { captureUrl, diagnoseCapture } from "@tell/core";
 import { CapturePayload, TellReport } from "@tell/schema";
-import { OfflineRedesignGenerator } from "@tell/redesign";
+import { OfflineRedesignGenerator, type SourceFile } from "@tell/redesign";
 import { classifyWithTaste, parseDirection } from "@tell/taste";
 import type { Finding, TasteVerdict } from "@tell/schema";
 
@@ -72,16 +73,62 @@ server.tool(
 
 server.tool(
   "tell_apply",
-  "Return patch instructions for Cursor. This tool never writes files automatically.",
-  { proposalId: z.string().optional() },
-  async () => {
-    const patches = lastProposal?.files.map((file) => file.unifiedDiff) ?? [];
+  "Return patch instructions for Cursor. When projectRoot points at a workspace with source files (CSS/SCSS/Tailwind config), the patch rewrites the REAL source literals (accent, body font, radius, AI gradients) as genuine unified diffs; otherwise it returns the drop-in override sheet. This tool never writes files automatically.",
+  { proposalId: z.string().optional(), projectRoot: z.string().optional() },
+  async ({ projectRoot }) => {
+    // Hero path: re-derive the proposal against the user's actual source files so the diff
+    // edits their code, not a new override sheet. Falls back silently when none are found.
+    if (lastReport && lastProposal) {
+      const sources = await collectSources(projectRoot ?? process.cwd());
+      if (sources.length) {
+        lastProposal = await new OfflineRedesignGenerator().propose(
+          lastReport, lastProposal.direction, lastProposal.findingId, undefined, sources,
+        );
+      }
+    }
+    const files = lastProposal?.files ?? [];
     return asJson({
-      patches,
-      instruction: "Review the unified diff in Cursor, then apply it manually or ask the Agent to patch the listed files.",
+      patches: files.map((file) => file.unifiedDiff),
+      files: files.map((file) => ({ file: file.file, summary: file.summary })),
+      instruction: files.some((f) => f.file !== "tell-overrides.css")
+        ? "Review the unified diffs in Cursor, then apply them to the listed source files (or ask the Agent to apply the patch)."
+        : "Review the unified diff in Cursor, then apply it manually or ask the Agent to patch the listed files.",
     });
   },
 );
+
+// ── Local source reader for the tell_apply hero path (Cursor workspace) ──
+const SKIP_DIRS = new Set(["node_modules", ".next", ".git", "dist", "build", "out", ".turbo", "coverage"]);
+const MAX_SOURCE_FILES = 60;
+const MAX_SOURCE_BYTES = 200_000;
+
+function isSourceCandidate(name: string): boolean {
+  return /\.(css|scss|sass|less)$/i.test(name) || /^tailwind\.config\.(ts|js|cjs|mjs)$/i.test(name);
+}
+
+async function collectSources(root: string): Promise<SourceFile[]> {
+  const out: SourceFile[] = [];
+  async function walk(dir: string): Promise<void> {
+    if (out.length >= MAX_SOURCE_FILES) return;
+    let entries;
+    try { entries = await readdir(dir, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      if (out.length >= MAX_SOURCE_FILES) return;
+      if (e.isDirectory()) {
+        if (SKIP_DIRS.has(e.name) || e.name.startsWith(".")) continue;
+        await walk(path.join(dir, e.name));
+      } else if (e.isFile() && isSourceCandidate(e.name)) {
+        const full = path.join(dir, e.name);
+        try {
+          const contents = await readFile(full, "utf8");
+          if (contents.length <= MAX_SOURCE_BYTES) out.push({ path: path.relative(root, full), contents });
+        } catch { /* unreadable — skip */ }
+      }
+    }
+  }
+  await walk(root);
+  return out;
+}
 
 await server.connect(new StdioServerTransport());
 
