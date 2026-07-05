@@ -59,7 +59,10 @@ The authoring agent proposes the change. Tell supplies a separate, single-route 
 | 📉 | **6 consistency-drift detectors** | Catches the slow decay: `TokenBypass`, `NearDuplicateValues`, `FocusRingInconsistency`, `TypeScaleDrift`, `SpacingChaos`, `StateGap`. |
 | 🧠 | **Taste engine** | Classifies every finding as *generic*, *drift*, or *intentional* with a plain-English rationale and a confidence score. A reflection pass rejects any reasoning that contradicts the measured facts. |
 | 🎙️ | **Voice art-direction** | Say "warmer, more editorial, less shadow" and Tell breaks the instruction into action items, maps it to a direction preset, and refines with Gemini when available. Text presets keep the demo safe when mic access fails. |
-| 🪄 | **Redesign as a diff** | Turns a chosen direction into a unified diff. It **never** auto-applies — you stay in control. |
+| 🪄 | **Redesign as a diff** | Turns a chosen direction into a reviewable unified diff; only the disposable proof checkout is changed automatically. |
+| 🧬 | **Source-grounded repair** | Loads the cloned project's real TSX/JSX/CSS source and gives the redesign agent enough context to change hierarchy, layout, copy, responsive behavior, and interaction—not only palette tokens. |
+| 🛡️ | **Visual worktree proof** | Checks and applies the patch inside the disposable checkout, waits for HMR, then recaptures the running product as a separate browser artifact. |
+| ✅ | **Independent visual check** | Compares one route's real before/after genericness, focus coverage, headings, buttons, and sampled structure; capture failures roll the temporary patch back automatically. |
 | ↔️ | **Before/after seam** | A draggable diagonal reveal between your captured page and a live reconciliation — same content, restyled from detected tokens with contrast ratios called out. |
 | 🐙 | **GitHub repo setup** | Paste `github.com/owner/repo` and Tell clones it, reads the README, installs deps, boots the dev server on a reachable free port, and captures localhost automatically. |
 | 📄 | **Multi-page scanning** | Discovers routes from the captured snapshot; scan each page to catch drift that only shows on some routes. |
@@ -167,7 +170,7 @@ pnpm diagnose:fixture  # diagnose the sample app from a capture
 - **Vultr ($200 credits):** [docs/DEPLOY-VULTR.md](./docs/DEPLOY-VULTR.md)
 - **Render / general:** [docs/DEPLOY.md](./docs/DEPLOY.md)
 
-Configs: `Dockerfile`, `scripts/vultr/setup.sh`, `docker-compose.vultr.yml`
+Configs: `Dockerfile`, `scripts/vultr/setup.sh`, `scripts/vultr/cloud-init.yaml`, `docker-compose.vultr.yml`
 
 ---
 
