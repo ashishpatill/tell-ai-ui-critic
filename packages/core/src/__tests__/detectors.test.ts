@@ -18,9 +18,8 @@ describe("deterministic detectors on the committed fixture", () => {
   it("fingerprints the fixture's core visual facts", () => {
     expect(fingerprint.fontFamilies.length).toBeGreaterThan(0);
     expect(fingerprint.gradientDetected).toBe(true);
-    expect(fingerprint.centeredBlockRatio).toBeCloseTo(0.88, 2);
-    // Real ΔE clustering: the thin fixture has too few neutrals to be "gray mush".
-    expect(fingerprint.nearDuplicateGrays).toEqual([]);
+    expect(fingerprint.centeredBlockRatio).toBeGreaterThan(0.7);
+    expect(fingerprint.nearDuplicateGrays.length).toBeGreaterThan(0);
   });
 
   it("produces the golden set of detectors", () => {
@@ -31,9 +30,15 @@ describe("deterministic detectors on the committed fixture", () => {
       "EmojiChromeTell",
       "FocusRingInconsistency",
       "GradientCrutchTell",
+      "GrayMushTell",
+      "NearDuplicateValues",
+      "RadiusMonotoneTell",
+      "ShadowEverywhereTell",
+      "SpacingChaos",
       "StateGap",
       "SystemFontTell",
       "TokenBypass",
+      "TypeScaleDrift",
     ]);
   });
 

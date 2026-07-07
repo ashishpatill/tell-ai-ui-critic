@@ -11,6 +11,7 @@ export default defineConfig({
     alias: {
       "@tell/schema": path.resolve(__dirname, "packages/schema/src"),
       "@tell/core": path.resolve(__dirname, "packages/core/src"),
+      "@tell/redesign": path.resolve(__dirname, "packages/redesign/src"),
     },
   },
 });
