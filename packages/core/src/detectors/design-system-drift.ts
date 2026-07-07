@@ -34,7 +34,11 @@ export function detectDesignSystemDrift(
     !spec.fonts.some((declared) => family.toLowerCase().includes(declared.toLowerCase()) || declared.toLowerCase().includes(family.toLowerCase())),
   );
 
-  const usedColors = new Set(fingerprint.colors.map((c) => c.normalizedHex.toUpperCase()));
+  const usedColors = new Set(
+    fingerprint.colors
+      .filter((c) => !isTransparentColor(c.value))
+      .map((c) => c.normalizedHex.toUpperCase()),
+  );
   const declaredColors = new Set(spec.colors.map((c) => c.toUpperCase()));
   const offPalette = [...usedColors].filter((hex) => {
     if (declaredColors.size === 0) return false;
@@ -76,6 +80,13 @@ function colorNear(a: string, b: string): boolean {
   const ra = hexToRgb(a), rb = hexToRgb(b);
   if (!ra || !rb) return false;
   return Math.abs(ra[0] - rb[0]) + Math.abs(ra[1] - rb[1]) + Math.abs(ra[2] - rb[2]) < 24;
+}
+
+function isTransparentColor(value: string): boolean {
+  const match = value.match(/rgba?\(([^)]+)\)/i);
+  if (!match?.[1]) return false;
+  const parts = match[1].split(",").map((part) => part.trim());
+  return parts.length === 4 && Number.parseFloat(parts[3] ?? "1") === 0;
 }
 
 function hexToRgb(hex: string): [number, number, number] | null {
