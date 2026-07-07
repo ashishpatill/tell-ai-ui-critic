@@ -110,6 +110,7 @@ pnpm test
 pnpm typecheck
 pnpm capture:fixture
 pnpm diagnose:fixture
+pnpm verify:directions   # screenshot all 6 reconcile directions (requires Playwright)
 ```
 
 Optional environment variables live in `.env.example`:
@@ -138,6 +139,8 @@ Run tell_diagnose on http://localhost:3001 and draft an editorial redesign.
 | `tell_diagnose` | Return the full Tell report, findings, verdicts, and score. |
 | `tell_redesign` | Draft a redesign proposal for a finding or whole report. |
 | `tell_apply` | Return patch text and instructions; it never writes files for you. |
+| `tell_proof_verify` | Apply a patch, recapture the URL, and return pass/review/fail with measured deltas. |
+| `tell_proof_revert` | Revert the last proof patch in the workspace. |
 
 ---
 
@@ -211,6 +214,13 @@ Next:
 - Per-state evidence thumbnails for hover, focus, and error states
 - Shareable hosted report links
 - Broader detector golden corpus across more product categories
+
+Shipped in Phase 1:
+
+- Full 14-detector golden fixture corpus
+- `tell_proof_verify` and `tell_proof_revert` MCP tools
+- PR preview diagnosis workflow (`.github/workflows/pr-diagnose.yml`)
+- Dogfood script (`pnpm dogfood:web`) — Tell UI reports zero generic tells
 
 ---
 
