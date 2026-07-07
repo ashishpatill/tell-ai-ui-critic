@@ -25,7 +25,7 @@ console.log("\n=== AGAINST BRAND DNA ===");
 const against = reconcile(capture, report.fingerprint, report.findings, dna.directionId, dna);
 console.log(`scoredAgainst ${against.scoredAgainst}  genericness ${against.scoreBefore} -> ${against.scoreAfter}  accent ${against.accentAfter}`);
 console.log(`target fonts: ${dna.displayFont} / ${dna.bodyFont}  ·  DNA accent ${dna.accent}`);
-console.log(`after typeface row: ${against.rows.find((r) => r.key === "type")?.after}`);
-console.log(`after accent row: ${against.rows.find((r) => r.key === "accent")?.after}`);
+console.log(`after typeface row: ${against.rows.find((row) => row.key === "type")?.after}`);
+console.log(`after accent row: ${against.rows.find((row) => row.key === "accent")?.after}`);
 
 process.exit(0);

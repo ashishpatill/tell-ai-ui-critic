@@ -21,6 +21,9 @@
       "@tell/redesign": [
         "../../packages/redesign/src"
       ],
+      "@tell/redesign/llm": [
+        "../../packages/redesign/src/llm-restyle.ts"
+      ],
       "@tell/core": [
         "../../packages/core/src"
       ]
