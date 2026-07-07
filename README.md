@@ -211,9 +211,17 @@ Shipped:
 
 Next:
 
-- Per-state evidence thumbnails for hover, focus, and error states
-- Shareable hosted report links
 - Broader detector golden corpus across more product categories
+- Multi-viewport capture matrix (tablet + mobile)
+- Hosted proof sandboxes for Vercel deployments
+
+Shipped in Phase 2:
+
+- Shareable report links (`/api/reports/share`, `/report/[id]`)
+- State probe thumbnails on capture (default / hover / focus clips)
+- DESIGN.md drift detector (`DesignSystemDrift`)
+- Tell Proof verify Cursor skill (`.cursor/skills/tell-proof-verify`)
+- Dogfood typography consolidation on Tell web UI
 
 Shipped in Phase 1:
 
