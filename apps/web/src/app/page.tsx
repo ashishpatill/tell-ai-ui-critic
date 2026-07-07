@@ -767,8 +767,8 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen px-6 py-5 text-text">
-      <header className="flex flex-wrap items-center gap-3 border-b border-border pb-4">
+    <main className="min-h-screen px-6 py-6 text-text">
+      <header className="flex flex-wrap items-center gap-3 border-b border-border">
         <div className="flex items-center gap-3">
           <div className="grid h-9 w-9 place-items-center rounded-full border border-accent/50 bg-accent/10 font-mono text-accent">⊕</div>
           <div>
@@ -792,7 +792,7 @@ export default function HomePage() {
         <button
           onClick={onPrimary}
           disabled={operationActive}
-          className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 font-semibold text-white transition hover:bg-accent-hover active:scale-[0.99] disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-md bg-accent px-3 py-2 font-semibold text-white transition hover:bg-accent-hover active:scale-[0.99] disabled:opacity-60"
         >
           {setupActive ? (
             <><Loader2 className="h-4 w-4 animate-spin" /> Setting up…</>
@@ -871,15 +871,15 @@ export default function HomePage() {
         </p>
       ) : null}
 
-      <section className="grid gap-6 py-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,.8fr)]">
+      <section className="grid gap-6 py-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,.8fr)]">
         <div className="min-w-0 space-y-6">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Rendered surface</p>
-            <h1 className="mt-2 max-w-3xl font-display text-6xl leading-[0.95] text-text">
+            <h1 className="mt-2 max-w-3xl font-display text-3xl leading-[0.95] text-text">
               {scannedSite ? (
                 <>
                   Cursor wrote the change.
-                  <span className="block text-4xl text-secondary">Tell shows what survived the browser on {scannedSite}.</span>
+                  <span className="block text-3xl text-secondary">Tell shows what survived the browser on {scannedSite}.</span>
                 </>
               ) : (
                 <>Your coding agent should not grade its own homework.</>
@@ -1067,7 +1067,7 @@ export default function HomePage() {
                   <button
                     key={finding.id}
                     onClick={() => setSelectedId(finding.id)}
-                    className={`w-full rounded-md border p-3 text-left transition hover:border-accent ${
+                    className={`w-full rounded-md border px-3 py-2 text-left transition hover:border-accent ${
                       selectedId === finding.id ? "border-accent bg-accent/10" : "border-border bg-bg/60"
                     }`}
                   >
@@ -1085,7 +1085,7 @@ export default function HomePage() {
           </div>
 
           {selectedFinding && verdict ? (
-            <section className="min-w-0 rounded-card border border-accent/40 bg-surface-raised p-5 shadow-signal">
+            <section className="min-w-0 rounded-card border border-accent/40 bg-surface-raised p-4 shadow-signal">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="font-mono text-lg">{selectedFinding.detector}</h2>
                 <VerdictBadge verdict={verdict.verdict} />
@@ -1102,18 +1102,28 @@ export default function HomePage() {
                 {report.capture.stateShots.length > 0 ? (
                   <div className="mt-4 border-t border-border pt-4">
                     <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted">State probes</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {report.capture.stateShots.slice(0, 9).map((shot) => (
-                        <figure key={`${shot.selector}-${shot.state}`} className="rounded border border-border bg-surface p-1.5">
-                          <img
-                            alt={`${shot.selector} ${shot.state}`}
-                            src={`data:image/png;base64,${shot.imageBase64}`}
-                            className="h-14 max-w-[120px] object-contain"
-                          />
-                          <figcaption className="mt-1 text-center font-mono text-meta text-muted">{shot.state}</figcaption>
-                        </figure>
-                      ))}
-                    </div>
+                    {report.capture.stateShots.some((shot) => shot.imageBase64) ? (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {report.capture.stateShots.filter((shot) => shot.imageBase64).slice(0, 9).map((shot) => (
+                          <figure key={`${shot.selector}-${shot.state}`} className="rounded border border-border bg-surface p-1.5">
+                            <img
+                              alt={`${shot.selector} ${shot.state}`}
+                              src={`data:image/png;base64,${shot.imageBase64}`}
+                              className="h-14 max-w-[120px] object-contain"
+                            />
+                            <figcaption className="mt-1 text-center font-mono text-meta text-muted">{shot.state}</figcaption>
+                          </figure>
+                        ))}
+                      </div>
+                    ) : (
+                      <ul className="mt-2 flex flex-wrap gap-2">
+                        {report.capture.stateShots.slice(0, 9).map((shot) => (
+                          <li key={`${shot.selector}-${shot.state}`} className="rounded-full border border-border px-3 py-1 font-mono text-meta text-secondary">
+                            {shot.state}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 ) : null}
               </div>
@@ -1121,11 +1131,11 @@ export default function HomePage() {
                 <button
                   onClick={draftFix}
                   disabled={draftState === "drafting" || operationActive}
-                  className="flex items-center gap-2 rounded-md bg-accent px-4 py-2 font-semibold text-white transition hover:bg-accent-hover disabled:opacity-60"
+                  className="flex items-center gap-2 rounded-md bg-accent px-3 py-2 font-semibold text-white transition hover:bg-accent-hover disabled:opacity-60"
                 >
                   <Wand2 className="h-4 w-4" /> {draftState === "drafting" ? "Mapping source…" : setupJob?.state === "ready" ? "Plan source fix" : "Draft fix"}
                 </button>
-                <button onClick={markIntentional} className="rounded-md border border-border px-4 py-2 text-secondary transition hover:text-text">Mark intentional</button>
+                <button onClick={markIntentional} className="rounded-md border border-border px-3 py-2 text-secondary transition hover:text-text">Mark intentional</button>
               </div>
               {draftError ? <p className="mt-3 font-mono text-xs text-drift">{draftError}</p> : null}
               {proposal ? (
@@ -1197,7 +1207,7 @@ function WorkflowRail({
             <span className={`font-mono text-xs uppercase tracking-[0.12em] ${step.done || step.active ? "text-text" : "text-muted"}`}>{step.label}</span>
             {step.active ? <span className="ml-auto h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> : null}
           </div>
-          <p className="mt-1 pl-7 text-xs text-muted">{step.detail}</p>
+          <p className="mt-1 pl-8 text-xs text-muted">{step.detail}</p>
         </div>
       ))}
     </div>
@@ -1427,7 +1437,7 @@ function PagesStrip({
             </button>
           );
         })}
-        <div className="flex items-center gap-1 rounded-full border border-dashed border-border px-2 py-0.5">
+        <div className="flex items-center gap-1 rounded-full border border-dashed border-border px-2 py-1">
           <input
             value={pageInput}
             onChange={(e) => setPageInput(e.target.value)}
@@ -1518,7 +1528,7 @@ function Scorecard({ reconciliation, live }: { reconciliation: Reconciliation; l
   const { scoreBefore, scoreAfter, axes, scoredAgainst } = reconciliation;
   const drop = Math.max(0, scoreBefore - scoreAfter);
   return (
-    <section className="rounded-card border border-accent/40 bg-surface-raised p-5 shadow-signal">
+    <section className="rounded-card border border-accent/40 bg-surface-raised p-4 shadow-signal">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Genericness score</p>
@@ -1531,9 +1541,9 @@ function Scorecard({ reconciliation, live }: { reconciliation: Reconciliation; l
 
       <div className="flex items-end gap-4">
         <div className="flex items-baseline gap-3">
-          <span className="font-display text-5xl text-secondary line-through decoration-secondary/40">{scoreBefore}</span>
+          <span className="font-display text-3xl text-secondary line-through decoration-secondary/40">{scoreBefore}</span>
           <span className="font-mono text-secondary">→</span>
-          <span className="font-display text-6xl leading-none text-accent">{scoreAfter}</span>
+          <span className="font-display text-3xl leading-none text-accent">{scoreAfter}</span>
         </div>
         <div className="mb-1 flex flex-col">
           <span className="font-mono text-xs uppercase tracking-[0.14em] text-accent">−{drop} points</span>
@@ -1649,7 +1659,7 @@ function VerifiedProofPanel({
 
   return (
     <section className={`overflow-hidden rounded-card border bg-surface-raised shadow-signal ${tone}`}>
-      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border px-5 py-4">
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border px-4 py-4">
         <div className="flex items-start gap-3">
           <span className={`mt-0.5 grid h-9 w-9 place-items-center rounded-full border ${
             result.status === "passed" ? "border-ok/50 bg-ok/10 text-ok" : "border-accent/40 bg-accent/10 text-accent"
@@ -1722,8 +1732,8 @@ function VerifiedProofPanel({
             />
           </div>
           <span className="absolute bottom-0 top-0 z-10 w-px bg-accent" style={{ left: `${seam}%` }} />
-          <span className="absolute left-3 top-3 z-10 rounded bg-black/70 px-2 py-1 font-mono text-meta uppercase tracking-[0.14em] text-white">Baseline</span>
-          <span className="absolute right-3 top-3 z-10 rounded bg-black/70 px-2 py-1 font-mono text-meta uppercase tracking-[0.14em] text-white">Recaptured source</span>
+          <span className="absolute left-3 top-3 z-10 rounded bg-bg/70 px-2 py-1 font-mono text-meta uppercase tracking-[0.14em] text-white">Baseline</span>
+          <span className="absolute right-3 top-3 z-10 rounded bg-bg/70 px-2 py-1 font-mono text-meta uppercase tracking-[0.14em] text-white">Recaptured source</span>
           <input
             type="range"
             min={0}
@@ -1819,17 +1829,17 @@ function DiffViewer({
         </div>
       </div>
       {canProve ? (
-        <div className="flex items-center gap-2 border-b border-border bg-ok/5 px-4 py-2 font-mono text-meta text-secondary">
+        <div className="flex items-center gap-2 border-b border-border bg-ok/5 px-3 py-2 font-mono text-meta text-secondary">
           <ShieldCheck className="h-3.5 w-3.5 text-ok" />
           Applies only to Tell&apos;s disposable clone · hot reloads · captures again · checks score and focus states
         </div>
       ) : (
-        <div className="flex items-center gap-2 border-b border-border bg-accent/5 px-4 py-2 font-mono text-meta text-secondary">
+        <div className="flex items-center gap-2 border-b border-border bg-accent/5 px-3 py-2 font-mono text-meta text-secondary">
           <GitPullRequest className="h-3.5 w-3.5 text-accent" />
           Send to Cursor copies a prompt plus diff for the local repo. No fragile editor deep link required.
         </div>
       )}
-      {proofError ? <p className="border-b border-drift/30 bg-drift/10 px-4 py-2 font-mono text-meta text-drift">{proofError}</p> : null}
+      {proofError ? <p className="border-b border-drift/30 bg-drift/10 px-3 py-2 font-mono text-meta text-drift">{proofError}</p> : null}
       <pre className="max-h-80 overflow-auto p-4 text-left font-mono text-meta leading-relaxed text-secondary">
         <code>{patch}</code>
       </pre>

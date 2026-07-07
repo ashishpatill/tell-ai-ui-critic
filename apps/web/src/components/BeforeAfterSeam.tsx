@@ -158,10 +158,10 @@ export function BeforeAfterSeam({
           <div className="absolute inset-0 overflow-hidden" style={{ clipPath: afterClip, WebkitClipPath: afterClip }}>
             <iframe title="Reconciled preview" srcDoc={afterDoc} sandbox="allow-same-origin" scrolling="no" style={iframeStyle} />
             {reconciliation ? (
-              <div className="pointer-events-none absolute bottom-4 right-4 z-[16] max-w-xs rounded-md border border-white/25 bg-black/60 px-3 py-2 text-left backdrop-blur-sm">
-                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/80">Reconciled · {reconciliation.label}</p>
+              <div className="pointer-events-none absolute bottom-4 right-4 z-[16] max-w-xs rounded-md border border-white/25 bg-bg/80 px-3 py-2 text-left backdrop-blur-sm">
+                <p className="font-mono text-meta uppercase tracking-[0.14em] text-white/80">Reconciled · {reconciliation.label}</p>
                 <p className="mt-1 text-sm text-white">{reconciliation.summary}</p>
-                <p className="mt-2 flex items-center gap-2 font-mono text-[10px] text-white/70">
+                <p className="mt-2 flex items-center gap-2 font-mono text-meta text-white/70">
                   <span className="inline-block h-3 w-3 rounded-full ring-1 ring-white/40" style={{ background: reconciliation.accentBefore }} />
                   → <span className="inline-block h-3 w-3 rounded-full ring-1 ring-white/40" style={{ background: reconciliation.accentAfter }} />
                   {reconciliation.accentBefore} → {reconciliation.accentAfter}
@@ -171,7 +171,7 @@ export function BeforeAfterSeam({
                     <button
                       type="button"
                       onClick={() => onLlmModeChange("recipes")}
-                      className={`rounded px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] transition ${
+                      className={`rounded px-2 py-1 font-mono text-meta uppercase tracking-[0.1em] transition ${
                         !usingLlm ? "bg-white/25 text-white" : "text-white/60 hover:text-white/90"
                       }`}
                     >
@@ -181,7 +181,7 @@ export function BeforeAfterSeam({
                       type="button"
                       disabled={!llmSheet}
                       onClick={() => onLlmModeChange("ai")}
-                      className={`rounded px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                      className={`rounded px-2 py-1 font-mono text-meta uppercase tracking-[0.1em] transition disabled:cursor-not-allowed disabled:opacity-40 ${
                         usingLlm ? "bg-white/25 text-white" : "text-white/60 hover:text-white/90"
                       }`}
                     >
@@ -212,7 +212,7 @@ export function BeforeAfterSeam({
         <div className="absolute inset-0 grid place-items-center text-center">
           <div className="max-w-md px-8">
             <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">No capture yet</p>
-            <h2 className="mt-3 font-display text-4xl text-text">Paste a URL and capture.</h2>
+            <h2 className="mt-3 font-display text-3xl text-text">Paste a URL and capture.</h2>
             <p className="mt-3 text-secondary">Tell renders the real page here, then wipes to the reconciled restyle on the right.</p>
           </div>
         </div>
@@ -250,7 +250,7 @@ export function BeforeAfterSeam({
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onKeyDown={onKeyDown}
-        className="seam-handle absolute top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize rounded-full border border-accent bg-surface-raised p-1.5 shadow-signal"
+        className="seam-handle absolute top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize rounded-full border border-accent bg-surface-raised px-3 py-2 shadow-signal"
         style={{ left: `${seam}%` }}
       >
         <ProofMark className="h-5 w-5" />
@@ -260,14 +260,14 @@ export function BeforeAfterSeam({
       <CropMark corner="tr" />
       <CropMark corner="bl" />
       <CropMark corner="br" />
-      <span className="absolute left-4 top-4 z-[21] rounded bg-black/55 px-2 py-1 font-mono text-xs uppercase tracking-[0.16em] text-white/90">
+      <span className="absolute left-4 top-4 z-[21] rounded bg-bg/75 px-2 py-1 font-mono text-xs uppercase tracking-[0.16em] text-white/90">
         {hasLive ? "Captured" : "Before"}
       </span>
       <span className="absolute right-4 top-4 z-[21] flex items-center gap-1.5 rounded px-2 py-1 font-mono text-xs uppercase tracking-[0.16em]"
         style={{ background: reconciliation?.surfaceAfter ?? "rgba(255,255,255,.85)", color: reconciliation?.textAfter ?? "#181614" }}>
         Reconciled
         {reconciliation ? (
-          <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-[9px] normal-case tracking-normal">
+          <span className="rounded-full bg-surface/50 px-2 py-1 text-meta normal-case tracking-normal">
             {usingLlm ? "Gemini-refined" : "Recipe engine"}
           </span>
         ) : null}

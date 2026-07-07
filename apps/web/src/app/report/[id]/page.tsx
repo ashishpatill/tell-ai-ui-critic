@@ -64,18 +64,28 @@ export default function SharedReportPage({ params }: { params: { id: string } })
       {report.capture.stateShots.length > 0 ? (
         <section className="mt-10">
           <h2 className="font-mono text-label uppercase tracking-[0.14em] text-secondary">State probes</h2>
-          <div className="mt-4 flex flex-wrap gap-3">
-            {report.capture.stateShots.map((shot) => (
-              <figure key={`${shot.selector}-${shot.state}`} className="rounded-md border border-border bg-bg p-2">
-                <img
-                  alt={`${shot.selector} ${shot.state}`}
-                  src={`data:image/png;base64,${shot.imageBase64}`}
-                  className="h-16 w-auto max-w-[140px] object-contain"
-                />
-                <figcaption className="mt-1 font-mono text-meta text-muted">{shot.state}</figcaption>
-              </figure>
-            ))}
-          </div>
+          {report.capture.stateShots.some((shot) => shot.imageBase64) ? (
+            <div className="mt-4 flex flex-wrap gap-3">
+              {report.capture.stateShots.filter((shot) => shot.imageBase64).map((shot) => (
+                <figure key={`${shot.selector}-${shot.state}`} className="rounded-md border border-border bg-bg p-2">
+                  <img
+                    alt={`${shot.selector} ${shot.state}`}
+                    src={`data:image/png;base64,${shot.imageBase64}`}
+                    className="h-16 w-auto max-w-[140px] object-contain"
+                  />
+                  <figcaption className="mt-1 font-mono text-meta text-muted">{shot.state}</figcaption>
+                </figure>
+              ))}
+            </div>
+          ) : (
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {report.capture.stateShots.map((shot) => (
+                <li key={`${shot.selector}-${shot.state}`} className="rounded-full border border-border px-3 py-1 font-mono text-meta text-secondary">
+                  {shot.selector} · {shot.state}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       ) : null}
     </main>
