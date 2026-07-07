@@ -170,6 +170,8 @@ Key API routes:
 | `POST /api/setup/start` | Local-only GitHub clone/install/run/capture workflow. |
 | `POST /api/proof/apply` | Apply a candidate patch in the disposable checkout and verify it. |
 | `POST /api/proof/revert` | Revert the proof checkout. |
+| `POST /api/reports/share` | Persist a Tell report and return a shareable `/report/[id]` link. |
+| `GET /api/reports/[id]` | Load a previously shared report JSON. |
 | `GET /api/health/capture` | Check Playwright capture readiness. |
 
 ---
@@ -219,7 +221,7 @@ Shipped in Phase 2:
 
 - Shareable report links (`/api/reports/share`, `/report/[id]`)
 - State probe thumbnails on capture (default / hover / focus clips)
-- DESIGN.md drift detector (`DesignSystemDrift`)
+- DESIGN.md drift detector (`DesignSystemDrift`) with automatic load in diagnose pipeline
 - Tell Proof verify Cursor skill (`.cursor/skills/tell-proof-verify`)
 - Dogfood typography consolidation on Tell web UI
 
