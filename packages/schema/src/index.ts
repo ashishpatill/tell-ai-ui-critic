@@ -47,6 +47,14 @@ export const InteractiveProbe = z.object({
 });
 export type InteractiveProbe = z.infer<typeof InteractiveProbe>;
 
+/** Small element clip captured in default, hover, or focus-visible state. */
+export const StateProbeShot = z.object({
+  selector: z.string(),
+  state: z.enum(["default", "hover", "focus"]),
+  imageBase64: z.string(),
+});
+export type StateProbeShot = z.infer<typeof StateProbeShot>;
+
 export const CssVariable = z.object({ name: z.string(), value: z.string() });
 export type CssVariable = z.infer<typeof CssVariable>;
 
@@ -75,6 +83,7 @@ export const CapturePayload = z.object({
   surfaceTokens: SurfaceTokens.optional(),
   styles: z.array(ComputedStyleSample),
   probes: z.array(InteractiveProbe),
+  stateShots: z.array(StateProbeShot).default([]),
   domSummary: z.object({
     headingCount: z.number(),
     buttonCount: z.number(),
@@ -129,6 +138,7 @@ export const DriftDetector = z.enum([
   "TypeScaleDrift",
   "SpacingChaos",
   "StateGap",
+  "DesignSystemDrift",
 ]);
 export type DriftDetector = z.infer<typeof DriftDetector>;
 
