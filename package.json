@@ -15,7 +15,8 @@
     "diagnose:fixture": "pnpm -F @tell/core diagnose:fixture",
     "dogfood:web": "pnpm -F @tell/core exec tsx src/scripts/dogfood-web.ts",
     "verify:directions": "pnpm exec tsx .verification-screenshots/capture-directions.ts",
-    "pr:diagnose": "pnpm -F @tell/core build && pnpm -F @tell/core exec tsx ../../scripts/pr-diagnose.ts"
+    "pr:diagnose": "pnpm -F @tell/core build && pnpm -F @tell/core exec tsx ../../scripts/pr-diagnose.ts",
+    "sync:demo-report": "pnpm -F @tell/core exec tsx ../../scripts/sync-demo-report.ts"
   },
   "devDependencies": {
     "vitest": "^2.1.9"
