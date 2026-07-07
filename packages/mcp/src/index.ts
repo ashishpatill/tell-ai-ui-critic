@@ -4,7 +4,7 @@ import path from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { captureUrl, diagnoseCapture } from "@tell/core";
+import { captureUrl, diagnoseCapture, verifyProofPatch, revertProofPatch } from "@tell/core";
 import { CapturePayload, TellReport } from "@tell/schema";
 import { OfflineRedesignGenerator, type SourceFile } from "@tell/redesign";
 import { classifyWithTaste, parseDirection } from "@tell/taste";
@@ -93,6 +93,43 @@ server.tool(
       instruction: files.some((f) => f.file !== "tell-overrides.css")
         ? "Review the unified diffs in Cursor, then apply them to the listed source files (or ask the Agent to apply the patch)."
         : "Review the unified diff in Cursor, then apply it manually or ask the Agent to patch the listed files.",
+    });
+  },
+);
+
+server.tool(
+  "tell_proof_verify",
+  "Apply a candidate patch in the project workspace, recapture the live URL, and return an independent pass/review/fail verdict with before/after scores. Failed attempts auto-revert when revertOnFail is true (default). Requires a reachable dev server at url.",
+  {
+    url: z.string().url(),
+    patch: z.string().min(1),
+    projectRoot: z.string().optional(),
+    waitMs: z.number().int().min(0).max(30_000).optional(),
+    revertOnFail: z.boolean().optional(),
+  },
+  async ({ url, patch, projectRoot, waitMs, revertOnFail }) => {
+    const result = await verifyProofPatch({
+      url,
+      patch,
+      projectRoot: projectRoot ?? process.cwd(),
+      waitMs,
+      revertOnFail,
+    });
+    return asJson(result);
+  },
+);
+
+server.tool(
+  "tell_proof_revert",
+  "Revert the last tell_proof_verify patch in the project workspace using the saved marker patch.",
+  { projectRoot: z.string().optional(), patch: z.string().optional() },
+  async ({ projectRoot, patch }) => {
+    const reverted = await revertProofPatch(projectRoot ?? process.cwd(), patch);
+    return asJson({
+      reverted,
+      instruction: reverted
+        ? "Proof patch reverted. Recapture the URL if you need a fresh baseline."
+        : "No proof patch marker found to revert.",
     });
   },
 );
