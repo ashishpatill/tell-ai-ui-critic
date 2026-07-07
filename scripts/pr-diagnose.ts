@@ -3,7 +3,7 @@
  * Diagnose a preview URL for PR checks. Writes markdown to GITHUB_STEP_SUMMARY when set.
  */
 import { appendFileSync, writeFileSync } from "node:fs";
-import { captureUrl, diagnoseCapture } from "@tell/core";
+import { captureUrl, diagnoseCapture, loadDesignDoc } from "@tell/core";
 
 const url = process.env.TELL_PREVIEW_URL ?? process.env.PREVIEW_URL ?? "";
 const failGenericAbove = Number(process.env.TELL_FAIL_GENERIC_ABOVE ?? "6");
@@ -15,7 +15,8 @@ if (!url) {
 }
 
 const capture = await captureUrl(url);
-const report = diagnoseCapture(capture);
+const designDoc = await loadDesignDoc();
+const report = diagnoseCapture(capture, undefined, designDoc);
 writeFileSync(outPath, JSON.stringify(report, null, 2));
 
 const genericFindings = report.findings.filter((f) => {

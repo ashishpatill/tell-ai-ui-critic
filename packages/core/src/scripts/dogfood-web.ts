@@ -1,7 +1,8 @@
-import { captureUrl, diagnoseCapture } from "../index";
+import { captureUrl, diagnoseCapture, loadDesignDoc } from "../index";
 
 const capture = await captureUrl("http://localhost:3000");
-const report = diagnoseCapture(capture);
+const designDoc = await loadDesignDoc();
+const report = diagnoseCapture(capture, undefined, designDoc);
 const generic = report.findings.filter((f) => {
   const v = report.verdicts.find((x) => x.findingId === f.id);
   return (v?.verdict ?? f.verdictHint) === "generic";
