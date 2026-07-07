@@ -14,6 +14,7 @@ import {
   Github,
   GitPullRequest,
   Layers,
+  Link2,
   Loader2,
   Mic,
   MicOff,
@@ -157,6 +158,8 @@ export default function HomePage() {
   const parseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [uiNotice, setUiNotice] = useState<UiNotice | null>(null);
   const noticeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [shareUrl, setShareUrl] = useState("");
+  const [sharingReport, setSharingReport] = useState(false);
 
   // ── GitHub repo setup ──
   const [setupJob, setSetupJob] = useState<SetupJob | null>(null);
@@ -258,6 +261,53 @@ export default function HomePage() {
     if (noticeTimerRef.current) clearTimeout(noticeTimerRef.current);
     noticeTimerRef.current = setTimeout(() => setUiNotice(null), notice.tone === "error" ? 12_000 : 7000);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const sharedId = new URLSearchParams(window.location.search).get("report");
+    if (!sharedId) return;
+    fetch(`/api/reports/${sharedId}`)
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error ?? "Could not load shared report.");
+        setReport(data.report);
+        setSelectedId(data.report.findings[0]?.id ?? "");
+        setCaptureState("done");
+        setCaptureMeta({ live: false, requestedUrl: data.report.capture.url, capturedUrl: data.report.capture.url });
+        showNotice({ tone: "info", title: "Shared report loaded", message: "This is a read-only handoff link." });
+      })
+      .catch((error) => {
+        showNotice({
+          tone: "error",
+          title: "Shared report unavailable",
+          message: error instanceof Error ? error.message : String(error),
+        });
+      });
+  }, [showNotice]);
+
+  const shareReport = useCallback(async () => {
+    setSharingReport(true);
+    try {
+      const res = await fetch("/api/reports/share", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ report }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Could not create share link.");
+      setShareUrl(data.url);
+      await navigator.clipboard.writeText(data.url);
+      showNotice({ tone: "success", title: "Share link copied", message: data.url });
+    } catch (error) {
+      showNotice({
+        tone: "error",
+        title: "Share failed",
+        message: error instanceof Error ? error.message : String(error),
+      });
+    } finally {
+      setSharingReport(false);
+    }
+  }, [report, showNotice]);
 
   const learnDna = useCallback(() => {
     const dna = learnBrandDNA(report.capture, report.fingerprint, siteLabel(report.capture.url));
@@ -723,7 +773,7 @@ export default function HomePage() {
           <div className="grid h-9 w-9 place-items-center rounded-full border border-accent/50 bg-accent/10 font-mono text-accent">⊕</div>
           <div>
             <p className="font-display text-3xl leading-none">Tell Proof</p>
-            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-secondary">Independent visual checks for agent-built software</p>
+            <p className="font-mono text-meta uppercase tracking-[0.12em] text-secondary">Independent visual checks for agent-built software</p>
           </div>
         </div>
         <label className="ml-auto flex min-w-[320px] flex-1 items-center gap-2 rounded-card border border-border bg-surface px-3 py-2 font-mono text-sm text-secondary">
@@ -754,6 +804,17 @@ export default function HomePage() {
             "Capture"
           )}
         </button>
+        {captureState === "done" && report.findings.length > 0 ? (
+          <button
+            type="button"
+            onClick={shareReport}
+            disabled={sharingReport || operationActive}
+            className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 font-mono text-meta text-secondary transition hover:border-accent hover:text-accent disabled:opacity-60"
+          >
+            <Link2 className="h-4 w-4" />
+            {sharingReport ? "Sharing…" : shareUrl ? "Copy share link" : "Share report"}
+          </button>
+        ) : null}
         <span className={`rounded-full border px-3 py-2 font-mono text-xs ${
           operationActive
             ? "border-accent/40 bg-accent/10 text-accent"
@@ -773,7 +834,7 @@ export default function HomePage() {
       />
 
       {isRepo && !setupJob ? (
-        <p className="mt-3 flex items-center gap-2 font-mono text-[11px] text-secondary">
+        <p className="mt-3 flex items-center gap-2 font-mono text-meta text-secondary">
           <Github className="h-3.5 w-3.5 text-accent" />
           Tell will clone this repo, read its README to find the run command, start it, and capture the localhost URL for you.
         </p>
@@ -793,7 +854,7 @@ export default function HomePage() {
       ) : null}
 
       {captureMeta?.live && report.capture.url ? (
-        <p className="mt-3 font-mono text-[11px] text-muted">
+        <p className="mt-3 font-mono text-meta text-muted">
           Scanned {report.capture.styles.length} elements · snapshot {Math.round((report.capture.snapshotHtml.length || 0) / 1024)}KB ·{" "}
           <span className="text-text">{report.capture.url}</span>
           {captureMeta.requestedUrl !== report.capture.url ? (
@@ -803,7 +864,7 @@ export default function HomePage() {
       ) : null}
 
       {captureMeta && !captureMeta.live ? (
-        <p className="mt-3 font-mono text-[11px] text-drift">
+        <p className="mt-3 font-mono text-meta text-drift">
           Tried <span className="text-text">{captureMeta.requestedUrl}</span> · showing offline demo fixture from{" "}
           <span className="text-text">{captureMeta.capturedUrl}</span>
           {captureMeta.backend === "local" ? " · live Vercel capture needs TELL_CAPTURE_API_URL" : null}
@@ -851,7 +912,7 @@ export default function HomePage() {
                 <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary" aria-live="polite">
                   {captureState === "capturing" ? captureNote : "Concept preview · not yet verified"}
                 </p>
-                {captureState !== "capturing" ? <p className="mt-1 font-mono text-[10px] text-muted">{scoreLine}</p> : null}
+                {captureState !== "capturing" ? <p className="mt-1 font-mono text-meta text-muted">{scoreLine}</p> : null}
               </div>
               <span className="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-xs text-accent">
                 direction: {dirMeta.id}
@@ -875,7 +936,7 @@ export default function HomePage() {
                 onLlmModeChange={llmRestyle.setMode}
               />
             )}
-            <p className="mt-2 font-mono text-[11px] text-muted">
+            <p className="mt-2 font-mono text-meta text-muted">
               {operationActive
                 ? "Tell is working on the requested target. The previous capture is hidden until this operation finishes."
                 : liveCapture
@@ -918,7 +979,7 @@ export default function HomePage() {
                 <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Voice director</p>
               </div>
               {directionPlan ? (
-                <span className="font-mono text-[11px] text-muted">
+                <span className="font-mono text-meta text-muted">
                   direction: {resolveDirection(directionPlan.presetId).label.toLowerCase()}
                   {directionParsing ? " · refining…" : directionSource === "gemini" ? " · gemini" : null}
                 </span>
@@ -972,12 +1033,12 @@ export default function HomePage() {
             </div>
             {directionPlan?.actionItems.length ? (
               <div className="mt-3 space-y-2">
-                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">Action items</p>
+                <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted">Action items</p>
                 <ul className="flex flex-wrap gap-2">
                   {directionPlan.actionItems.map((item) => (
                     <li
                       key={item.id}
-                      className="rounded-md border border-border bg-bg/70 px-2.5 py-1.5 font-mono text-[11px] text-secondary"
+                      className="rounded-md border border-border bg-bg/70 px-2 py-2 font-mono text-meta text-secondary"
                     >
                       <span className="mr-1.5 text-muted">{item.category}</span>
                       {item.label}
@@ -987,9 +1048,9 @@ export default function HomePage() {
               </div>
             ) : null}
             {!voice.supported ? (
-              <p className="mt-2 font-mono text-[11px] text-muted">Voice input needs a Chromium browser — type your direction or use the presets.</p>
+              <p className="mt-2 font-mono text-meta text-muted">Voice input needs a Chromium browser — type your direction or use the presets.</p>
             ) : (
-              <p className="mt-2 font-mono text-[11px] text-muted">
+              <p className="mt-2 font-mono text-meta text-muted">
                 Tap mic again to append more direction. Text wraps and scrolls after ~4 lines.
               </p>
             )}
@@ -1038,6 +1099,23 @@ export default function HomePage() {
                     <span className="text-accent">⊕</span> {evidence.label}: {evidence.value}
                   </p>
                 ))}
+                {report.capture.stateShots.length > 0 ? (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted">State probes</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {report.capture.stateShots.slice(0, 9).map((shot) => (
+                        <figure key={`${shot.selector}-${shot.state}`} className="rounded border border-border bg-surface p-1.5">
+                          <img
+                            alt={`${shot.selector} ${shot.state}`}
+                            src={`data:image/png;base64,${shot.imageBase64}`}
+                            className="h-14 max-w-[120px] object-contain"
+                          />
+                          <figcaption className="mt-1 text-center font-mono text-meta text-muted">{shot.state}</figcaption>
+                        </figure>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 <button
@@ -1107,7 +1185,7 @@ function WorkflowRail({
       {steps.map((step, index) => (
         <div key={step.label} className={`relative px-4 py-3 ${index ? "border-t border-border md:border-l md:border-t-0" : ""}`}>
           <div className="flex items-center gap-2">
-            <span className={`grid h-5 w-5 place-items-center rounded-full border font-mono text-[9px] ${
+            <span className={`grid h-5 w-5 place-items-center rounded-full border font-mono text-meta ${
               step.done
                 ? "border-ok/50 bg-ok/10 text-ok"
                 : step.active
@@ -1135,7 +1213,7 @@ function OperationPlaceholder({ title, detail }: { title: string; detail: string
         </div>
         <p className="mt-4 font-display text-3xl text-text">{title || "Tell is working"}</p>
         <p className="mt-2 text-sm text-secondary">{detail || "Preparing the next rendered surface…"}</p>
-        <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">previous capture hidden while this runs</p>
+        <p className="mt-4 font-mono text-meta uppercase tracking-[0.14em] text-muted">previous capture hidden while this runs</p>
       </div>
     </div>
   );
@@ -1216,33 +1294,33 @@ function SetupPanel({
         </div>
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {job.detected?.framework ? (
-            <span className="rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-secondary">{job.detected.framework}</span>
+            <span className="rounded-full border border-border px-2 py-1 font-mono text-meta text-secondary">{job.detected.framework}</span>
           ) : null}
           {job.detected?.runCmd ? (
-            <span className="rounded-full border border-border px-2.5 py-1 font-mono text-[11px] text-secondary">{job.detected.runCmd}</span>
+            <span className="rounded-full border border-border px-2 py-1 font-mono text-meta text-secondary">{job.detected.runCmd}</span>
           ) : null}
           {ready && job.url ? (
-            <a href={job.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md border border-ok/40 bg-ok/10 px-2.5 py-1 font-mono text-[11px] text-ok">
+            <a href={job.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-md border border-ok/40 bg-ok/10 px-2 py-1 font-mono text-meta text-ok">
               <ExternalLink className="h-3 w-3" /> {job.url}
             </a>
           ) : null}
           {ready ? (
-            <button onClick={onStop} className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-secondary transition hover:text-text">
+            <button onClick={onStop} className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 font-mono text-meta text-secondary transition hover:text-text">
               <Square className="h-3 w-3" /> Stop app
             </button>
           ) : null}
           {(manual || job.state === "error") ? (
-            <button onClick={onRetry} className="rounded-md border border-border px-2.5 py-1 font-mono text-[11px] text-secondary transition hover:text-text">Retry</button>
+            <button onClick={onRetry} className="rounded-md border border-border px-2 py-1 font-mono text-meta text-secondary transition hover:text-text">Retry</button>
           ) : null}
         </div>
       </div>
 
       {job.logs.length ? (
         <details className="mt-3" open={active || job.state === "error"}>
-          <summary className="flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+          <summary className="flex cursor-pointer items-center gap-2 font-mono text-meta uppercase tracking-[0.14em] text-muted">
             <TerminalSquare className="h-3.5 w-3.5" /> Setup log
           </summary>
-          <pre className="mt-2 max-h-40 overflow-auto rounded-md border border-border bg-bg p-3 font-mono text-[11px] leading-relaxed text-secondary">
+          <pre className="mt-2 max-h-40 overflow-auto rounded-md border border-border bg-bg p-3 font-mono text-meta leading-relaxed text-secondary">
             <code>{job.logs.slice(-24).join("\n")}</code>
           </pre>
         </details>
@@ -1255,10 +1333,10 @@ function SetupPanel({
           </p>
           {job.detected?.readmeInstructions?.length ? (
             <div className="mt-2">
-              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">From the README</p>
+              <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted">From the README</p>
               <ul className="mt-1 space-y-1">
                 {job.detected.readmeInstructions.map((line) => (
-                  <li key={line} className="font-mono text-[12px] text-secondary">$ {line}</li>
+                  <li key={line} className="font-mono text-label text-secondary">$ {line}</li>
                 ))}
               </ul>
             </div>
@@ -1325,7 +1403,7 @@ function PagesStrip({
           <button
             onClick={onScanAll}
             disabled={scanningAll || capturing}
-            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 font-mono text-[11px] text-secondary transition hover:border-accent hover:text-accent disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 font-mono text-meta text-secondary transition hover:border-accent hover:text-accent disabled:opacity-50"
           >
             {scanningAll ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
             {scanningAll ? "Scanning all…" : "Scan all pages"}
@@ -1341,7 +1419,7 @@ function PagesStrip({
               onClick={() => onSelect(p.url)}
               disabled={capturing || scanningAll}
               title={p.url}
-              className={`max-w-[240px] truncate rounded-full border px-3 py-1.5 font-mono text-xs transition disabled:opacity-50 ${
+              className={`max-w-[240px] truncate rounded-full border px-3 py-2 font-mono text-xs transition disabled:opacity-50 ${
                 active ? "border-accent bg-accent/10 text-accent" : "border-border text-secondary hover:border-accent hover:text-accent"
               }`}
             >
@@ -1363,7 +1441,7 @@ function PagesStrip({
           </button>
         </div>
       </div>
-      <p className="mt-2 font-mono text-[11px] text-muted">
+      <p className="mt-2 font-mono text-meta text-muted">
         Scan each route to catch drift that only shows on some pages. The drafted patch is a site-wide stylesheet — one apply covers every page here.
       </p>
     </section>
@@ -1396,14 +1474,14 @@ function BrandDnaBar({ dna, onLearn, onClear, live }: { dna: BrandDNA | null; on
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Brand DNA</p>
           {dna ? (
             <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-text">
-              <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-2">
                 <span className="inline-block h-3 w-3 rounded-full border border-border" style={{ background: dna.accent }} />
-                <span className="font-mono text-[12px]">{dna.accent}</span>
+                <span className="font-mono text-label">{dna.accent}</span>
               </span>
               <span className="text-muted">·</span>
               <span>{dna.displayFont} / {dna.bodyFont}</span>
               <span className="text-muted">·</span>
-              <span className="font-mono text-[11px] text-muted">radius {dna.radius} · from {dna.source}</span>
+              <span className="font-mono text-meta text-muted">radius {dna.radius} · from {dna.source}</span>
             </p>
           ) : (
             <p className="mt-1 text-sm text-secondary">
@@ -1444,11 +1522,11 @@ function Scorecard({ reconciliation, live }: { reconciliation: Reconciliation; l
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Genericness score</p>
-          <p className="mt-1 font-mono text-[11px] text-muted">
+          <p className="mt-1 font-mono text-meta text-muted">
             0 = fully distinctive · lower is better · scored {scoredAgainst === "brand-dna" ? "against your Brand DNA" : "vs the generic baseline"} · docs/05 methodology
           </p>
         </div>
-        <span className="font-mono text-[11px] text-muted">{live ? "measured from your capture" : "capture to measure live"}</span>
+        <span className="font-mono text-meta text-muted">{live ? "measured from your capture" : "capture to measure live"}</span>
       </div>
 
       <div className="flex items-end gap-4">
@@ -1459,23 +1537,23 @@ function Scorecard({ reconciliation, live }: { reconciliation: Reconciliation; l
         </div>
         <div className="mb-1 flex flex-col">
           <span className="font-mono text-xs uppercase tracking-[0.14em] text-accent">−{drop} points</span>
-          <span className="font-mono text-[11px] text-muted">{BAND_COPY[reconciliation.scoreAfter <= 25 ? "distinctive" : reconciliation.scoreAfter <= 45 ? "conservative" : "template"]}</span>
+          <span className="font-mono text-meta text-muted">{BAND_COPY[reconciliation.scoreAfter <= 25 ? "distinctive" : reconciliation.scoreAfter <= 45 ? "conservative" : "template"]}</span>
         </div>
       </div>
 
       <div className="mt-5 grid gap-3">
         {axes.map((a) => (
-          <div key={a.key} className="grid gap-1.5">
+          <div key={a.key} className="grid gap-2">
             <div className="flex items-center justify-between gap-3">
               <span className="text-sm text-text">{a.label}</span>
-              <span className="font-mono text-[11px] text-muted">{a.beforeText} <span className="text-accent">→</span> {a.afterText}</span>
+              <span className="font-mono text-meta text-muted">{a.beforeText} <span className="text-accent">→</span> {a.afterText}</span>
             </div>
             <AxisBar before={a.before} after={a.after} />
-            <p className="text-[11px] text-muted">{a.rationale}</p>
+            <p className="text-meta text-muted">{a.rationale}</p>
           </div>
         ))}
       </div>
-      <p className="mt-4 font-mono text-[11px] text-muted">
+      <p className="mt-4 font-mono text-meta text-muted">
         {reconciliation.elementsRestyled} real elements restyled by <span className="text-secondary">data-tell-id</span> — the preview transforms the page itself, not a filter.
       </p>
     </section>
@@ -1506,12 +1584,12 @@ function ReconciliationTable({ reconciliation, live }: { reconciliation: Reconci
     <section className="rounded-card border border-border bg-surface p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-secondary">Reconciliation · {reconciliation.label}</p>
-        <span className="font-mono text-[11px] text-muted">{live ? "grounded in your captured tokens" : "capture a page to ground this"}</span>
+        <span className="font-mono text-meta text-muted">{live ? "grounded in your captured tokens" : "capture a page to ground this"}</span>
       </div>
       <div className="overflow-hidden rounded-md border border-border">
         <table className="w-full border-collapse text-left text-sm">
           <thead>
-            <tr className="bg-bg/60 font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
+            <tr className="bg-bg/60 font-mono text-meta uppercase tracking-[0.12em] text-muted">
               <th className="px-3 py-2 font-normal">Token</th>
               <th className="px-3 py-2 font-normal">Before</th>
               <th className="px-3 py-2 font-normal">After</th>
@@ -1522,16 +1600,16 @@ function ReconciliationTable({ reconciliation, live }: { reconciliation: Reconci
               <tr key={row.key} className="border-t border-border align-top">
                 <td className="px-3 py-2.5">
                   <p className="text-text">{row.label}</p>
-                  {row.note ? <p className="mt-0.5 text-[11px] text-muted">{row.note}</p> : null}
+                  {row.note ? <p className="mt-0.5 text-meta text-muted">{row.note}</p> : null}
                 </td>
                 <td className="px-3 py-2.5">
-                  <span className="inline-flex items-center gap-2 font-mono text-[13px] text-secondary">
+                  <span className="inline-flex items-center gap-2 font-mono text-label text-secondary">
                     {row.swatchBefore ? <span className="inline-block h-3 w-3 rounded-full ring-1 ring-white/20" style={{ background: row.swatchBefore }} /> : null}
                     {row.before}
                   </span>
                 </td>
                 <td className="px-3 py-2.5">
-                  <span className="inline-flex items-center gap-2 font-mono text-[13px] text-text">
+                  <span className="inline-flex items-center gap-2 font-mono text-label text-text">
                     {row.swatchAfter ? <span className="inline-block h-3 w-3 rounded-full ring-1 ring-white/20" style={{ background: row.swatchAfter }} /> : null}
                     {row.after}
                   </span>
@@ -1614,8 +1692,8 @@ function VerifiedProofPanel({
         />
         <ProofMetric label="Focus coverage" before={`${Math.round(proof.focusBefore * 100)}%`} after={`${Math.round(proof.focusAfter * 100)}%`} good={!proof.focusRegressed} />
         <div className="px-4 py-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted">Verdict</p>
-          <p className={`mt-1 flex items-center gap-1.5 font-mono text-sm uppercase ${
+          <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted">Verdict</p>
+          <p className={`mt-1 flex items-center gap-2 font-mono text-sm uppercase ${
             result.status === "passed" ? "text-ok" : result.status === "failed" ? "text-drift" : "text-accent"
           }`}>
             {result.status === "passed" ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
@@ -1625,7 +1703,7 @@ function VerifiedProofPanel({
       </div>
 
       <div className="p-4">
-        <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+        <p className="mb-3 font-mono text-meta uppercase tracking-[0.14em] text-muted">
           Scope · 1 route · {baseline.capture.viewport.width}×{baseline.capture.viewport.height} · default rendered state
         </p>
         <div className="relative h-[500px] overflow-hidden rounded-md border border-border bg-bg">
@@ -1644,8 +1722,8 @@ function VerifiedProofPanel({
             />
           </div>
           <span className="absolute bottom-0 top-0 z-10 w-px bg-accent" style={{ left: `${seam}%` }} />
-          <span className="absolute left-3 top-3 z-10 rounded bg-black/70 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white">Baseline</span>
-          <span className="absolute right-3 top-3 z-10 rounded bg-black/70 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white">Recaptured source</span>
+          <span className="absolute left-3 top-3 z-10 rounded bg-black/70 px-2 py-1 font-mono text-meta uppercase tracking-[0.14em] text-white">Baseline</span>
+          <span className="absolute right-3 top-3 z-10 rounded bg-black/70 px-2 py-1 font-mono text-meta uppercase tracking-[0.14em] text-white">Recaptured source</span>
           <input
             type="range"
             min={0}
@@ -1657,12 +1735,12 @@ function VerifiedProofPanel({
           />
         </div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-          <p className="font-mono text-[11px] text-muted">
+          <p className="font-mono text-meta text-muted">
             Verified {new Date(proof.capturedAt).toLocaleTimeString()} · {proof.url}
           </p>
           <div className="flex flex-wrap gap-2">
             {proof.changedFiles.map((file) => (
-              <span key={file} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg px-2.5 py-1 font-mono text-[10px] text-secondary">
+              <span key={file} className="inline-flex items-center gap-2 rounded-full border border-border bg-bg px-2 py-1 font-mono text-meta text-secondary">
                 <FileCode2 className="h-3 w-3 text-accent" /> {file}
               </span>
             ))}
@@ -1676,7 +1754,7 @@ function VerifiedProofPanel({
 function ProofMetric({ label, before, after, good }: { label: string; before: string; after: string; good: boolean }) {
   return (
     <div className="px-4 py-3">
-      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted">{label}</p>
+      <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted">{label}</p>
       <p className="mt-1 font-mono text-sm text-secondary">
         {before} <span className={good ? "text-ok" : "text-drift"}>→ {after}</span>
       </p>
@@ -1715,7 +1793,7 @@ function DiffViewer({
           </p>
           <p className="mt-1 break-words text-sm text-secondary">{proposal.files[0]?.summary}</p>
           {sourceContext?.mode === "repo" ? (
-            <p className="mt-1 break-words font-mono text-[10px] text-muted">
+            <p className="mt-1 break-words font-mono text-meta text-muted">
               Read {sourceContext.filesLoaded}/{sourceContext.filesDiscovered} project files · evidence matched {sourceContext.matchedFiles} · {Math.round(sourceContext.totalBytes / 1024)}KB context
             </p>
           ) : null}
@@ -1741,18 +1819,18 @@ function DiffViewer({
         </div>
       </div>
       {canProve ? (
-        <div className="flex items-center gap-2 border-b border-border bg-ok/5 px-4 py-2 font-mono text-[10px] text-secondary">
+        <div className="flex items-center gap-2 border-b border-border bg-ok/5 px-4 py-2 font-mono text-meta text-secondary">
           <ShieldCheck className="h-3.5 w-3.5 text-ok" />
           Applies only to Tell&apos;s disposable clone · hot reloads · captures again · checks score and focus states
         </div>
       ) : (
-        <div className="flex items-center gap-2 border-b border-border bg-accent/5 px-4 py-2 font-mono text-[10px] text-secondary">
+        <div className="flex items-center gap-2 border-b border-border bg-accent/5 px-4 py-2 font-mono text-meta text-secondary">
           <GitPullRequest className="h-3.5 w-3.5 text-accent" />
           Send to Cursor copies a prompt plus diff for the local repo. No fragile editor deep link required.
         </div>
       )}
-      {proofError ? <p className="border-b border-drift/30 bg-drift/10 px-4 py-2 font-mono text-[11px] text-drift">{proofError}</p> : null}
-      <pre className="max-h-80 overflow-auto p-4 text-left font-mono text-[11px] leading-relaxed text-secondary">
+      {proofError ? <p className="border-b border-drift/30 bg-drift/10 px-4 py-2 font-mono text-meta text-drift">{proofError}</p> : null}
+      <pre className="max-h-80 overflow-auto p-4 text-left font-mono text-meta leading-relaxed text-secondary">
         <code>{patch}</code>
       </pre>
     </section>
@@ -1762,7 +1840,7 @@ function DiffViewer({
 function VerdictBadge({ verdict }: { verdict: Verdict }) {
   const icon = verdict === "intentional" ? <Check className="h-3 w-3" /> : verdict === "drift" ? <Split className="h-3 w-3" /> : <Eye className="h-3 w-3" />;
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 font-mono text-[11px] uppercase tracking-[0.12em] ${badgeStyles[verdict]}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 font-mono text-meta uppercase tracking-[0.12em] ${badgeStyles[verdict]}`}>
       {icon}
       {verdict}
     </span>
@@ -1773,7 +1851,7 @@ function ConfidenceMeter({ value }: { value: number }) {
   const filled = Math.round(value * 5);
   return (
     <div className="mt-3 flex items-center gap-2">
-      <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">confidence</span>
+      <span className="font-mono text-meta uppercase tracking-[0.12em] text-muted">confidence</span>
       <div className="flex gap-1" aria-label={`Confidence ${Math.round(value * 100)}%`}>
         {[0, 1, 2, 3, 4].map((i) => (
           <span key={i} className={`h-2 w-4 rounded-sm ${i < filled ? "bg-accent" : "bg-border"}`} />

@@ -25,6 +25,13 @@ const config: Config = {
       borderRadius: {
         card: "var(--radius-card)",
       },
+      fontSize: {
+        meta: ["0.75rem", { lineHeight: "1.25" }],
+        label: ["0.875rem", { lineHeight: "1.35" }],
+      },
+      spacing: {
+        "4.5": "1.125rem",
+      },
       boxShadow: {
         card: "var(--shadow-card)",
         signal: "0 0 0 1px rgb(var(--accent)), 0 0 20px rgb(var(--accent) / .16)",
