@@ -28,6 +28,8 @@ const SAMPLE_SELECTORS = [
   "[class*='button']",
   "[class*='cta']",
   "[class*='hero']",
+  "[class*='tag']",
+  "[class*='mini']",
 ].join(",");
 
 const MAX_INLINE_CSS = 400_000;
@@ -43,7 +45,7 @@ export async function captureUrl(url: string): Promise<CapturePayload> {
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 });
     await page.waitForLoadState("networkidle", { timeout: 4_000 }).catch(() => {});
     await page
-      .waitForFunction(() => document.querySelectorAll("h1,h2,article,section,main [class*='card'],button,nav a").length >= 3, undefined, { timeout: 6_000 })
+      .waitForFunction(() => document.querySelectorAll("h1,h2,article,section,main [class*='card'],button,nav a,.tag").length >= 3, undefined, { timeout: 6_000 })
       .catch(() => {});
     await page.waitForTimeout(350); // let webfonts + late paints settle
     const screenshotBase64 = await page.screenshot({ fullPage: true, type: "png" }).then((b) => b.toString("base64"));
