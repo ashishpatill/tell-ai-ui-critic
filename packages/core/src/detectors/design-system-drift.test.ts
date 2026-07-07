@@ -43,4 +43,23 @@ describe("detectDesignSystemDrift", () => {
     expect(finding?.detector).toBe("DesignSystemDrift");
     expect(finding?.facts.undeclaredFonts).toContain("Inter");
   });
+
+  it("ignores fully transparent rgba colors", () => {
+    const transparentCapture = CapturePayload.parse({
+      ...capture,
+      styles: [{
+        ...capture.styles[0]!,
+        fontFamily: '"Instrument Serif", serif',
+        color: "rgb(243, 237, 228)",
+        backgroundColor: "rgba(0, 0, 0, 0)",
+      }],
+    });
+    const fp = buildFingerprint(transparentCapture);
+    const finding = detectDesignSystemDrift(fp, {
+      fonts: ["Instrument Serif"],
+      colors: ["#F3EDE4", "#181614"],
+      source: "DESIGN.md",
+    });
+    expect(finding).toBeNull();
+  });
 });

@@ -188,6 +188,8 @@ The most reliable production shape is a hosted UI plus a separate Playwright cap
 
 Set `TELL_CAPTURE_API_URL` on the Vercel app to point at the capture backend. GitHub clone-and-run is local-only and should stay disabled on public hosts with `TELL_DISABLE_REPO_SETUP=1`.
 
+For durable share links on Vercel, link a Blob store to the project (see [DEPLOY.md](./docs/DEPLOY.md)). For PR preview diagnosis CI, set the GitHub repo variable `TELL_PREVIEW_URL` to your stable Vercel URL.
+
 Deployment guides:
 
 - [Hybrid and single-platform deploy](./docs/DEPLOY.md)
@@ -230,7 +232,7 @@ Shipped in Phase 1:
 - Full 14-detector golden fixture corpus
 - `tell_proof_verify` and `tell_proof_revert` MCP tools
 - PR preview diagnosis workflow (`.github/workflows/pr-diagnose.yml`)
-- Dogfood script (`pnpm dogfood:web`) — Tell UI reports zero generic tells
+- Dogfood script (`pnpm dogfood:web`) — Tell UI reports zero generic tells and zero drift
 
 ---
 

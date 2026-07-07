@@ -255,6 +255,23 @@ Free tier may spin down after idle — first request after sleep is slow (~30–
 | `CURSOR_API_KEY` | — | Cursor SDK redesign drafts |
 | `TELL_FIXTURE_URL` | `http://localhost:3001` | Local fixture only |
 | `TELL_REPORT_ARTIFACT` | `fixtures/reports/tell-report.json` | Offline demo fallback |
+| `BLOB_READ_WRITE_TOKEN` | — | Vercel Blob token for durable `/api/reports/share` links |
+| `TELL_PREVIEW_URL` | — | GitHub repo variable for PR preview diagnosis CI |
+
+### Share links on Vercel
+
+Shared reports (`POST /api/reports/share`) use local disk in dev. On Vercel, link a **Blob store** to the project — Vercel injects `BLOB_READ_WRITE_TOKEN` automatically. Without it, share links are ephemeral (lost on cold start).
+
+### PR preview diagnosis CI
+
+In GitHub **Settings → Secrets and variables → Actions → Variables**, set:
+
+| Variable | Example | Purpose |
+|---|---|---|
+| `TELL_PREVIEW_URL` | `https://tell-five.vercel.app` | Stable URL for `.github/workflows/pr-diagnose.yml` |
+| `TELL_FAIL_GENERIC_ABOVE` | `6` | Optional — fail CI when generic tell count exceeds threshold |
+
+The workflow falls back to the first URL in the PR body when `TELL_PREVIEW_URL` is unset.
 
 ---
 
