@@ -17,6 +17,9 @@ importers:
       '@cursor/sdk':
         specifier: ^1.0.23
         version: 1.0.23
+      '@neondatabase/serverless':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@next/env':
         specifier: 14.2.33
         version: 14.2.33
@@ -775,6 +778,10 @@ packages:
     peerDependenciesMeta:
       '@cfworker/json-schema':
         optional: true
+
+  '@neondatabase/serverless@1.1.0':
+    resolution: {integrity: sha512-r3ZZhRjEcfEdKIZnoB1RusNgvHuaBRqfCzV4Gi+5A9yUX0S4HTws/ASWqt13wL4y4I+0rqsWGdA2w7EQXHi3+Q==}
+    engines: {node: '>=19.0.0'}
 
   '@next/env@14.2.33':
     resolution: {integrity: sha512-CgVHNZ1fRIlxkLhIX22flAZI/HmpDaZ8vwyJ/B0SDPTBuLZ1PJ+DWMjCHhqnExfmSQzA/PbZi8OAc7PAq2w9IA==}
@@ -2471,6 +2478,8 @@ snapshots:
       zod-to-json-schema: 3.25.2(zod@3.25.76)
     transitivePeerDependencies:
       - supports-color
+
+  '@neondatabase/serverless@1.1.0': {}
 
   '@next/env@14.2.33': {}
 
