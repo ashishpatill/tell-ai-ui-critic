@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { TellReport } from "@tell/schema";
-import { resolveShareBackend, saveSharedReport, shareBackendNote } from "@/lib/report-store";
+import {
+  resolveShareBackend,
+  sanitizeStoreError,
+  saveSharedReport,
+  shareBackendNote,
+} from "@/lib/report-store";
 
 export const runtime = "nodejs";
 
@@ -32,11 +37,10 @@ export async function POST(request: Request) {
       expiresNote: shareBackendNote(backend),
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Could not persist shared report.";
     return NextResponse.json(
       {
         error: "Could not persist shared report.",
-        detail: message,
+        detail: sanitizeStoreError(err),
         backend,
         hint:
           backend === "neon"
