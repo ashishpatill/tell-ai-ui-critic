@@ -63,10 +63,15 @@ async function ensureNeonTable(): Promise<void> {
           created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )
       `;
-      await sql`
-        CREATE INDEX IF NOT EXISTS shared_reports_created_at_idx
-        ON shared_reports (created_at DESC)
-      `;
+      // Index creation is best-effort; table existence is what share/load require.
+      try {
+        await sql`
+          CREATE INDEX IF NOT EXISTS shared_reports_created_at_idx
+          ON shared_reports (created_at DESC)
+        `;
+      } catch {
+        /* older Neon roles may lack CREATE INDEX; reads/writes still work */
+      }
     })().catch((err) => {
       neonReady = null;
       throw err;
