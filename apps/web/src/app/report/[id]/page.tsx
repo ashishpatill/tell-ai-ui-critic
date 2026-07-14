@@ -21,7 +21,11 @@ export default function SharedReportPage({ params }: { params: { id: string } })
   if (error) {
     return (
       <main className="mx-auto max-w-3xl px-6 py-16 font-sans text-text">
-        <p className="text-drift">{error}</p>
+        <p className="font-mono text-meta uppercase tracking-[0.14em] text-secondary">Shared report</p>
+        <p className="mt-3 text-drift">{error}</p>
+        <p className="mt-2 text-sm text-muted">
+          Links persist when Neon (`DATABASE_URL`) or Vercel Blob is configured on the host.
+        </p>
         <Link href="/" className="mt-4 inline-block text-accent underline">Back to Tell Proof</Link>
       </main>
     );
