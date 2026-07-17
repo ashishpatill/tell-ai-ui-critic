@@ -1,0 +1,53 @@
+---
+description: Auto-run Tell Proof verification after UI-changing edits
+globs: "apps/web/**/*.{tsx,ts,css},fixtures/generic-app/**/*.{tsx,css},packages/redesign/**/*"
+alwaysApply: false
+---
+
+# Tell Proof verify (agent workflow)
+
+When you change rendered UI (components, styles, tokens, fixture pages), run proof verification before claiming done or opening a PR.
+
+## When to invoke
+
+- After drafting a redesign patch with `tell_redesign` / `tell_apply`
+- After editing `apps/web` or `fixtures/generic-app` styles that affect the captured surface
+- Before merge on any frontend PR that changes computed styles
+
+## MCP path (preferred in Cursor Agent)
+
+```
+1. tell_diagnose on the running preview URL (or localhost:3001 for fixture)
+2. tell_redesign with direction
+3. tell_apply with projectRoot set to the workspace
+4. tell_proof_verify { url, patch, projectRoot }
+5. If status is "failed" and reverted is true → revise patch and retry
+6. If status is "passed" or "review" → human approves merge (never auto-merge)
+```
+
+## Web / hosted path
+
+- **Local disposable checkout:** `POST /api/proof/apply` with `jobId`, `patch`, `beforeReport`
+- **Hosted compare (Vercel preview):** `POST /api/proof/verify` with `{ mode: "compare", url, beforeReport, afterReport }`
+- **Hosted patch (capture backend):** `POST /api/proof/verify` with `{ url, patch, projectRoot }` — proxied when `TELL_CAPTURE_API_URL` is set
+
+## Verdict meanings
+
+| Status | Meaning |
+|--------|---------|
+| `passed` | Score improved ≥3, screenshot changed, no focus/structure regression |
+| `review` | Neutral or small change — human should judge |
+| `failed` | Regression or patch did not apply — auto-reverted when configured |
+
+## Rules
+
+- Never auto-merge on `passed` alone — human reviews the diff
+- Always capture the **same URL** as the baseline report
+- Prefer disposable checkout proof over editing the main branch directly
+- After UI fixes, also run `pnpm dogfood:web` (Tell must stay at zero tells)
+
+## Related
+
+- Skill: `.cursor/skills/tell-proof-verify/SKILL.md`
+- Skill: `.cursor/skills/tell-dogfood-audit/SKILL.md`
+- Core: `packages/core/src/proof-verify.ts`
