@@ -1,0 +1,101 @@
+name: PR proof compare
+
+# Runs Tell Proof compare mode when UI/engine surfaces change.
+# - Always compares committed baseline vs itself as a smoke check (must be "review").
+# - When TELL_PREVIEW_URL (or a Vercel URL in the PR body) is available, compares
+#   baseline → live diagnose as an informational proof signal (does not fail on "review").
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "apps/web/**"
+      - "packages/core/**"
+      - "packages/redesign/**"
+      - "packages/schema/**"
+      - "packages/taste/**"
+      - "fixtures/reports/**"
+      - "fixtures/corpus/**"
+      - ".cursor/rules/tell-proof-verify.mdc"
+      - ".cursor/skills/tell-proof-verify/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  proof-compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: |
+          pnpm -F @tell/schema build
+          pnpm -F @tell/core build
+
+      - name: Smoke compare (baseline vs baseline)
+        env:
+          TELL_BEFORE_REPORT: fixtures/reports/tell-report.json
+          TELL_AFTER_REPORT: fixtures/reports/tell-report.json
+          TELL_FAIL_ON: failed,passed
+        run: pnpm proof:compare
+
+      - name: Install Playwright Chromium
+        if: vars.TELL_PREVIEW_URL != '' || github.event.pull_request.body != ''
+        run: pnpm -F @tell/core exec playwright install chromium --with-deps
+
+      - name: Resolve preview URL
+        id: preview
+        env:
+          REPO_PREVIEW_URL: ${{ vars.TELL_PREVIEW_URL }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          URL="${REPO_PREVIEW_URL}"
+          SOURCE="var"
+          if [ -z "$URL" ]; then
+            SOURCE="body"
+            URL="$(printf '%s' "$PR_BODY" | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app(/[a-zA-Z0-9./?=_%:-]*)?' | head -1 || true)"
+          fi
+          if [ -z "$URL" ]; then
+            SOURCE="body"
+            URL="$(printf '%s' "$PR_BODY" | grep -Eo 'https://[a-zA-Z0-9.-]+\.onrender\.com(/[a-zA-Z0-9./?=_%:-]*)?' | head -1 || true)"
+          fi
+          if [ -z "$URL" ]; then
+            echo "No preview URL — skipping live proof compare."
+            exit 0
+          fi
+          if [ "$SOURCE" = "body" ] && ! printf '%s' "$URL" | grep -Eq '^https://[a-zA-Z0-9.-]+\.(vercel\.app|onrender\.com)([/?#]|$)'; then
+            echo "Ignoring non-preview URL from PR body: $URL"
+            exit 0
+          fi
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Live proof compare (preview vs itself)
+        if: steps.preview.outputs.url != ''
+        env:
+          TELL_PREVIEW_URL: ${{ steps.preview.outputs.url }}
+          TELL_COMPARE_SELF: "1"
+          TELL_FAIL_ON: failed
+        run: pnpm proof:compare
+
+      - name: Upload proof artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tell-proof-compare
+          path: tell-proof-compare.json
+          if-no-files-found: ignore
