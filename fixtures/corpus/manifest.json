@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "ai-saas-generic",
+      "label": "AI-built SaaS landing",
+      "fixture": "fixtures/generic-app",
+      "capturePath": "fixtures/reports/capture.json",
+      "reportPath": "fixtures/reports/tell-report.json",
+      "expectedDetectors": [
+        "AcidAccentTell",
+        "CenteredEverythingTell",
+        "EmojiChromeTell",
+        "FocusRingInconsistency",
+        "GradientCrutchTell",
+        "GrayMushTell",
+        "NearDuplicateValues",
+        "RadiusMonotoneTell",
+        "ShadowEverywhereTell",
+        "SpacingChaos",
+        "StateGap",
+        "SystemFontTell",
+        "TokenBypass",
+        "TypeScaleDrift"
+      ],
+      "notes": "Primary demo input — deliberately bland Inter/violet/shadow-everywhere surface."
+    },
+    {
+      "id": "editorial-calm",
+      "label": "Editorial calm (negative control)",
+      "capturePath": "fixtures/corpus/captures/editorial-calm.json",
+      "expectedDetectors": [],
+      "notes": "Serif, on-grid spacing, restrained accent — should fire zero detectors."
+    },
+    {
+      "id": "fintech-dense",
+      "label": "Fintech dense dashboard",
+      "capturePath": "fixtures/corpus/captures/fintech-dense.json",
+      "expectedDetectors": [
+        "AcidAccentTell",
+        "FocusRingInconsistency",
+        "SpacingChaos",
+        "StateGap",
+        "SystemFontTell",
+        "TokenBypass",
+        "TypeScaleDrift"
+      ],
+      "notes": "Inter monoculture + off-grid spacing + weak focus — dense drift profile."
+    },
+    {
+      "id": "intentional-brutalist",
+      "label": "Intentional mono route",
+      "fixture": "fixtures/generic-app/app/brutalist",
+      "route": "/brutalist",
+      "notes": "Scoped art direction — taste should mark at least one finding intentional, not generic."
+    },
+    {
+      "id": "tell-dogfood",
+      "label": "Tell product UI",
+      "target": "http://localhost:3000",
+      "script": "pnpm dogfood:web",
+      "expectedGeneric": [],
+      "expectedDrift": [],
+      "notes": "M10 contract — zero generic tells and zero drift on apps/web."
+    }
+  ]
+}
