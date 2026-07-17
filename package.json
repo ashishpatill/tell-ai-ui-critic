@@ -16,6 +16,7 @@
     "dogfood:web": "pnpm -F @tell/core exec tsx src/scripts/dogfood-web.ts",
     "verify:directions": "pnpm exec tsx .verification-screenshots/capture-directions.ts",
     "pr:diagnose": "pnpm -F @tell/schema build && pnpm -F @tell/core build && pnpm -F @tell/core exec tsx --tsconfig ../../packages/core/tsconfig.json ../../scripts/pr-diagnose.ts",
+    "proof:compare": "pnpm -F @tell/schema build && pnpm -F @tell/core build && pnpm -F @tell/core exec tsx --tsconfig ../../packages/core/tsconfig.json ../../scripts/pr-proof-compare.ts",
     "sync:demo-report": "pnpm -F @tell/core exec tsx ../../scripts/sync-demo-report.ts",
     "deploy:vercel": "bash scripts/deploy-vercel.sh"
   },
