@@ -66,6 +66,7 @@ When I paste status, give ONE next action and what to cut if behind. Protect BUI
 ## Project knowledge files
 
 1. `docs/01_DESIGN_SYSTEM.md`
-2. `docs/02_CURSOR_BUILD_INSTRUCTIONS.md` (or BUILD.md)
-3. `USER_STORY.md`
-4. This file
+2. `BUILD.md` (engineering). `docs/02_CURSOR_BUILD_INSTRUCTIONS.md` is a stub → archive.
+3. `PLAN.md` — consolidated remaining-work plan + goal/loop prompts
+4. `USER_STORY.md`
+5. This file

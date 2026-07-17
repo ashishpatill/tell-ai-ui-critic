@@ -182,7 +182,9 @@ inspector), FR10 (score artifact).
 Cursor); live URL capture; GitHub repo setup with reachable localhost verification; multi-page route
 scanning.
 
-**Remaining stretch:** Playwright state-probe thumbnails in evidence panels; shareable report link.
+**Stretch now also shipped:** Playwright state-probe thumbnails; shareable report links (`/api/reports/share`).
+
+**Remaining (see root `PLAN.md`):** optional corpus expansion and scenario matrix — MVP through Phase 4 is complete.
 
 **Explicit cut line:** if live repo setup breaks at demo time, keep the committed fixture artifact and
 seeded fixture path. Do not show a broken or unreachable localhost state as success; Tell must either
@@ -204,19 +206,22 @@ Day 1 = spine (schema, capture, fingerprint, detectors, taste, MCP diagnose). Da
 
 | ID | Milestone | Status | Owner | DoD met? | Notes |
 |----|-----------|--------|-------|----------|-------|
-| M1 | schema (zod contracts) | ⬜ | | | |
-| M2 | capture + fingerprint (Playwright → Fingerprint) | ⬜ | | | |
-| M3 | 14 detectors → planted findings on generic fixture | ⬜ | | | |
-| M4 | taste engine + reflection + fallback | ⬜ | | | |
-| M5 | MCP capture + diagnose (Cursor) | ⬜ | | | |
-| M6 | Tell Report + before/after seam | ⬜ | | | |
-| M7 | Tell/Drift inspector + verdict cards | ⬜ | | | |
-| M8 | voice director + redesign diff (stretch) | ⬜ | | | |
-| M9 | demo hardening + backup video | ⬜ | | | |
-| M10 | dogfood: 0 tells on own repo | ⬜ | | | |
+| M1 | schema (zod contracts) | ✅ | | yes | |
+| M2 | capture + fingerprint (Playwright → Fingerprint) | ✅ | | yes | committed `capture.json` |
+| M3 | 14 detectors → planted findings on generic fixture | ✅ | | yes | golden findings on fixture |
+| M4 | taste engine + reflection + fallback | ✅ | | yes | Gemini + deterministic fallback |
+| M5 | MCP capture + diagnose (Cursor) | ✅ | | yes | + proof verify/revert tools |
+| M6 | Tell Report + before/after seam | ✅ | | yes | live reconcile CSS |
+| M7 | Tell/Drift inspector + verdict cards | ✅ | | yes | |
+| M8 | voice director + redesign diff (stretch) | ✅ | | yes | redesign v2 recipes + LLM path |
+| M9 | demo hardening + backup video | ✅ | | yes | offline artifact + demo gif |
+| M10 | dogfood: 0 tells on own repo | ✅ | | yes | `pnpm dogfood:web` |
+| P3 | viewport matrix + proof verify API + corpus | ✅ | | yes | see PLAN.md |
+| P4 | taxonomy + corpus + PR proof automation | ✅ | | yes | see PLAN.md |
 
 **Status log (append newest on top):**
 ```
+[2026-07-17] Consolidated PLAN.md; archived docs/02 + redesign-v2 spec; Phase 3–4 closed.
 [Day _ · HH:MM] <what changed> · <next action> · <blockers>
 ```
 

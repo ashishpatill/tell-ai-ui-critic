@@ -2033,7 +2033,8 @@ export const demoReport: TellReport = {
       "buttonCount": 3,
       "centeredBlockRatio": 1,
       "emojiInUiCount": 12
-    }
+    },
+    "viewportMatrix": []
   },
   "fingerprint": {
     "url": "http://localhost:3001",

@@ -331,6 +331,15 @@ When you're back:
 
 After changing env vars, **redeploy** so runtime picks them up.
 
+### Proof verify on hosted deployments
+
+| Mode | Where it runs | Body |
+|---|---|---|
+| `compare` | Vercel UI (no Playwright needed) | `{ "mode": "compare", "url", "beforeReport", "afterReport" }` |
+| `patch` | Capture backend (needs git + Playwright) | `{ "url", "patch", "projectRoot" }` |
+
+On Vercel, `POST /api/proof/verify` proxies patch mode to `TELL_CAPTURE_API_URL` when configured. Compare mode scores two already-captured reports — useful for Vercel preview before/after links.
+
 ---
 
 ## What not to deploy

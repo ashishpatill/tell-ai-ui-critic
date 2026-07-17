@@ -1135,6 +1135,25 @@ export default function HomePage() {
                     )}
                   </div>
                 ) : null}
+                {report.capture.viewportMatrix.length > 0 ? (
+                  <div className="mt-4 border-t border-border pt-4">
+                    <p className="font-mono text-meta uppercase tracking-[0.14em] text-muted">Viewport matrix</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {report.capture.viewportMatrix.map((entry) => (
+                        <figure key={entry.preset} className="rounded border border-border bg-surface p-1.5">
+                          <img
+                            alt={`${entry.preset} ${entry.width}×${entry.height}`}
+                            src={`data:image/png;base64,${entry.screenshotBase64}`}
+                            className="h-20 max-w-[140px] object-contain object-top"
+                          />
+                          <figcaption className="mt-1 text-center font-mono text-meta text-muted">
+                            {entry.preset} · {entry.width}×{entry.height}
+                          </figcaption>
+                        </figure>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 <button

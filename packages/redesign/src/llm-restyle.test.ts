@@ -53,6 +53,7 @@ function makeCapture(overrides?: Partial<CapturePayload>): CapturePayload {
     ],
     probes: [],
     stateShots: [],
+    viewportMatrix: [],
     domSummary: { headingCount: 3, buttonCount: 1, centeredBlockRatio: 0.2, emojiInUiCount: 0 },
     ...overrides,
   };

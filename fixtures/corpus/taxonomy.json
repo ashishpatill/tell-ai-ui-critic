@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "title": "Tell Proof — Open Genericness Taxonomy",
+  "description": "Machine-readable benchmark mapping methodology tells (docs/05) to deterministic detectors in packages/core. Use for regression tests, research citations, and external evaluations.",
+  "methodologyDoc": "docs/05_GENERICNESS_METHODOLOGY.md",
+  "corpusManifest": "fixtures/corpus/manifest.json",
+  "tells": [
+    {
+      "id": "T1",
+      "name": "Default-font monoculture",
+      "detector": "SystemFontTell",
+      "family": "tell",
+      "signature": "Primary font-family is Inter / system-ui / Arial-class with ≥75% role coverage",
+      "flipThreshold": "familyCount weighted ratio ≥ 0.75 and family ∈ DEFAULT_SET"
+    },
+    {
+      "id": "T2",
+      "name": "Violet→pink hero gradient",
+      "detector": "GradientCrutchTell",
+      "family": "tell",
+      "signature": "Saturated violet/pink gradient as hero chrome",
+      "flipThreshold": "fingerprint.gradientDetected === true"
+    },
+    {
+      "id": "T3",
+      "name": "AI-default accent hue",
+      "detector": "AcidAccentTell",
+      "family": "tell",
+      "signature": "High-saturation accent against a near-black surface",
+      "flipThreshold": "dark surface L < 0.2 paired with accent saturation > 0.7"
+    },
+    {
+      "id": "T4",
+      "name": "Shadow on everything",
+      "detector": "ShadowEverywhereTell",
+      "family": "tell",
+      "signature": "Repeated non-none box-shadow across many containers",
+      "flipThreshold": "dominant shadow count ≥ max(3, 35% of samples)"
+    },
+    {
+      "id": "T5",
+      "name": "Radius monotone",
+      "detector": "RadiusMonotoneTell",
+      "family": "tell",
+      "signature": "One non-zero radius dominates the surface",
+      "flipThreshold": "dominant radius count ≥ max(5, 50% of samples)"
+    },
+    {
+      "id": "T6",
+      "name": "Everything centered",
+      "detector": "CenteredEverythingTell",
+      "family": "tell",
+      "signature": "Most large blocks use text-align:center",
+      "flipThreshold": "centeredBlockRatio ≥ 0.8"
+    },
+    {
+      "id": "T7",
+      "name": "Gray mush",
+      "detector": "GrayMushTell",
+      "family": "tell",
+      "signature": "≥5 near-duplicate neutrals in a tight ΔE cluster",
+      "flipThreshold": "nearDuplicateGrays.length ≥ 1 (cluster size ≥ 5, ΔE < 3)"
+    },
+    {
+      "id": "T8",
+      "name": "Acid / electric accent",
+      "detector": "AcidAccentTell",
+      "family": "tell",
+      "signature": "Same detector as T3 — acid accent on dark surface",
+      "flipThreshold": "see T3"
+    },
+    {
+      "id": "T9",
+      "name": "Emoji as UI chrome",
+      "detector": "EmojiChromeTell",
+      "family": "tell",
+      "signature": "Emoji inside headings, buttons, or nav",
+      "flipThreshold": "emojiInUiCount ≥ 3"
+    },
+    {
+      "id": "D1",
+      "name": "Token bypass",
+      "detector": "TokenBypass",
+      "family": "drift",
+      "signature": "Off 4px-grid spacing literals",
+      "flipThreshold": "≥3 distinct off-grid px values"
+    },
+    {
+      "id": "D2",
+      "name": "Near-duplicate values",
+      "detector": "NearDuplicateValues",
+      "family": "drift",
+      "signature": "Near-duplicate gray clusters reported on fingerprint",
+      "flipThreshold": "nearDuplicateGrays non-empty"
+    },
+    {
+      "id": "D3",
+      "name": "Focus ring inconsistency",
+      "detector": "FocusRingInconsistency",
+      "family": "drift",
+      "signature": "Low focus-visible coverage on interactive probes",
+      "flipThreshold": "focusRingCoverage < 0.5"
+    },
+    {
+      "id": "D4",
+      "name": "Type scale drift",
+      "detector": "TypeScaleDrift",
+      "family": "drift",
+      "signature": "Too many distinct font sizes",
+      "flipThreshold": "typeScale.length ≥ 6"
+    },
+    {
+      "id": "D5",
+      "name": "Spacing chaos",
+      "detector": "SpacingChaos",
+      "family": "drift",
+      "signature": "Too many distinct spacing literals",
+      "flipThreshold": "spacingValues.length ≥ 8"
+    },
+    {
+      "id": "D6",
+      "name": "State gap",
+      "detector": "StateGap",
+      "family": "drift",
+      "signature": "Missing hover and/or disabled coverage on probes",
+      "flipThreshold": "hover < 0.6 or disabled < 0.2"
+    },
+    {
+      "id": "D7",
+      "name": "Design system drift",
+      "detector": "DesignSystemDrift",
+      "family": "drift",
+      "signature": "Rendered surface diverges from DESIGN.md contract",
+      "flipThreshold": "optional — requires DESIGN.md / designDoc input"
+    }
+  ],
+  "benchmarkProtocol": {
+    "capture": "Playwright CapturePayload (committed JSON or live URL)",
+    "fingerprint": "packages/core buildFingerprint — deterministic",
+    "detect": "packages/core detectFindings — zero LLM",
+    "score": "report.measures.score when present; else generic*12 + drift*7",
+    "proof": "compareProofReports / verifyProofPatch — disposable checkout only"
+  }
+}

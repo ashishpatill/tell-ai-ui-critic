@@ -71,6 +71,24 @@ export const SurfaceTokens = z.object({
 });
 export type SurfaceTokens = z.infer<typeof SurfaceTokens>;
 
+/** Named breakpoints in the multi-viewport capture matrix (desktop is the primary capture). */
+export const ViewportPreset = z.enum(["desktop", "tablet", "mobile"]);
+export type ViewportPreset = z.infer<typeof ViewportPreset>;
+
+export const ViewportMatrixEntry = z.object({
+  preset: ViewportPreset,
+  width: z.number(),
+  height: z.number(),
+  screenshotBase64: z.string(),
+  domSummary: z.object({
+    headingCount: z.number(),
+    buttonCount: z.number(),
+    centeredBlockRatio: z.number(),
+    emojiInUiCount: z.number(),
+  }),
+});
+export type ViewportMatrixEntry = z.infer<typeof ViewportMatrixEntry>;
+
 export const CapturePayload = z.object({
   url: z.string(),
   capturedAt: z.string(),
@@ -84,6 +102,8 @@ export const CapturePayload = z.object({
   styles: z.array(ComputedStyleSample),
   probes: z.array(InteractiveProbe),
   stateShots: z.array(StateProbeShot).default([]),
+  /** Tablet + mobile captures for responsive drift checks; desktop lives in the primary fields above. */
+  viewportMatrix: z.array(ViewportMatrixEntry).default([]),
   domSummary: z.object({
     headingCount: z.number(),
     buttonCount: z.number(),

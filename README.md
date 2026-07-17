@@ -169,6 +169,7 @@ Key API routes:
 | `POST /api/voice` | Convert transcript/text into direction presets and action items. |
 | `POST /api/setup/start` | Local-only GitHub clone/install/run/capture workflow. |
 | `POST /api/proof/apply` | Apply a candidate patch in the disposable checkout and verify it. |
+| `POST /api/proof/verify` | Hosted proof sandbox — compare two reports on Vercel, or apply+recapture on the capture backend. |
 | `POST /api/proof/revert` | Revert the proof checkout. |
 | `POST /api/reports/share` | Persist a Tell report (Neon → Blob → disk) and return a shareable `/report/[id]` link. |
 | `GET /api/reports/[id]` | Load a previously shared report JSON. |
@@ -215,11 +216,24 @@ Shipped:
 
 Next:
 
-- Broader detector golden corpus across more product categories (`fixtures/corpus/`)
-- Multi-viewport capture matrix (tablet + mobile) — open Phase 3 PR
-- Hosted proof sandboxes for Vercel deployments — open Phase 3 PR
-- Open taxonomy / benchmark asset (Phase 4)
-- Cursor automation hook to run proof-verify on every UI PR (Phase 4)
+- Broader live-site captures in the open corpus (optional expansion)
+- Scenario matrix: route × viewport × theme × interaction state (see `docs/06_TELL_PROOF.md`)
+
+Shipped in Phase 4:
+
+- Open taxonomy / benchmark asset (`fixtures/corpus/taxonomy.json` + README)
+- Additional corpus captures: `editorial-calm` (0 tells), `fintech-dense` (dense drift)
+- PR proof-compare workflow (`.github/workflows/pr-proof-compare.yml`) + `pnpm proof:compare`
+- Cursor after-edit hook reminds agents to run proof-verify on UI changes
+- Consolidated remaining-work plan: root `PLAN.md` (archived duplicate plans under `docs/archive/`)
+
+Shipped in Phase 3:
+
+- Multi-viewport capture matrix (desktop + tablet + mobile) with viewport strip in the report
+- Hosted proof verify API (`POST /api/proof/verify`) — compare mode on Vercel, patch mode on capture backend
+- Detector golden corpus manifest (`fixtures/corpus/manifest.json`) with regression test
+- Cursor rule for auto proof-verify (`.cursor/rules/tell-proof-verify.mdc`)
+- Cursor Cloud environment setup docs in `AGENTS.md`
 
 Shipped in Phase 2:
 

@@ -1,5 +1,6 @@
-import { chromium } from "playwright";
-import { CapturePayload } from "@tell/schema";
+import { chromium, type Page } from "playwright";
+import { CapturePayload, ViewportMatrixEntry } from "@tell/schema";
+import { CAPTURE_VIEWPORT_PRESETS, SECONDARY_VIEWPORT_PRESETS } from "./viewports";
 
 const SAMPLE_SELECTORS = [
   "body",
@@ -35,10 +36,33 @@ const SAMPLE_SELECTORS = [
 const MAX_INLINE_CSS = 400_000;
 const MAX_SNAPSHOT = 2_600_000;
 
+async function captureViewportSummary(page: Page, preset: ViewportMatrixEntry["preset"], width: number, height: number) {
+  await page.setViewportSize({ width, height });
+  await page.waitForTimeout(250);
+  const screenshotBase64 = await page.screenshot({ fullPage: true, type: "png" }).then((b) => b.toString("base64"));
+  const domSummary = await page.evaluate(() => {
+    const blocks = Array.from(document.querySelectorAll<HTMLElement>("section,header,footer,article,main,div")).filter((el) =>
+      Array.from(el.childNodes).some((n) => n.nodeType === 3 && (n.textContent ?? "").trim().length > 0),
+    );
+    const centered = blocks.filter((el) => getComputedStyle(el).textAlign === "center").length;
+    const chrome = Array.from(document.querySelectorAll<HTMLElement>("h1,h2,h3,button,nav,nav a,a"));
+    const emojiRe = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu;
+    const emojiInUiCount = chrome.reduce((n, el) => n + ((el.textContent?.match(emojiRe) ?? []).length), 0);
+    return {
+      headingCount: document.querySelectorAll("h1,h2,h3").length,
+      buttonCount: document.querySelectorAll("button").length,
+      centeredBlockRatio: blocks.length ? centered / blocks.length : 0,
+      emojiInUiCount,
+    };
+  });
+  return ViewportMatrixEntry.parse({ preset, width, height, screenshotBase64, domSummary });
+}
+
 export async function captureUrl(url: string): Promise<CapturePayload> {
   const browser = await chromium.launch({ headless: true });
+  const desktop = CAPTURE_VIEWPORT_PRESETS[0]!;
   try {
-    const page = await browser.newPage({ viewport: { width: 1440, height: 1100 } });
+    const page = await browser.newPage({ viewport: { width: desktop.width, height: desktop.height } });
     // `networkidle` is defeated by a dev server's HMR websocket, so navigate on DOM-ready and then
     // actively wait for real content to hydrate. This makes capturing a freshly-booted localhost dev
     // server (the GitHub-repo-setup flow) reliable, while still working on static/production pages.
@@ -281,12 +305,23 @@ export async function captureUrl(url: string): Promise<CapturePayload> {
       }
     }
 
+    const viewportMatrix: ViewportMatrixEntry[] = [];
+    for (const preset of SECONDARY_VIEWPORT_PRESETS) {
+      try {
+        viewportMatrix.push(await captureViewportSummary(page, preset.preset, preset.width, preset.height));
+      } catch {
+        /* viewport resize or screenshot failed — skip this preset */
+      }
+    }
+    await page.setViewportSize({ width: desktop.width, height: desktop.height }).catch(() => {});
+
     return CapturePayload.parse({
       url,
       capturedAt: new Date().toISOString(),
-      viewport: { width: 1440, height: 1100 },
+      viewport: { width: desktop.width, height: desktop.height },
       screenshotBase64,
       stateShots,
+      viewportMatrix,
       ...payload,
     });
   } finally {

@@ -16,6 +16,9 @@ next-env.d.ts
 
 # Generated capture/diagnose output
 output/
+tell-pr-report.json
+tell-proof-compare.json
+tell-preview-report.json
 
 # Internal planning notes (kept local, not shipped)
 docs/03_CLAUDE_DESIGN_BRIEF.md

@@ -17,6 +17,14 @@ async function main() {
         return { ...(shot as Record<string, unknown>), imageBase64: "" };
       });
     }
+    if (Array.isArray(capture.viewportMatrix)) {
+      capture.viewportMatrix = capture.viewportMatrix.map((entry) => {
+        if (!entry || typeof entry !== "object") return entry;
+        return { ...(entry as Record<string, unknown>), screenshotBase64: "" };
+      });
+    } else {
+      capture.viewportMatrix = [];
+    }
   }
 
   const body = `// Auto-generated from fixtures/reports/tell-report.json (the deliberately-generic sample app).
