@@ -15,6 +15,9 @@
     },
     "src/app/api/proof/apply/route.ts": {
       "maxDuration": 180
+    },
+    "src/app/api/proof/verify/route.ts": {
+      "maxDuration": 180
     }
   }
 }
