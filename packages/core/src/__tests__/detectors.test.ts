@@ -54,3 +54,65 @@ describe("deterministic detectors on the committed fixture", () => {
     expect(acid?.facts.accent).toBe("#8B5CF6");
   });
 });
+
+describe("ResponsiveViewportDrift baseline", () => {
+  const tiny =
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+
+  function style(i: number) {
+    return {
+      selector: `p.${i}`,
+      tellId: `t${i}`,
+      tag: "p",
+      role: "body" as const,
+      rect: { x: 0, y: 0, w: 100, h: 20 },
+      fontFamily: "Georgia, serif",
+      fontSize: "16px",
+      fontWeight: "400",
+      color: "rgb(40,40,40)",
+      backgroundColor: "rgb(250,250,250)",
+      borderRadius: "0px",
+      boxShadow: "none",
+      padding: "16px",
+      textAlign: "left",
+      lineHeight: "1.5",
+      backgroundImage: "none",
+    };
+  }
+
+  it("uses desktop matrix entry as baseline when primary capture is mobile", () => {
+    const capture = CapturePayload.parse({
+      url: "http://localhost:3001/",
+      capturedAt: "2026-07-19T00:00:00.000Z",
+      viewport: { width: 390, height: 844 },
+      screenshotBase64: tiny,
+      styles: Array.from({ length: 10 }, (_, i) => style(i)),
+      probes: [],
+      // Collapsed mobile primary
+      domSummary: { headingCount: 1, buttonCount: 1, centeredBlockRatio: 0.2, emojiInUiCount: 0 },
+      viewportMatrix: [
+        {
+          preset: "desktop",
+          width: 1440,
+          height: 1100,
+          screenshotBase64: tiny,
+          domSummary: { headingCount: 8, buttonCount: 6, centeredBlockRatio: 0.2, emojiInUiCount: 0 },
+        },
+        {
+          preset: "tablet",
+          width: 768,
+          height: 1024,
+          screenshotBase64: tiny,
+          domSummary: { headingCount: 7, buttonCount: 5, centeredBlockRatio: 0.2, emojiInUiCount: 0 },
+        },
+      ],
+    });
+    const detectors = detectFindings(buildFingerprint(capture), capture).map((f) => f.detector);
+    expect(detectors).toContain("ResponsiveViewportDrift");
+    const finding = detectFindings(buildFingerprint(capture), capture).find(
+      (f) => f.detector === "ResponsiveViewportDrift",
+    );
+    expect(finding?.facts.desktopHeadings).toBe(8);
+    expect(finding?.facts.desktopButtons).toBe(6);
+  });
+});

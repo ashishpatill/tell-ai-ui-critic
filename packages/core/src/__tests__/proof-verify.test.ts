@@ -113,6 +113,29 @@ describe("compareProofReports", () => {
 });
 
 describe("compareProofMatrices", () => {
+  it("fails when no scenario ids overlap", () => {
+    const before = ScenarioMatrix.parse({
+      baseUrl: "http://localhost:3001",
+      capturedAt: "2026-07-19T00:00:00.000Z",
+      cells: [{
+        scenario: buildScenario({ route: "/", viewport: "desktop" }),
+        capture: stubReport("before", 8, 0.8, 5, 4, 20).capture,
+      }],
+    });
+    const after = ScenarioMatrix.parse({
+      baseUrl: "http://localhost:3001",
+      capturedAt: "2026-07-19T00:00:01.000Z",
+      cells: [{
+        scenario: buildScenario({ route: "/pricing", viewport: "mobile" }),
+        capture: stubReport("after", 4, 0.8, 3, 2, 12).capture,
+      }],
+    });
+    const result = compareProofMatrices(before, after);
+    expect(result.matchedCells).toBe(0);
+    expect(result.status).toBe("failed");
+    expect(result.cells.every((c) => c.status === "skipped")).toBe(true);
+  });
+
   it("aggregates cell verdicts and skips unmatched scenarios", () => {
     const beforeCell = {
       scenario: buildScenario({ route: "/", viewport: "desktop" }),
