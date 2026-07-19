@@ -18,6 +18,7 @@ next-env.d.ts
 output/
 tell-pr-report.json
 tell-proof-compare.json
+tell-proof-matrix.json
 tell-preview-report.json
 
 # Internal planning notes (kept local, not shipped)

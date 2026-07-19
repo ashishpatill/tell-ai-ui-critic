@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { CapturePayload, DesignFingerprint } from "@tell/schema";
-import { compareProofReports } from "../proof-verify";
+import { CapturePayload, DesignFingerprint, ScenarioMatrix } from "@tell/schema";
+import { compareProofMatrices, compareProofReports } from "../proof-verify";
+import { buildScenario } from "../capture/scenario-matrix";
 
 function axis(key: "contrast" | "typescale" | "spacing" | "depth" | "accent" | "identity", before: number, after: number) {
   return {
@@ -108,5 +109,65 @@ describe("compareProofReports", () => {
     const after = stubReport("after", 4, 0.5, 5, 4, 20);
     const { status } = compareProofReports(before, after, "http://localhost:3000");
     expect(status).toBe("failed");
+  });
+});
+
+describe("compareProofMatrices", () => {
+  it("fails when no scenario ids overlap", () => {
+    const before = ScenarioMatrix.parse({
+      baseUrl: "http://localhost:3001",
+      capturedAt: "2026-07-19T00:00:00.000Z",
+      cells: [{
+        scenario: buildScenario({ route: "/", viewport: "desktop" }),
+        capture: stubReport("before", 8, 0.8, 5, 4, 20).capture,
+      }],
+    });
+    const after = ScenarioMatrix.parse({
+      baseUrl: "http://localhost:3001",
+      capturedAt: "2026-07-19T00:00:01.000Z",
+      cells: [{
+        scenario: buildScenario({ route: "/pricing", viewport: "mobile" }),
+        capture: stubReport("after", 4, 0.8, 3, 2, 12).capture,
+      }],
+    });
+    const result = compareProofMatrices(before, after);
+    expect(result.matchedCells).toBe(0);
+    expect(result.status).toBe("failed");
+    expect(result.cells.every((c) => c.status === "skipped")).toBe(true);
+  });
+
+  it("aggregates cell verdicts and skips unmatched scenarios", () => {
+    const beforeCell = {
+      scenario: buildScenario({ route: "/", viewport: "desktop" }),
+      capture: stubReport("before", 8, 0.8, 5, 4, 20).capture,
+    };
+    const afterSameFindings = {
+      scenario: beforeCell.scenario,
+      // Screenshot change with identical styles → review (diagnose recomputes score from capture)
+      capture: {
+        ...stubReport("after", 4, 0.8, 5, 4, 20).capture,
+        screenshotBase64: "after",
+      },
+    };
+    const afterOnly = {
+      scenario: buildScenario({ route: "/pricing", viewport: "mobile" }),
+      capture: stubReport("pricing", 4, 0.8, 3, 2, 12).capture,
+    };
+    const before = ScenarioMatrix.parse({
+      baseUrl: "http://localhost:3001",
+      capturedAt: "2026-07-19T00:00:00.000Z",
+      cells: [beforeCell],
+    });
+    const after = ScenarioMatrix.parse({
+      baseUrl: "http://localhost:3001",
+      capturedAt: "2026-07-19T00:00:01.000Z",
+      cells: [afterSameFindings, afterOnly],
+    });
+    const result = compareProofMatrices(before, after);
+    expect(result.matchedCells).toBe(1);
+    expect(result.skippedCells).toBe(1);
+    expect(result.cells.some((c) => c.status === "review")).toBe(true);
+    expect(result.cells.some((c) => c.status === "skipped")).toBe(true);
+    expect(result.status).toBe("review");
   });
 });

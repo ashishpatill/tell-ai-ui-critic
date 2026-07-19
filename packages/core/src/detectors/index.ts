@@ -208,5 +208,69 @@ export function detectFindings(
   const designFinding = detectDesignSystemDrift(fingerprint, designSpec);
   if (designFinding) findings.push(designFinding);
 
+  // ResponsiveViewportDrift — non-desktop viewports lose structure vs a desktop baseline.
+  // Baseline is always desktop: primary domSummary when the matrix is tablet/mobile-only,
+  // or the desktop matrix entry when capture used a non-desktop primary viewport.
+  if (capture.viewportMatrix.length > 0) {
+    const desktopFromMatrix = capture.viewportMatrix.find((entry) => entry.preset === "desktop");
+    const baseline = desktopFromMatrix?.domSummary ?? capture.domSummary;
+    type CollapseCandidate = {
+      preset: string;
+      domSummary: CapturePayload["domSummary"];
+    };
+    const candidates: CollapseCandidate[] = desktopFromMatrix
+      ? [
+          // Primary capture is non-desktop — include it alongside other non-desktop matrix cells.
+          {
+            preset:
+              capture.viewport.width <= 430 ? "mobile" : capture.viewport.width <= 900 ? "tablet" : "primary",
+            domSummary: capture.domSummary,
+          },
+          ...capture.viewportMatrix
+            .filter((entry) => entry.preset !== "desktop")
+            .map((entry) => ({ preset: entry.preset, domSummary: entry.domSummary })),
+        ]
+      : capture.viewportMatrix.map((entry) => ({
+          preset: entry.preset,
+          domSummary: entry.domSummary,
+        }));
+
+    const headingFloor = Math.max(1, Math.floor(baseline.headingCount * 0.6));
+    const buttonFloor = baseline.buttonCount ? Math.max(1, Math.floor(baseline.buttonCount * 0.6)) : 0;
+    const collapses = candidates
+      .map((entry) => {
+        const headingDrop = baseline.headingCount > 0 && entry.domSummary.headingCount < headingFloor;
+        const buttonDrop = baseline.buttonCount > 0 && entry.domSummary.buttonCount < buttonFloor;
+        return headingDrop || buttonDrop
+          ? {
+              preset: entry.preset,
+              headings: entry.domSummary.headingCount,
+              buttons: entry.domSummary.buttonCount,
+              headingFloor,
+              buttonFloor,
+            }
+          : null;
+      })
+      .filter((v): v is NonNullable<typeof v> => v !== null);
+    if (collapses.length > 0) {
+      findings.push(Finding.parse({
+        id: "drift-responsive-viewport",
+        family: "drift",
+        detector: "ResponsiveViewportDrift",
+        verdictHint: "drift",
+        severity: "medium",
+        facts: {
+          desktopHeadings: baseline.headingCount,
+          desktopButtons: baseline.buttonCount,
+          collapses,
+        },
+        evidence: evidence(
+          "Responsive structure collapse",
+          collapses.map((c) => `${c.preset}: ${c.headings}h/${c.buttons}b`).join("; "),
+        ),
+      }));
+    }
+  }
+
   return findings;
 }

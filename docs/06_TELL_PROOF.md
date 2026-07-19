@@ -35,6 +35,26 @@ The important distinction is independence. A video produced by the same agent th
 9. If the patch cannot apply or the app cannot be recaptured, Tell automatically rolls it back.
 10. The user receives two separate browser captures, measured deltas, and a one-click worktree revert.
 
+## Scenario matrix (Phase 5)
+
+Beyond the single-route desktop proof, Tell ships a **scenario matrix**:
+
+```text
+route × viewport × theme × interaction (± authRole schema)
+```
+
+| Piece | Location |
+|---|---|
+| Schemas | `CaptureScenario`, `ScenarioMatrix`, `ProofMatrixResult` in `@tell/schema` |
+| Capture | `captureScenarioMatrix()` in `@tell/core` |
+| Compare | `compareProofMatrices()` — per-cell pass/review/fail, then aggregate |
+| Fixture | `fixtures/corpus/scenario-matrix.json` |
+| CI | `pnpm proof:matrix` (self-compare smoke on UI/engine PRs) |
+
+Each cell is a replayable `CapturePayload` tagged with scenario dimensions. Auth role is schema-ready (`anonymous` default); login harnesses are out of scope.
+
+`ResponsiveViewportDrift` fires when tablet/mobile `viewportMatrix` summaries lose ≥40% of desktop headings or buttons.
+
 ## Why this belongs beside Cursor
 
 Cursor already has strong authoring, visual prompting, browser control, cloud execution, and code review. Tell Proof is complementary infrastructure:
@@ -44,12 +64,6 @@ Cursor already has strong authoring, visual prompting, browser control, cloud ex
 - replayable evidence for model and harness evaluation;
 - a source-to-browser feedback loop that can reject regressions before merge.
 
-## Current scope and next expansion
+## Scope notes
 
-The shipped check covers one route at one captured desktop viewport in its default rendered state. It does not claim functional, responsive, full-accessibility, performance, security, or merge readiness. The architecture extends naturally to a scenario matrix:
-
-```text
-route × viewport × theme × auth role × interaction state
-```
-
-Each cell becomes a replayable artifact with a pass, review, or fail verdict. A future PR integration can compare base and head worktrees, run the matrix in CI, and publish the proof bundle directly into Cursor or GitHub.
+The default single-URL proof path remains the demo loop. The scenario matrix extends it for CI and corpus evaluation. It does not claim full accessibility, performance, security, or merge readiness on its own.

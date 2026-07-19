@@ -132,6 +132,14 @@
       "family": "drift",
       "signature": "Rendered surface diverges from DESIGN.md contract",
       "flipThreshold": "optional — requires DESIGN.md / designDoc input"
+    },
+    {
+      "id": "D8",
+      "name": "Responsive viewport drift",
+      "detector": "ResponsiveViewportDrift",
+      "family": "drift",
+      "signature": "Tablet/mobile viewport matrix loses headings or controls vs desktop",
+      "flipThreshold": "secondary headingCount or buttonCount < 60% of desktop domSummary"
     }
   ],
   "benchmarkProtocol": {
@@ -139,6 +147,7 @@
     "fingerprint": "packages/core buildFingerprint — deterministic",
     "detect": "packages/core detectFindings — zero LLM",
     "score": "report.measures.score when present; else generic*12 + drift*7",
-    "proof": "compareProofReports / verifyProofPatch — disposable checkout only"
+    "proof": "compareProofReports / compareProofMatrices / verifyProofPatch — disposable checkout only",
+    "scenarioMatrix": "route × viewport × theme × interaction (± authRole schema)"
   }
 }

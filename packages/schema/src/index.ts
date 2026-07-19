@@ -89,6 +89,32 @@ export const ViewportMatrixEntry = z.object({
 });
 export type ViewportMatrixEntry = z.infer<typeof ViewportMatrixEntry>;
 
+/** Color scheme for scenario-matrix captures (`page.emulateMedia({ colorScheme })`). */
+export const ColorTheme = z.enum(["light", "dark"]);
+export type ColorTheme = z.infer<typeof ColorTheme>;
+
+/** Page-level interaction state for a scenario cell (element clips stay on StateProbeShot). */
+export const InteractionState = z.enum(["default", "hover", "focus"]);
+export type InteractionState = z.infer<typeof InteractionState>;
+
+/**
+ * Auth dimension for scenario cells. Capture does not implement login —
+ * authenticated cells are reserved for future disposable-session harnesses.
+ */
+export const AuthRole = z.enum(["anonymous", "authenticated"]);
+export type AuthRole = z.infer<typeof AuthRole>;
+
+/** One cell in the proof scenario matrix: route × viewport × theme × interaction (± auth). */
+export const CaptureScenario = z.object({
+  id: z.string(),
+  route: z.string(),
+  viewport: ViewportPreset,
+  theme: ColorTheme.default("light"),
+  interaction: InteractionState.default("default"),
+  authRole: AuthRole.default("anonymous"),
+});
+export type CaptureScenario = z.infer<typeof CaptureScenario>;
+
 export const CapturePayload = z.object({
   url: z.string(),
   capturedAt: z.string(),
@@ -112,6 +138,42 @@ export const CapturePayload = z.object({
   }),
 });
 export type CapturePayload = z.infer<typeof CapturePayload>;
+
+export const ScenarioCapture = z.object({
+  scenario: CaptureScenario,
+  capture: CapturePayload,
+});
+export type ScenarioCapture = z.infer<typeof ScenarioCapture>;
+
+export const ScenarioMatrix = z.object({
+  baseUrl: z.string(),
+  capturedAt: z.string(),
+  cells: z.array(ScenarioCapture),
+});
+export type ScenarioMatrix = z.infer<typeof ScenarioMatrix>;
+
+export const ProofCellResult = z.object({
+  scenarioId: z.string(),
+  status: z.enum(["passed", "review", "failed", "skipped"]),
+  beforeScore: z.number(),
+  afterScore: z.number(),
+  scoreDelta: z.number(),
+  focusRegressed: z.boolean(),
+  structureRegressed: z.boolean(),
+  screenshotsDiffer: z.boolean(),
+  error: z.string().optional(),
+});
+export type ProofCellResult = z.infer<typeof ProofCellResult>;
+
+export const ProofMatrixResult = z.object({
+  status: z.enum(["passed", "review", "failed"]),
+  cells: z.array(ProofCellResult),
+  url: z.string(),
+  capturedAt: z.string(),
+  matchedCells: z.number(),
+  skippedCells: z.number(),
+});
+export type ProofMatrixResult = z.infer<typeof ProofMatrixResult>;
 
 export const DesignFingerprint = z.object({
   url: z.string(),
@@ -159,6 +221,7 @@ export const DriftDetector = z.enum([
   "SpacingChaos",
   "StateGap",
   "DesignSystemDrift",
+  "ResponsiveViewportDrift",
 ]);
 export type DriftDetector = z.infer<typeof DriftDetector>;
 

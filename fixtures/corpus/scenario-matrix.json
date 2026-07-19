@@ -1,0 +1,3323 @@
+{
+  "baseUrl": "corpus://marketplace-clutter",
+  "capturedAt": "2026-07-19T00:00:00.000Z",
+  "cells": [
+    {
+      "scenario": {
+        "id": "root__desktop__light__default__anonymous",
+        "route": "/",
+        "viewport": "desktop",
+        "theme": "light",
+        "interaction": "default",
+        "authRole": "anonymous"
+      },
+      "capture": {
+        "url": "corpus://marketplace-clutter",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": {
+          "width": 1440,
+          "height": 1100
+        },
+        "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+        "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>corpus://marketplace-clutter</p></body></html>",
+        "cssVariables": [],
+        "styles": [
+          {
+            "selector": "body",
+            "tellId": "body",
+            "tag": "body",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "section.hero",
+            "tellId": "sectionhero",
+            "tag": "section",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "80px 24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))"
+          },
+          {
+            "selector": "h1",
+            "tellId": "h1",
+            "tag": "h1",
+            "role": "display",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "700",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h2",
+            "tellId": "h2",
+            "tag": "h2",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "28px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h3",
+            "tellId": "h3",
+            "tag": "h3",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.primary",
+            "tellId": "buttonprimar",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(124, 58, 237)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.secondary",
+            "tellId": "buttonsecond",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "nav",
+            "tellId": "nav",
+            "tag": "nav",
+            "role": "nav",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "16px 24px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "a",
+            "tellId": "a",
+            "tag": "a",
+            "role": "link",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(124, 58, 237)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-0",
+            "tellId": "card-0",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-1",
+            "tellId": "card-1",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-2",
+            "tellId": "card-2",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-3",
+            "tellId": "card-3",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-4",
+            "tellId": "card-4",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-5",
+            "tellId": "card-5",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-6",
+            "tellId": "card-6",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-7",
+            "tellId": "card-7",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          }
+        ],
+        "probes": [
+          {
+            "role": "button",
+            "selector": "button.primary",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "button",
+            "selector": "button.secondary",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "nav a",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "a.cta",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          }
+        ],
+        "stateShots": [],
+        "viewportMatrix": [
+          {
+            "preset": "tablet",
+            "width": 768,
+            "height": 1024,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 4,
+              "buttonCount": 3,
+              "centeredBlockRatio": 0.85,
+              "emojiInUiCount": 5
+            }
+          },
+          {
+            "preset": "mobile",
+            "width": 390,
+            "height": 844,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 1,
+              "buttonCount": 1,
+              "centeredBlockRatio": 0.95,
+              "emojiInUiCount": 4
+            }
+          }
+        ],
+        "domSummary": {
+          "headingCount": 6,
+          "buttonCount": 8,
+          "centeredBlockRatio": 0.82,
+          "emojiInUiCount": 6
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "root__tablet__light__default__anonymous",
+        "route": "/",
+        "viewport": "tablet",
+        "theme": "light",
+        "interaction": "default",
+        "authRole": "anonymous"
+      },
+      "capture": {
+        "url": "corpus://marketplace-clutter",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+        "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>corpus://marketplace-clutter</p></body></html>",
+        "cssVariables": [],
+        "styles": [
+          {
+            "selector": "body",
+            "tellId": "body",
+            "tag": "body",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "section.hero",
+            "tellId": "sectionhero",
+            "tag": "section",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "80px 24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))"
+          },
+          {
+            "selector": "h1",
+            "tellId": "h1",
+            "tag": "h1",
+            "role": "display",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "700",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h2",
+            "tellId": "h2",
+            "tag": "h2",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "28px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h3",
+            "tellId": "h3",
+            "tag": "h3",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.primary",
+            "tellId": "buttonprimar",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(124, 58, 237)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.secondary",
+            "tellId": "buttonsecond",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "nav",
+            "tellId": "nav",
+            "tag": "nav",
+            "role": "nav",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "16px 24px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "a",
+            "tellId": "a",
+            "tag": "a",
+            "role": "link",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(124, 58, 237)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-0",
+            "tellId": "card-0",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-1",
+            "tellId": "card-1",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-2",
+            "tellId": "card-2",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-3",
+            "tellId": "card-3",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-4",
+            "tellId": "card-4",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-5",
+            "tellId": "card-5",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-6",
+            "tellId": "card-6",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-7",
+            "tellId": "card-7",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          }
+        ],
+        "probes": [
+          {
+            "role": "button",
+            "selector": "button.primary",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "button",
+            "selector": "button.secondary",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "nav a",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "a.cta",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          }
+        ],
+        "stateShots": [],
+        "viewportMatrix": [],
+        "domSummary": {
+          "headingCount": 4,
+          "buttonCount": 3,
+          "centeredBlockRatio": 0.85,
+          "emojiInUiCount": 5
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "root__mobile__light__default__anonymous",
+        "route": "/",
+        "viewport": "mobile",
+        "theme": "light",
+        "interaction": "default",
+        "authRole": "anonymous"
+      },
+      "capture": {
+        "url": "corpus://marketplace-clutter",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+        "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>corpus://marketplace-clutter</p></body></html>",
+        "cssVariables": [],
+        "styles": [
+          {
+            "selector": "body",
+            "tellId": "body",
+            "tag": "body",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "section.hero",
+            "tellId": "sectionhero",
+            "tag": "section",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "80px 24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))"
+          },
+          {
+            "selector": "h1",
+            "tellId": "h1",
+            "tag": "h1",
+            "role": "display",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "700",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h2",
+            "tellId": "h2",
+            "tag": "h2",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "28px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h3",
+            "tellId": "h3",
+            "tag": "h3",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.primary",
+            "tellId": "buttonprimar",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(124, 58, 237)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.secondary",
+            "tellId": "buttonsecond",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "nav",
+            "tellId": "nav",
+            "tag": "nav",
+            "role": "nav",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "16px 24px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "a",
+            "tellId": "a",
+            "tag": "a",
+            "role": "link",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(124, 58, 237)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-0",
+            "tellId": "card-0",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-1",
+            "tellId": "card-1",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-2",
+            "tellId": "card-2",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-3",
+            "tellId": "card-3",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-4",
+            "tellId": "card-4",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-5",
+            "tellId": "card-5",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-6",
+            "tellId": "card-6",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-7",
+            "tellId": "card-7",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          }
+        ],
+        "probes": [
+          {
+            "role": "button",
+            "selector": "button.primary",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "button",
+            "selector": "button.secondary",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "nav a",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "a.cta",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          }
+        ],
+        "stateShots": [],
+        "viewportMatrix": [],
+        "domSummary": {
+          "headingCount": 1,
+          "buttonCount": 1,
+          "centeredBlockRatio": 0.95,
+          "emojiInUiCount": 4
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "pricing__desktop__light__default__anonymous",
+        "route": "/pricing",
+        "viewport": "desktop",
+        "theme": "light",
+        "interaction": "default",
+        "authRole": "anonymous"
+      },
+      "capture": {
+        "url": "corpus://marketplace-clutter/pricing",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": {
+          "width": 1440,
+          "height": 1100
+        },
+        "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+        "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>corpus://marketplace-clutter</p></body></html>",
+        "cssVariables": [],
+        "styles": [
+          {
+            "selector": "body",
+            "tellId": "body",
+            "tag": "body",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "section.hero",
+            "tellId": "sectionhero",
+            "tag": "section",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "80px 24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))"
+          },
+          {
+            "selector": "h1",
+            "tellId": "h1",
+            "tag": "h1",
+            "role": "display",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "700",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h2",
+            "tellId": "h2",
+            "tag": "h2",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "28px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h3",
+            "tellId": "h3",
+            "tag": "h3",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.primary",
+            "tellId": "buttonprimar",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(124, 58, 237)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.secondary",
+            "tellId": "buttonsecond",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "nav",
+            "tellId": "nav",
+            "tag": "nav",
+            "role": "nav",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "16px 24px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "a",
+            "tellId": "a",
+            "tag": "a",
+            "role": "link",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(124, 58, 237)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-0",
+            "tellId": "card-0",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-1",
+            "tellId": "card-1",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-2",
+            "tellId": "card-2",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-3",
+            "tellId": "card-3",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-4",
+            "tellId": "card-4",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-5",
+            "tellId": "card-5",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-6",
+            "tellId": "card-6",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-7",
+            "tellId": "card-7",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          }
+        ],
+        "probes": [
+          {
+            "role": "button",
+            "selector": "button.primary",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "button",
+            "selector": "button.secondary",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "nav a",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "a.cta",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          }
+        ],
+        "stateShots": [],
+        "viewportMatrix": [
+          {
+            "preset": "tablet",
+            "width": 768,
+            "height": 1024,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 4,
+              "buttonCount": 3,
+              "centeredBlockRatio": 0.85,
+              "emojiInUiCount": 5
+            }
+          },
+          {
+            "preset": "mobile",
+            "width": 390,
+            "height": 844,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 1,
+              "buttonCount": 1,
+              "centeredBlockRatio": 0.95,
+              "emojiInUiCount": 4
+            }
+          }
+        ],
+        "domSummary": {
+          "headingCount": 5,
+          "buttonCount": 7,
+          "centeredBlockRatio": 0.82,
+          "emojiInUiCount": 6
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "root__desktop__dark__default__anonymous",
+        "route": "/",
+        "viewport": "desktop",
+        "theme": "dark",
+        "interaction": "default",
+        "authRole": "anonymous"
+      },
+      "capture": {
+        "url": "corpus://marketplace-clutter",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": {
+          "width": 1440,
+          "height": 1100
+        },
+        "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+        "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>corpus://marketplace-clutter</p></body></html>",
+        "cssVariables": [],
+        "styles": [
+          {
+            "selector": "body",
+            "tellId": "body",
+            "tag": "body",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "section.hero",
+            "tellId": "sectionhero",
+            "tag": "section",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "80px 24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))"
+          },
+          {
+            "selector": "h1",
+            "tellId": "h1",
+            "tag": "h1",
+            "role": "display",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "700",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h2",
+            "tellId": "h2",
+            "tag": "h2",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "28px",
+            "fontWeight": "600",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h3",
+            "tellId": "h3",
+            "tag": "h3",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.primary",
+            "tellId": "buttonprimar",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(124, 58, 237)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.secondary",
+            "tellId": "buttonsecond",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "nav",
+            "tellId": "nav",
+            "tag": "nav",
+            "role": "nav",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "16px 24px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "a",
+            "tellId": "a",
+            "tag": "a",
+            "role": "link",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(124, 58, 237)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-0",
+            "tellId": "card-0",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-1",
+            "tellId": "card-1",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-2",
+            "tellId": "card-2",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-3",
+            "tellId": "card-3",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-4",
+            "tellId": "card-4",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-5",
+            "tellId": "card-5",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-6",
+            "tellId": "card-6",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-7",
+            "tellId": "card-7",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(244, 244, 245)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          }
+        ],
+        "probes": [
+          {
+            "role": "button",
+            "selector": "button.primary",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "button",
+            "selector": "button.secondary",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "nav a",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "a.cta",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          }
+        ],
+        "stateShots": [],
+        "viewportMatrix": [
+          {
+            "preset": "tablet",
+            "width": 768,
+            "height": 1024,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 4,
+              "buttonCount": 3,
+              "centeredBlockRatio": 0.85,
+              "emojiInUiCount": 5
+            }
+          },
+          {
+            "preset": "mobile",
+            "width": 390,
+            "height": 844,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 1,
+              "buttonCount": 1,
+              "centeredBlockRatio": 0.95,
+              "emojiInUiCount": 4
+            }
+          }
+        ],
+        "domSummary": {
+          "headingCount": 6,
+          "buttonCount": 8,
+          "centeredBlockRatio": 0.82,
+          "emojiInUiCount": 6
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "root__desktop__light__hover__anonymous",
+        "route": "/",
+        "viewport": "desktop",
+        "theme": "light",
+        "interaction": "hover",
+        "authRole": "anonymous"
+      },
+      "capture": {
+        "url": "corpus://marketplace-clutter",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": {
+          "width": 1440,
+          "height": 1100
+        },
+        "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+        "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>corpus://marketplace-clutter</p></body></html>",
+        "cssVariables": [],
+        "styles": [
+          {
+            "selector": "body",
+            "tellId": "body",
+            "tag": "body",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "section.hero",
+            "tellId": "sectionhero",
+            "tag": "section",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "80px 24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))"
+          },
+          {
+            "selector": "h1",
+            "tellId": "h1",
+            "tag": "h1",
+            "role": "display",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "700",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h2",
+            "tellId": "h2",
+            "tag": "h2",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "28px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h3",
+            "tellId": "h3",
+            "tag": "h3",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.primary",
+            "tellId": "buttonprimar",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(124, 58, 237)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.secondary",
+            "tellId": "buttonsecond",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "nav",
+            "tellId": "nav",
+            "tag": "nav",
+            "role": "nav",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "16px 24px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "a",
+            "tellId": "a",
+            "tag": "a",
+            "role": "link",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(124, 58, 237)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-0",
+            "tellId": "card-0",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-1",
+            "tellId": "card-1",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-2",
+            "tellId": "card-2",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-3",
+            "tellId": "card-3",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-4",
+            "tellId": "card-4",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-5",
+            "tellId": "card-5",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-6",
+            "tellId": "card-6",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-7",
+            "tellId": "card-7",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          }
+        ],
+        "probes": [
+          {
+            "role": "button",
+            "selector": "button.primary",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "button",
+            "selector": "button.secondary",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "nav a",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "a.cta",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          }
+        ],
+        "stateShots": [],
+        "viewportMatrix": [
+          {
+            "preset": "tablet",
+            "width": 768,
+            "height": 1024,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 4,
+              "buttonCount": 3,
+              "centeredBlockRatio": 0.85,
+              "emojiInUiCount": 5
+            }
+          },
+          {
+            "preset": "mobile",
+            "width": 390,
+            "height": 844,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 1,
+              "buttonCount": 1,
+              "centeredBlockRatio": 0.95,
+              "emojiInUiCount": 4
+            }
+          }
+        ],
+        "domSummary": {
+          "headingCount": 6,
+          "buttonCount": 8,
+          "centeredBlockRatio": 0.82,
+          "emojiInUiCount": 6
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "root__desktop__light__focus__anonymous",
+        "route": "/",
+        "viewport": "desktop",
+        "theme": "light",
+        "interaction": "focus",
+        "authRole": "anonymous"
+      },
+      "capture": {
+        "url": "corpus://marketplace-clutter",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": {
+          "width": 1440,
+          "height": 1100
+        },
+        "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+        "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>corpus://marketplace-clutter</p></body></html>",
+        "cssVariables": [],
+        "styles": [
+          {
+            "selector": "body",
+            "tellId": "body",
+            "tag": "body",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "section.hero",
+            "tellId": "sectionhero",
+            "tag": "section",
+            "role": "surface",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(15, 15, 15)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "80px 24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))"
+          },
+          {
+            "selector": "h1",
+            "tellId": "h1",
+            "tag": "h1",
+            "role": "display",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "700",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h2",
+            "tellId": "h2",
+            "tag": "h2",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "28px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "h3",
+            "tellId": "h3",
+            "tag": "h3",
+            "role": "heading",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.primary",
+            "tellId": "buttonprimar",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(124, 58, 237)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "button.secondary",
+            "tellId": "buttonsecond",
+            "tag": "button",
+            "role": "button",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "12px 20px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "nav",
+            "tellId": "nav",
+            "tag": "nav",
+            "role": "nav",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "16px 24px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": "a",
+            "tellId": "a",
+            "tag": "a",
+            "role": "link",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "color": "rgb(124, 58, 237)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderRadius": "0px",
+            "boxShadow": "none",
+            "padding": "0px",
+            "textAlign": "left",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-0",
+            "tellId": "card-0",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-1",
+            "tellId": "card-1",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-2",
+            "tellId": "card-2",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-3",
+            "tellId": "card-3",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-4",
+            "tellId": "card-4",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-5",
+            "tellId": "card-5",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-6",
+            "tellId": "card-6",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          },
+          {
+            "selector": ".card-7",
+            "tellId": "card-7",
+            "tag": "article",
+            "role": "card",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "w": 400,
+              "h": 48
+            },
+            "fontFamily": "Inter, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "color": "rgb(15, 15, 15)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "boxShadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px",
+            "padding": "24px",
+            "textAlign": "center",
+            "lineHeight": "1.5",
+            "backgroundImage": "none"
+          }
+        ],
+        "probes": [
+          {
+            "role": "button",
+            "selector": "button.primary",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "button",
+            "selector": "button.secondary",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "nav a",
+            "hasHoverDiff": true,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          },
+          {
+            "role": "a",
+            "selector": "a.cta",
+            "hasHoverDiff": false,
+            "hasFocusVisibleDiff": false,
+            "hasDisabledAttr": false,
+            "ariaDisabled": false
+          }
+        ],
+        "stateShots": [],
+        "viewportMatrix": [
+          {
+            "preset": "tablet",
+            "width": 768,
+            "height": 1024,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 4,
+              "buttonCount": 3,
+              "centeredBlockRatio": 0.85,
+              "emojiInUiCount": 5
+            }
+          },
+          {
+            "preset": "mobile",
+            "width": 390,
+            "height": 844,
+            "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+            "domSummary": {
+              "headingCount": 1,
+              "buttonCount": 1,
+              "centeredBlockRatio": 0.95,
+              "emojiInUiCount": 4
+            }
+          }
+        ],
+        "domSummary": {
+          "headingCount": 6,
+          "buttonCount": 8,
+          "centeredBlockRatio": 0.82,
+          "emojiInUiCount": 6
+        }
+      }
+    }
+  ]
+}

@@ -54,6 +54,13 @@ jobs:
           TELL_FAIL_ON: failed,passed
         run: pnpm proof:compare
 
+      - name: Smoke scenario matrix (fixture vs itself)
+        env:
+          TELL_BEFORE_MATRIX: fixtures/corpus/scenario-matrix.json
+          TELL_AFTER_MATRIX: fixtures/corpus/scenario-matrix.json
+          TELL_FAIL_ON: failed,passed
+        run: pnpm proof:matrix
+
       - name: Install Playwright Chromium
         if: vars.TELL_PREVIEW_URL != '' || github.event.pull_request.body != ''
         run: pnpm -F @tell/core exec playwright install chromium --with-deps
@@ -97,5 +104,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tell-proof-compare
-          path: tell-proof-compare.json
+          path: |
+            tell-proof-compare.json
+            tell-proof-matrix.json
           if-no-files-found: ignore

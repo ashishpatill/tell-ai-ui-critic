@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate slim synthetic CapturePayload fixtures for the open corpus."""
+"""Generate slim synthetic CapturePayload fixtures for the open corpus + scenario matrix."""
 
 from __future__ import annotations
 
@@ -8,10 +8,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "fixtures" / "corpus" / "captures"
+MATRIX_OUT = ROOT / "fixtures" / "corpus" / "scenario-matrix.json"
 
 # 1x1 transparent PNG
 TINY_PNG = (
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+)
+TINY_PNG_ALT = (
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
 )
 
 
@@ -71,18 +75,21 @@ def capture(
     probes: list[dict],
     dom: dict,
     css_vars: list[dict] | None = None,
+    viewport: dict | None = None,
+    viewport_matrix: list[dict] | None = None,
+    screenshot: str = TINY_PNG,
 ) -> dict:
     return {
         "url": url,
-        "capturedAt": "2026-07-17T00:00:00.000Z",
-        "viewport": {"width": 1440, "height": 1100},
-        "screenshotBase64": TINY_PNG,
-        "snapshotHtml": f"<html><body data-tell-corpus=\"1\"><p>{url}</p></body></html>",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "viewport": viewport or {"width": 1440, "height": 1100},
+        "screenshotBase64": screenshot,
+        "snapshotHtml": f'<html><body data-tell-corpus="1"><p>{url}</p></body></html>',
         "cssVariables": css_vars or [],
         "styles": styles,
         "probes": probes,
         "stateShots": [],
-        "viewportMatrix": [],
+        "viewportMatrix": viewport_matrix or [],
         "domSummary": dom,
     }
 
@@ -105,7 +112,6 @@ def editorial_calm() -> dict:
         style("article.card", font=body, size="16px", weight="400", color=ink, bg="rgb(255, 252, 247)", radius="12px", shadow="rgba(0, 0, 0, 0.06) 0px 1px 2px", role="card", tag="article", padding="24px"),
         style("section", font=body, size="16px", weight="400", color=ink, bg=paper, role="surface", tag="section", padding="64px 24px", align="left"),
     ]
-    # Add a few more varied sizes/spaces so spacing/type detectors stay calm
     for i, (sz, pad) in enumerate([(14, "8px"), (15, "12px"), (18, "24px"), (20, "32px"), (24, "48px")]):
         styles.append(
             style(
@@ -132,19 +138,18 @@ def editorial_calm() -> dict:
         probes=probes,
         dom={"headingCount": 4, "buttonCount": 2, "centeredBlockRatio": 0.15, "emojiInUiCount": 0},
         css_vars=[
-            {"name": "--color-ink", "value": "#1C1917", "source": ":root"},
-            {"name": "--color-paper", "value": "#FAF7F2", "source": ":root"},
-            {"name": "--color-accent", "value": "#B45331", "source": ":root"},
+            {"name": "--color-ink", "value": "#1C1917"},
+            {"name": "--color-paper", "value": "#FAF7F2"},
+            {"name": "--color-accent", "value": "#B45331"},
         ],
     )
 
 
 def fintech_dense() -> dict:
-    """Dense Inter fintech dashboard — spacing chaos + gray mush + system font."""
+    """Dense Inter fintech dashboard — spacing chaos + system font."""
     font = "Inter, system-ui, sans-serif"
     ink = "rgb(15, 23, 42)"
     paper = "rgb(248, 250, 252)"
-    # Near-duplicate grays (ΔL small)
     grays = [
         "rgb(241, 245, 249)",
         "rgb(243, 244, 246)",
@@ -164,7 +169,6 @@ def fintech_dense() -> dict:
         style("nav", font=font, size="13px", weight="500", color=ink, bg="rgb(255, 255, 255)", role="nav", tag="nav", padding="13px 17px"),
         style("a", font=font, size="13px", weight="500", color="rgb(37, 99, 235)", bg="rgba(0, 0, 0, 0)", role="link", tag="a", padding="0px"),
     ]
-    # Many off-grid paddings → SpacingChaos / TokenBypass
     odd_pads = ["11px", "13px", "17px", "19px", "21px", "23px", "27px", "29px", "31px", "33px", "37px", "41px"]
     for i, (gray, pad) in enumerate(zip(grays * 2, odd_pads)):
         styles.append(
@@ -182,7 +186,6 @@ def fintech_dense() -> dict:
                 tag="div",
             )
         )
-    # Extra odd type sizes for TypeScaleDrift
     for i, sz in enumerate([11, 13, 15, 17, 19, 21, 23, 25, 27, 29]):
         styles.append(
             style(
@@ -198,7 +201,7 @@ def fintech_dense() -> dict:
             )
         )
     probes = [
-        probe("button", "button.primary", True, False),  # missing focus
+        probe("button", "button.primary", True, False),
         probe("button", "button.ghost", False, False),
         probe("a", "nav a", True, False),
         probe("input", "input", False, True),
@@ -212,16 +215,237 @@ def fintech_dense() -> dict:
     )
 
 
+def marketplace_clutter() -> dict:
+    """Busy consumer marketplace — Inter, gradient hero, emoji chrome, centered cards, responsive collapse."""
+    font = "Inter, system-ui, sans-serif"
+    ink = "rgb(15, 15, 15)"
+    paper = "rgb(255, 255, 255)"
+    violet = "rgb(124, 58, 237)"
+    shadow = "rgba(0, 0, 0, 0.12) 0px 8px 24px"
+    styles = [
+        style("body", font=font, size="16px", weight="400", color=ink, bg=paper, role="surface", tag="body", padding="0px"),
+        style(
+            "section.hero",
+            font=font,
+            size="16px",
+            weight="400",
+            color="rgb(255, 255, 255)",
+            bg="rgb(15, 15, 15)",
+            role="surface",
+            tag="section",
+            padding="80px 24px",
+            align="center",
+            bg_image="linear-gradient(135deg, rgb(124, 58, 237), rgb(236, 72, 153))",
+        ),
+        style("h1", font=font, size="48px", weight="700", color="rgb(255, 255, 255)", bg="rgba(0, 0, 0, 0)", role="display", tag="h1", padding="0px", align="center"),
+        style("h2", font=font, size="28px", weight="600", color=ink, bg="rgba(0, 0, 0, 0)", role="heading", tag="h2", padding="0px", align="center"),
+        style("h3", font=font, size="20px", weight="600", color=ink, bg="rgba(0, 0, 0, 0)", role="heading", tag="h3", padding="0px", align="center"),
+        style("button.primary", font=font, size="15px", weight="600", color="rgb(255, 255, 255)", bg=violet, radius="8px", shadow=shadow, role="button", tag="button", padding="12px 20px"),
+        style("button.secondary", font=font, size="15px", weight="500", color=ink, bg="rgb(255, 255, 255)", radius="8px", shadow=shadow, role="button", tag="button", padding="12px 20px"),
+        style("nav", font=font, size="14px", weight="500", color=ink, bg=paper, role="nav", tag="nav", padding="16px 24px"),
+        style("a", font=font, size="14px", weight="500", color=violet, bg="rgba(0, 0, 0, 0)", role="link", tag="a", padding="0px"),
+    ]
+    for i in range(8):
+        styles.append(
+            style(
+                f".card-{i}",
+                font=font,
+                size="15px",
+                weight="400",
+                color=ink,
+                bg="rgb(255, 255, 255)",
+                radius="8px",
+                shadow=shadow,
+                padding="24px",
+                align="center",
+                role="card",
+                tag="article",
+            )
+        )
+    probes = [
+        probe("button", "button.primary", True, False),
+        probe("button", "button.secondary", False, False),
+        probe("a", "nav a", True, False),
+        probe("a", "a.cta", False, False),
+    ]
+    viewport_matrix = [
+        {
+            "preset": "tablet",
+            "width": 768,
+            "height": 1024,
+            "screenshotBase64": TINY_PNG,
+            "domSummary": {"headingCount": 4, "buttonCount": 3, "centeredBlockRatio": 0.85, "emojiInUiCount": 5},
+        },
+        {
+            "preset": "mobile",
+            "width": 390,
+            "height": 844,
+            "screenshotBase64": TINY_PNG,
+            # Structure collapses vs desktop → ResponsiveViewportDrift
+            "domSummary": {"headingCount": 1, "buttonCount": 1, "centeredBlockRatio": 0.95, "emojiInUiCount": 4},
+        },
+    ]
+    return capture(
+        url="corpus://marketplace-clutter",
+        styles=styles,
+        probes=probes,
+        dom={"headingCount": 6, "buttonCount": 8, "centeredBlockRatio": 0.82, "emojiInUiCount": 6},
+        viewport_matrix=viewport_matrix,
+    )
+
+
+def docs_site_calm() -> dict:
+    """Technical docs site — distinctive mono + serif, strong focus, left-aligned. Zero detectors."""
+    display = '"IBM Plex Serif", Georgia, serif'
+    body = '"IBM Plex Sans", "Segoe UI", sans-serif'
+    mono = '"IBM Plex Mono", ui-monospace, monospace'
+    # Mid ink (not near-black) + opaque paper — avoids AcidAccentTell false positives from transparent→#000.
+    ink = "rgb(63, 63, 70)"
+    paper = "rgb(250, 250, 250)"
+    accent = "rgb(14, 116, 144)"
+    styles = [
+        style("body", font=body, size="16px", weight="400", color=ink, bg=paper, role="surface", tag="body", padding="0px"),
+        style("h1", font=display, size="40px", weight="600", color=ink, bg=paper, role="display", tag="h1", padding="0px"),
+        style("h2", font=display, size="28px", weight="600", color=ink, bg=paper, role="heading", tag="h2", padding="0px"),
+        style("p", font=body, size="16px", weight="400", color="rgb(82, 82, 91)", bg=paper, role="body", tag="p", padding="0px"),
+        style("code", font=mono, size="14px", weight="400", color=ink, bg="rgb(244, 244, 245)", radius="4px", role="body", tag="code", padding="4px 8px"),
+        style("button.primary", font=body, size="14px", weight="600", color="rgb(255, 255, 255)", bg=accent, radius="6px", role="button", tag="button", padding="12px 16px"),
+        style("nav", font=body, size="14px", weight="500", color=ink, bg="rgb(255, 255, 255)", role="nav", tag="nav", padding="12px 20px"),
+        style("a", font=body, size="14px", weight="500", color=accent, bg=paper, role="link", tag="a", padding="0px"),
+        style("aside", font=body, size="14px", weight="400", color=ink, bg="rgb(255, 255, 255)", role="surface", tag="aside", padding="24px"),
+        style("article", font=body, size="16px", weight="400", color=ink, bg=paper, role="surface", tag="article", padding="32px"),
+    ]
+    probes = [
+        probe("button", "button.primary", True, True),
+        probe("a", "nav a", True, True),
+        probe("a", "aside a", True, True),
+        probe("button", "button.copy", True, True, True),
+    ]
+    return capture(
+        url="corpus://docs-site-calm",
+        styles=styles,
+        probes=probes,
+        dom={"headingCount": 5, "buttonCount": 2, "centeredBlockRatio": 0.1, "emojiInUiCount": 0},
+        css_vars=[
+            {"name": "--ink", "value": "#3F3F46"},
+            {"name": "--accent", "value": "#0E7490"},
+        ],
+    )
+
+
+def scenario_cell(
+    *,
+    route: str,
+    viewport: str,
+    theme: str,
+    interaction: str,
+    payload: dict,
+    auth_role: str = "anonymous",
+) -> dict:
+    route_key = "root" if route == "/" else route.lstrip("/").replace("/", "_")
+    sid = f"{route_key}__{viewport}__{theme}__{interaction}__{auth_role}"
+    return {
+        "scenario": {
+            "id": sid,
+            "route": route,
+            "viewport": viewport,
+            "theme": theme,
+            "interaction": interaction,
+            "authRole": auth_role,
+        },
+        "capture": payload,
+    }
+
+
+def build_scenario_matrix() -> dict:
+    """Committed matrix covering route × viewport × theme × interaction (auth=anonymous)."""
+    market = marketplace_clutter()
+    market_pricing = {
+        **market,
+        "url": "corpus://marketplace-clutter/pricing",
+        "screenshotBase64": TINY_PNG_ALT,
+        "domSummary": {**market["domSummary"], "headingCount": 5, "buttonCount": 7},
+    }
+    market_mobile = {
+        **market,
+        "url": "corpus://marketplace-clutter",
+        "viewport": {"width": 390, "height": 844},
+        "viewportMatrix": [],
+        "domSummary": {"headingCount": 1, "buttonCount": 1, "centeredBlockRatio": 0.95, "emojiInUiCount": 4},
+    }
+    market_dark = {
+        **market,
+        "url": "corpus://marketplace-clutter",
+        "screenshotBase64": TINY_PNG_ALT,
+        "styles": [
+            {
+                **s,
+                "backgroundColor": "rgb(15, 15, 15)" if s["role"] in ("surface", "nav") else s["backgroundColor"],
+                "color": "rgb(244, 244, 245)" if s["color"] == "rgb(15, 15, 15)" else s["color"],
+            }
+            for s in market["styles"]
+        ],
+    }
+    market_hover = {
+        **market,
+        "url": "corpus://marketplace-clutter",
+        "screenshotBase64": TINY_PNG_ALT,
+    }
+    docs = docs_site_calm()
+
+    cells = [
+        scenario_cell(route="/", viewport="desktop", theme="light", interaction="default", payload=market),
+        scenario_cell(route="/", viewport="tablet", theme="light", interaction="default", payload={
+            **market,
+            "viewport": {"width": 768, "height": 1024},
+            "viewportMatrix": [],
+            "domSummary": {"headingCount": 4, "buttonCount": 3, "centeredBlockRatio": 0.85, "emojiInUiCount": 5},
+        }),
+        scenario_cell(route="/", viewport="mobile", theme="light", interaction="default", payload=market_mobile),
+        scenario_cell(route="/pricing", viewport="desktop", theme="light", interaction="default", payload=market_pricing),
+        scenario_cell(route="/", viewport="desktop", theme="dark", interaction="default", payload=market_dark),
+        scenario_cell(route="/", viewport="desktop", theme="light", interaction="hover", payload=market_hover),
+        scenario_cell(route="/", viewport="desktop", theme="light", interaction="default", payload=docs),
+    ]
+    # Last cell is a second base profile under a docs baseUrl? Keep single baseUrl marketplace;
+    # docs cell uses docs url inside capture but scenario still under marketplace matrix for smoke.
+    # Replace docs cell with marketplace focus variant instead for consistent baseUrl.
+    cells[-1] = scenario_cell(
+        route="/",
+        viewport="desktop",
+        theme="light",
+        interaction="focus",
+        payload={**market, "screenshotBase64": TINY_PNG_ALT},
+    )
+
+    return {
+        "baseUrl": "corpus://marketplace-clutter",
+        "capturedAt": "2026-07-19T00:00:00.000Z",
+        "cells": cells,
+    }
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    # editorial-calm / fintech-dense are hand-tuned golden fixtures — only write if missing.
+    preserve = {"editorial-calm.json", "fintech-dense.json"}
     fixtures = {
         "editorial-calm.json": editorial_calm(),
         "fintech-dense.json": fintech_dense(),
+        "marketplace-clutter.json": marketplace_clutter(),
+        "docs-site-calm.json": docs_site_calm(),
     }
     for name, payload in fixtures.items():
         path = OUT / name
+        if name in preserve and path.exists():
+            print(f"keep  {path.relative_to(ROOT)} (hand-tuned)")
+            continue
         path.write_text(json.dumps(payload, indent=2) + "\n")
         print(f"wrote {path.relative_to(ROOT)} ({len(payload['styles'])} styles)")
+
+    matrix = build_scenario_matrix()
+    MATRIX_OUT.write_text(json.dumps(matrix, indent=2) + "\n")
+    print(f"wrote {MATRIX_OUT.relative_to(ROOT)} ({len(matrix['cells'])} cells)")
 
 
 if __name__ == "__main__":

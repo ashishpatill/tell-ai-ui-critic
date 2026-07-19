@@ -1,6 +1,17 @@
 import { chromium, type Page } from "playwright";
-import { CapturePayload, ViewportMatrixEntry } from "@tell/schema";
+import { CapturePayload, ViewportMatrixEntry, type ColorTheme, type InteractionState, type ViewportPreset } from "@tell/schema";
 import { CAPTURE_VIEWPORT_PRESETS, SECONDARY_VIEWPORT_PRESETS } from "./viewports";
+
+export type CaptureUrlOptions = {
+  /** Emulate `prefers-color-scheme` before sampling. */
+  theme?: ColorTheme;
+  /** Use this preset as the primary (full) capture instead of desktop. */
+  primaryViewport?: ViewportPreset;
+  /** Skip tablet/mobile summary captures (useful when the scenario already varies viewport). */
+  skipViewportMatrix?: boolean;
+  /** Apply a page-level interaction cue after load (first button/link). */
+  interaction?: InteractionState;
+};
 
 const SAMPLE_SELECTORS = [
   "body",
@@ -58,11 +69,15 @@ async function captureViewportSummary(page: Page, preset: ViewportMatrixEntry["p
   return ViewportMatrixEntry.parse({ preset, width, height, screenshotBase64, domSummary });
 }
 
-export async function captureUrl(url: string): Promise<CapturePayload> {
+export async function captureUrl(url: string, options: CaptureUrlOptions = {}): Promise<CapturePayload> {
   const browser = await chromium.launch({ headless: true });
-  const desktop = CAPTURE_VIEWPORT_PRESETS[0]!;
+  const primaryPreset = options.primaryViewport ?? "desktop";
+  const primary = CAPTURE_VIEWPORT_PRESETS.find((p) => p.preset === primaryPreset) ?? CAPTURE_VIEWPORT_PRESETS[0]!;
   try {
-    const page = await browser.newPage({ viewport: { width: desktop.width, height: desktop.height } });
+    const page = await browser.newPage({ viewport: { width: primary.width, height: primary.height } });
+    if (options.theme) {
+      await page.emulateMedia({ colorScheme: options.theme });
+    }
     // `networkidle` is defeated by a dev server's HMR websocket, so navigate on DOM-ready and then
     // actively wait for real content to hydrate. This makes capturing a freshly-booted localhost dev
     // server (the GitHub-repo-setup flow) reliable, while still working on static/production pages.
@@ -72,6 +87,14 @@ export async function captureUrl(url: string): Promise<CapturePayload> {
       .waitForFunction(() => document.querySelectorAll("h1,h2,article,section,main [class*='card'],button,nav a,.tag").length >= 3, undefined, { timeout: 6_000 })
       .catch(() => {});
     await page.waitForTimeout(350); // let webfonts + late paints settle
+    if (options.interaction && options.interaction !== "default") {
+      const target = page.locator("button, a[href]").first();
+      if ((await target.count()) > 0) {
+        if (options.interaction === "hover") await target.hover({ timeout: 2000 }).catch(() => {});
+        if (options.interaction === "focus") await target.focus({ timeout: 2000 }).catch(() => {});
+        await page.waitForTimeout(120);
+      }
+    }
     const screenshotBase64 = await page.screenshot({ fullPage: true, type: "png" }).then((b) => b.toString("base64"));
 
     const payload = await page.evaluate(
@@ -306,19 +329,22 @@ export async function captureUrl(url: string): Promise<CapturePayload> {
     }
 
     const viewportMatrix: ViewportMatrixEntry[] = [];
-    for (const preset of SECONDARY_VIEWPORT_PRESETS) {
-      try {
-        viewportMatrix.push(await captureViewportSummary(page, preset.preset, preset.width, preset.height));
-      } catch {
-        /* viewport resize or screenshot failed — skip this preset */
+    if (!options.skipViewportMatrix) {
+      const secondary = CAPTURE_VIEWPORT_PRESETS.filter((p) => p.preset !== primary.preset);
+      for (const preset of secondary.length ? secondary : SECONDARY_VIEWPORT_PRESETS) {
+        try {
+          viewportMatrix.push(await captureViewportSummary(page, preset.preset, preset.width, preset.height));
+        } catch {
+          /* viewport resize or screenshot failed — skip this preset */
+        }
       }
+      await page.setViewportSize({ width: primary.width, height: primary.height }).catch(() => {});
     }
-    await page.setViewportSize({ width: desktop.width, height: desktop.height }).catch(() => {});
 
     return CapturePayload.parse({
       url,
       capturedAt: new Date().toISOString(),
-      viewport: { width: desktop.width, height: desktop.height },
+      viewport: { width: primary.width, height: primary.height },
       screenshotBase64,
       stateShots,
       viewportMatrix,

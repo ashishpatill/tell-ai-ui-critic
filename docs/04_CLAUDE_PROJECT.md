@@ -184,7 +184,7 @@ scanning.
 
 **Stretch now also shipped:** Playwright state-probe thumbnails; shareable report links (`/api/reports/share`).
 
-**Remaining (see root `PLAN.md`):** optional corpus expansion and scenario matrix — MVP through Phase 4 is complete.
+**Remaining (see root `PLAN.md`):** Phase 5 stretch closed (live-site corpus + scenario matrix). Auth-role capture harness is schema-only.
 
 **Explicit cut line:** if live repo setup breaks at demo time, keep the committed fixture artifact and
 seeded fixture path. Do not show a broken or unreachable localhost state as success; Tell must either
@@ -218,9 +218,11 @@ Day 1 = spine (schema, capture, fingerprint, detectors, taste, MCP diagnose). Da
 | M10 | dogfood: 0 tells on own repo | ✅ | | yes | `pnpm dogfood:web` |
 | P3 | viewport matrix + proof verify API + corpus | ✅ | | yes | see PLAN.md |
 | P4 | taxonomy + corpus + PR proof automation | ✅ | | yes | see PLAN.md |
+| P5 | live-site corpus + scenario matrix | ✅ | | yes | see PLAN.md |
 
 **Status log (append newest on top):**
 ```
+[2026-07-19] Phase 5 closed — scenario matrix + marketplace/docs corpus + ResponsiveViewportDrift.
 [2026-07-17] Consolidated PLAN.md; archived docs/02 + redesign-v2 spec; Phase 3–4 closed.
 [Day _ · HH:MM] <what changed> · <next action> · <blockers>
 ```

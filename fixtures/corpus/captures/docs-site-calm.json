@@ -1,0 +1,294 @@
+{
+  "url": "corpus://docs-site-calm",
+  "capturedAt": "2026-07-19T00:00:00.000Z",
+  "viewport": {
+    "width": 1440,
+    "height": 1100
+  },
+  "screenshotBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  "snapshotHtml": "<html><body data-tell-corpus=\"1\"><p>docs</p></body></html>",
+  "cssVariables": [
+    {
+      "name": "--ink",
+      "value": "#3F3F46"
+    },
+    {
+      "name": "--accent",
+      "value": "#0E7490"
+    }
+  ],
+  "styles": [
+    {
+      "selector": "body",
+      "tellId": "body",
+      "tag": "body",
+      "role": "surface",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Sans\", \"Segoe UI\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(63, 63, 70)",
+      "backgroundColor": "rgb(250, 250, 250)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "0px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "h1",
+      "tellId": "h1",
+      "tag": "h1",
+      "role": "display",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Serif\", Georgia, serif",
+      "fontSize": "40px",
+      "fontWeight": "600",
+      "color": "rgb(63, 63, 70)",
+      "backgroundColor": "rgb(250, 250, 250)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "0px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "h2",
+      "tellId": "h2",
+      "tag": "h2",
+      "role": "heading",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Serif\", Georgia, serif",
+      "fontSize": "28px",
+      "fontWeight": "600",
+      "color": "rgb(63, 63, 70)",
+      "backgroundColor": "rgb(250, 250, 250)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "0px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "p",
+      "tellId": "p",
+      "tag": "p",
+      "role": "body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Sans\", \"Segoe UI\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(82, 82, 91)",
+      "backgroundColor": "rgb(250, 250, 250)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "0px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "code",
+      "tellId": "code",
+      "tag": "code",
+      "role": "body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Mono\", ui-monospace, monospace",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "color": "rgb(63, 63, 70)",
+      "backgroundColor": "rgb(244, 244, 245)",
+      "borderRadius": "4px",
+      "boxShadow": "none",
+      "padding": "4px 8px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "button.primary",
+      "tellId": "buttonprimar",
+      "tag": "button",
+      "role": "button",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Sans\", \"Segoe UI\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "600",
+      "color": "rgb(255, 255, 255)",
+      "backgroundColor": "rgb(14, 116, 144)",
+      "borderRadius": "6px",
+      "boxShadow": "none",
+      "padding": "12px 16px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "nav",
+      "tellId": "nav",
+      "tag": "nav",
+      "role": "nav",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Sans\", \"Segoe UI\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "color": "rgb(63, 63, 70)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "12px 20px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "a",
+      "tellId": "a",
+      "tag": "a",
+      "role": "link",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Sans\", \"Segoe UI\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "500",
+      "color": "rgb(14, 116, 144)",
+      "backgroundColor": "rgb(250, 250, 250)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "0px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "aside",
+      "tellId": "aside",
+      "tag": "aside",
+      "role": "surface",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Sans\", \"Segoe UI\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "color": "rgb(63, 63, 70)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "24px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    },
+    {
+      "selector": "article",
+      "tellId": "article",
+      "tag": "article",
+      "role": "surface",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 48
+      },
+      "fontFamily": "\"IBM Plex Sans\", \"Segoe UI\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(63, 63, 70)",
+      "backgroundColor": "rgb(250, 250, 250)",
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "padding": "32px",
+      "textAlign": "left",
+      "lineHeight": "1.5",
+      "backgroundImage": "none"
+    }
+  ],
+  "probes": [
+    {
+      "role": "button",
+      "selector": "button.primary",
+      "hasHoverDiff": true,
+      "hasFocusVisibleDiff": true,
+      "hasDisabledAttr": false,
+      "ariaDisabled": false
+    },
+    {
+      "role": "a",
+      "selector": "nav a",
+      "hasHoverDiff": true,
+      "hasFocusVisibleDiff": true,
+      "hasDisabledAttr": false,
+      "ariaDisabled": false
+    },
+    {
+      "role": "a",
+      "selector": "aside a",
+      "hasHoverDiff": true,
+      "hasFocusVisibleDiff": true,
+      "hasDisabledAttr": false,
+      "ariaDisabled": false
+    },
+    {
+      "role": "button",
+      "selector": "button.copy",
+      "hasHoverDiff": true,
+      "hasFocusVisibleDiff": true,
+      "hasDisabledAttr": true,
+      "ariaDisabled": false
+    }
+  ],
+  "stateShots": [],
+  "viewportMatrix": [],
+  "domSummary": {
+    "headingCount": 5,
+    "buttonCount": 2,
+    "centeredBlockRatio": 0.1,
+    "emojiInUiCount": 0
+  }
+}
