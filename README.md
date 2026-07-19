@@ -216,8 +216,15 @@ Shipped:
 
 Next:
 
-- Broader live-site captures in the open corpus (optional expansion)
-- Scenario matrix: route × viewport × theme × interaction state (see `docs/06_TELL_PROOF.md`)
+- Authenticated scenario cells (schema-ready `authRole`; no login harness yet)
+- Live Playwright capture of the scenario matrix against running previews (fixture matrix ships offline)
+
+Shipped in Phase 5:
+
+- Scenario matrix schemas + `captureScenarioMatrix` / `compareProofMatrices`
+- `ResponsiveViewportDrift` detector (D8) when secondary viewports lose structure
+- Live-site corpus profiles: `marketplace-clutter`, `docs-site-calm`
+- Committed `fixtures/corpus/scenario-matrix.json` + `pnpm proof:matrix` CI smoke
 
 Shipped in Phase 4:
 
