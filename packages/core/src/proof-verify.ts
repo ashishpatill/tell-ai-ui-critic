@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { TellReport } from "@tell/schema";
+import { ProofMatrixResult, type ScenarioMatrix, type TellReport } from "@tell/schema";
 import { captureUrl } from "./capture/capture-url";
 import { diagnoseCapture } from "./diagnose";
 
@@ -120,6 +120,82 @@ export async function revertProofPatch(projectRoot: string, patch?: string): Pro
 export function compareProofReports(before: TellReport, after: TellReport, url: string) {
   const proof = buildProof(before, after, url);
   return { status: verdictFromProof(proof), proof };
+}
+
+/**
+ * Compare two scenario matrices cell-by-cell (matched by scenario.id).
+ * Aggregate: any failed → failed; all passed → passed; else review.
+ * Missing counterpart cells are skipped (counted, not failed).
+ */
+export function compareProofMatrices(before: ScenarioMatrix, after: ScenarioMatrix): ProofMatrixResult {
+  const afterById = new Map(after.cells.map((cell) => [cell.scenario.id, cell]));
+  const cells = [];
+  let matched = 0;
+  let skipped = 0;
+
+  for (const beforeCell of before.cells) {
+    const afterCell = afterById.get(beforeCell.scenario.id);
+    if (!afterCell) {
+      skipped += 1;
+      cells.push({
+        scenarioId: beforeCell.scenario.id,
+        status: "skipped" as const,
+        beforeScore: 0,
+        afterScore: 0,
+        scoreDelta: 0,
+        focusRegressed: false,
+        structureRegressed: false,
+        screenshotsDiffer: false,
+        error: "No matching after cell for scenario id",
+      });
+      continue;
+    }
+    matched += 1;
+    const beforeReport = diagnoseCapture(beforeCell.capture);
+    const afterReport = diagnoseCapture(afterCell.capture);
+    const { status, proof } = compareProofReports(beforeReport, afterReport, afterCell.capture.url);
+    cells.push({
+      scenarioId: beforeCell.scenario.id,
+      status,
+      beforeScore: proof.beforeScore,
+      afterScore: proof.afterScore,
+      scoreDelta: proof.scoreDelta,
+      focusRegressed: proof.focusRegressed,
+      structureRegressed: proof.structureRegressed,
+      screenshotsDiffer: proof.screenshotsDiffer,
+    });
+  }
+
+  for (const afterCell of after.cells) {
+    if (!before.cells.some((c) => c.scenario.id === afterCell.scenario.id)) {
+      skipped += 1;
+      cells.push({
+        scenarioId: afterCell.scenario.id,
+        status: "skipped" as const,
+        beforeScore: 0,
+        afterScore: 0,
+        scoreDelta: 0,
+        focusRegressed: false,
+        structureRegressed: false,
+        screenshotsDiffer: false,
+        error: "No matching before cell for scenario id",
+      });
+    }
+  }
+
+  const active = cells.filter((c) => c.status !== "skipped");
+  let status: ProofMatrixResult["status"] = "review";
+  if (active.some((c) => c.status === "failed")) status = "failed";
+  else if (active.length > 0 && active.every((c) => c.status === "passed")) status = "passed";
+
+  return ProofMatrixResult.parse({
+    status,
+    cells,
+    url: after.baseUrl || before.baseUrl,
+    capturedAt: after.capturedAt || before.capturedAt,
+    matchedCells: matched,
+    skippedCells: skipped,
+  });
 }
 
 function buildProof(before: TellReport, after: TellReport, url: string) {
