@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "categories": [
     {
       "id": "ai-saas-generic",
@@ -48,6 +48,32 @@
       "notes": "Inter monoculture + off-grid spacing + weak focus — dense drift profile."
     },
     {
+      "id": "marketplace-clutter",
+      "label": "Consumer marketplace (live-site profile)",
+      "capturePath": "fixtures/corpus/captures/marketplace-clutter.json",
+      "expectedDetectors": [
+        "AcidAccentTell",
+        "CenteredEverythingTell",
+        "EmojiChromeTell",
+        "FocusRingInconsistency",
+        "GradientCrutchTell",
+        "RadiusMonotoneTell",
+        "ResponsiveViewportDrift",
+        "ShadowEverywhereTell",
+        "StateGap",
+        "SystemFontTell",
+        "TypeScaleDrift"
+      ],
+      "notes": "Busy marketplace with gradient hero, emoji chrome, and mobile structure collapse."
+    },
+    {
+      "id": "docs-site-calm",
+      "label": "Docs site calm (live-site negative)",
+      "capturePath": "fixtures/corpus/captures/docs-site-calm.json",
+      "expectedDetectors": [],
+      "notes": "IBM Plex family + strong focus — live-site negative control."
+    },
+    {
       "id": "intentional-brutalist",
       "label": "Intentional mono route",
       "fixture": "fixtures/generic-app/app/brutalist",
@@ -63,5 +89,7 @@
       "expectedDrift": [],
       "notes": "M10 contract — zero generic tells and zero drift on apps/web."
     }
-  ]
+  ],
+  "scenarioMatrixPath": "fixtures/corpus/scenario-matrix.json",
+  "scenarioMatrixNotes": "route × viewport × theme × interaction cells for proof:matrix smoke"
 }
