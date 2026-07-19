@@ -208,5 +208,45 @@ export function detectFindings(
   const designFinding = detectDesignSystemDrift(fingerprint, designSpec);
   if (designFinding) findings.push(designFinding);
 
+  // ResponsiveViewportDrift — secondary viewports lose structure vs the primary desktop capture.
+  if (capture.viewportMatrix.length > 0) {
+    const desktop = capture.domSummary;
+    const collapses = capture.viewportMatrix
+      .map((entry) => {
+        const headingFloor = Math.max(1, Math.floor(desktop.headingCount * 0.6));
+        const buttonFloor = desktop.buttonCount ? Math.max(1, Math.floor(desktop.buttonCount * 0.6)) : 0;
+        const headingDrop = desktop.headingCount > 0 && entry.domSummary.headingCount < headingFloor;
+        const buttonDrop = desktop.buttonCount > 0 && entry.domSummary.buttonCount < buttonFloor;
+        return headingDrop || buttonDrop
+          ? {
+              preset: entry.preset,
+              headings: entry.domSummary.headingCount,
+              buttons: entry.domSummary.buttonCount,
+              headingFloor,
+              buttonFloor,
+            }
+          : null;
+      })
+      .filter((v): v is NonNullable<typeof v> => v !== null);
+    if (collapses.length > 0) {
+      findings.push(Finding.parse({
+        id: "drift-responsive-viewport",
+        family: "drift",
+        detector: "ResponsiveViewportDrift",
+        verdictHint: "drift",
+        severity: "medium",
+        facts: {
+          desktopHeadings: desktop.headingCount,
+          desktopButtons: desktop.buttonCount,
+          collapses,
+        },
+        evidence: evidence(
+          "Responsive structure collapse",
+          collapses.map((c) => `${c.preset}: ${c.headings}h/${c.buttons}b`).join("; "),
+        ),
+      }));
+    }
+  }
+
   return findings;
 }
