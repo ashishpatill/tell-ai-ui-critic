@@ -185,7 +185,9 @@ export function compareProofMatrices(before: ScenarioMatrix, after: ScenarioMatr
 
   const active = cells.filter((c) => c.status !== "skipped");
   let status: ProofMatrixResult["status"] = "review";
-  if (active.some((c) => c.status === "failed")) status = "failed";
+  // No overlapping scenario ids means nothing was compared — treat as failed, not review.
+  if (matched === 0) status = "failed";
+  else if (active.some((c) => c.status === "failed")) status = "failed";
   else if (active.length > 0 && active.every((c) => c.status === "passed")) status = "passed";
 
   return ProofMatrixResult.parse({
