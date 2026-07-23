@@ -68,29 +68,29 @@ function scorePreset(input: string): Record<DirectionPresetId, number> {
     explainer: 0,
   };
 
-  if (/precision|instrument|mono|measured|data|sharp|grotesk|technical|clinical/.test(normalized)) {
+  if (/\b(precision|instrument|mono|measured|data|sharp|grotesk|technical|clinical)\b/.test(normalized)) {
     scores.precision += 2;
   }
-  if (/minimal|quiet|flat|restrain|simple|calm|subtle|less shadow|no shadow/.test(normalized)) {
+  if (/\b(minimal|quiet|flat|restrain|simple|calm|subtle)\b|less shadow|no shadow/.test(normalized)) {
     scores["warm-minimal"] += 2;
   }
-  if (/bold|contrast|dramatic|memorable|heavy|punchy|loud|high contrast/.test(normalized)) {
+  if (/\b(bold|contrast|dramatic|memorable|heavy|punchy|loud)\b|high contrast/.test(normalized)) {
     scores["bold-contrast"] += 2;
   }
-  if (/luxury|premium|refined|elegant|classic|sophisticated|hospitality/.test(normalized)) {
+  if (/\b(luxury|premium|refined|elegant|classic|sophisticated|hospitality)\b/.test(normalized)) {
     scores.luxury += 2;
   }
-  if (/brutalist|raw|utility|structural|industrial|mono|uppercase|ink border/.test(normalized)) {
+  if (/\b(brutalist|raw|utility|structural|industrial|mono|uppercase)\b|ink border/.test(normalized)) {
     scores.brutalist += 2;
   }
   if (
-    /explainer|essay|textbook|educational|blog|diagram|illustration|longform|how it works|visual textbook|interactive essay/.test(
+    /\b(explainer|essay|textbook|education|educational|blog|diagram|illustration|longform|book|interactive|curious)\b|how[\s-]?it[\s-]?works|visual textbook|interactive essay/.test(
       normalized,
     )
   ) {
     scores.explainer += 3;
   }
-  if (/editorial|serif|warm|paper|human|magazine|story/.test(normalized)) {
+  if (/\b(editorial|serif|warm|paper|human|magazine|story)\b/.test(normalized)) {
     scores.editorial += 2;
   }
 
