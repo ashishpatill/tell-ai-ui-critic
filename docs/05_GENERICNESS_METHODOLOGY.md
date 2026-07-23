@@ -138,6 +138,7 @@ Curated Google-Fonts pairings:
 | Classic luxury | Playfair Display 600/700 | Source Sans 3 400/600 | — |
 | Warm / human | Lora 500/600 (+ital) | Karla 400/500 | — |
 | Brutalist / utilitarian | Archivo Black 400 | Work Sans 400/500 | Space Mono 400/700 |
+| Visual textbook / explainer | Source Serif 4 600/700 | Source Sans 3 400/500 | IBM Plex Mono 400/500 |
 | Elegant superfamily | DM Serif Display 400 | DM Sans 400/500 | DM Mono 400 |
 
 `familyFactor`: 2–3→1, 1 & non-default→0.6, ≥4→0.5, single default→0.15.
