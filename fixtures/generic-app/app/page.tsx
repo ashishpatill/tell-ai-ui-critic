@@ -5,6 +5,8 @@ export default function GenericApp() {
       <nav className="nav">
         <a href="#features">🚀 Features</a>
         <a href="#metrics">📊 Metrics</a>
+        <a href="/pricing">💳 Pricing</a>
+        <a href="/account">👤 Account</a>
         <a href="/brutalist">✨ Brutalist route</a>
       </nav>
       <header className="hero">

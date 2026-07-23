@@ -138,3 +138,19 @@ a {
   padding: 88px 24px;
   text-align: left;
 }
+
+/* Pricing intentionally drifts: sharper radius, denser cards, no focus ring on CTA. */
+.pricing-hero {
+  padding: 61px 19px 71px;
+}
+
+.pricing-card {
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), 0 18px 40px rgba(139, 92, 246, 0.25);
+}
+
+.account code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: #E5E7EB;
+}
