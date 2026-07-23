@@ -115,6 +115,8 @@ See `ORCHESTRATION.md` for model routing and when to invoke each.
 - Remaining work / goal+loop prompts: `PLAN.md`
 - Screens: `docs/03_CLAUDE_DESIGN_BRIEF.md`
 - Vision/scope: `docs/04_CLAUDE_PROJECT.md`
+- Educational / interactive visualization plan: `docs/07_VISUALIZATION_PLAN.md` (principles only — no third-party author or site names)
+- AI design methods + how to add styles: `docs/08_AI_DESIGN_METHODS.md` (principle-only)
 
 ## Cursor Cloud specific instructions
 
