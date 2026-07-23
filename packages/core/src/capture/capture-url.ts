@@ -1,5 +1,14 @@
-import { chromium, type Page } from "playwright";
-import { CapturePayload, ViewportMatrixEntry, type ColorTheme, type InteractionState, type ViewportPreset } from "@tell/schema";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
+import { chromium, type BrowserContext, type Page } from "playwright";
+import {
+  CapturePayload,
+  ViewportMatrixEntry,
+  type AuthRole,
+  type ColorTheme,
+  type InteractionState,
+  type ViewportPreset,
+} from "@tell/schema";
 import { CAPTURE_VIEWPORT_PRESETS, SECONDARY_VIEWPORT_PRESETS } from "./viewports";
 
 export type CaptureUrlOptions = {
@@ -11,7 +20,55 @@ export type CaptureUrlOptions = {
   skipViewportMatrix?: boolean;
   /** Apply a page-level interaction cue after load (first button/link). */
   interaction?: InteractionState;
+  /**
+   * Auth role for this capture. `authenticated` requires a Playwright storage state
+   * via `storageState` or `TELL_AUTH_STORAGE_STATE`.
+   */
+  authRole?: AuthRole;
+  /**
+   * Playwright storage-state path (or inline object) used when `authRole` is `authenticated`.
+   * Falls back to `TELL_AUTH_STORAGE_STATE` when omitted.
+   */
+  storageState?: string | { cookies: unknown[]; origins: unknown[] };
 };
+
+/** Resolve storage state for authenticated captures; throws a clear error when missing. */
+export function resolveAuthStorageState(
+  options: Pick<CaptureUrlOptions, "authRole" | "storageState"> = {},
+): string | { cookies: unknown[]; origins: unknown[] } | undefined {
+  const role = options.authRole ?? "anonymous";
+  if (role !== "authenticated") return undefined;
+
+  if (options.storageState) {
+    if (typeof options.storageState === "string") {
+      const path = resolve(options.storageState);
+      if (!existsSync(path)) {
+        throw new Error(
+          `Authenticated capture requires a Playwright storage state, but file was not found: ${path}`,
+        );
+      }
+      return path;
+    }
+    return options.storageState;
+  }
+
+  const fromEnv = process.env.TELL_AUTH_STORAGE_STATE?.trim();
+  if (fromEnv) {
+    const path = resolve(fromEnv);
+    if (!existsSync(path)) {
+      throw new Error(
+        `Authenticated capture: TELL_AUTH_STORAGE_STATE points to a missing file: ${path}`,
+      );
+    }
+    return path;
+  }
+
+  throw new Error(
+    "Authenticated capture requires a Playwright storage state. " +
+      "Pass CaptureUrlOptions.storageState or set TELL_AUTH_STORAGE_STATE to a storageState JSON path " +
+      "(see fixtures/generic-app/auth-storage.json and pnpm auth:fixture).",
+  );
+}
 
 const SAMPLE_SELECTORS = [
   "body",
@@ -73,8 +130,19 @@ export async function captureUrl(url: string, options: CaptureUrlOptions = {}): 
   const browser = await chromium.launch({ headless: true });
   const primaryPreset = options.primaryViewport ?? "desktop";
   const primary = CAPTURE_VIEWPORT_PRESETS.find((p) => p.preset === primaryPreset) ?? CAPTURE_VIEWPORT_PRESETS[0]!;
+  let context: BrowserContext | undefined;
   try {
-    const page = await browser.newPage({ viewport: { width: primary.width, height: primary.height } });
+    const storageState = resolveAuthStorageState(options);
+    context = await browser.newContext({
+      viewport: { width: primary.width, height: primary.height },
+      ...(storageState
+        ? {
+            // Playwright accepts a path string or a StorageState object.
+            storageState: storageState as NonNullable<Parameters<typeof browser.newContext>[0]>["storageState"],
+          }
+        : {}),
+    });
+    const page = await context.newPage();
     if (options.theme) {
       await page.emulateMedia({ colorScheme: options.theme });
     }
@@ -351,6 +419,7 @@ export async function captureUrl(url: string, options: CaptureUrlOptions = {}): 
       ...payload,
     });
   } finally {
+    await context?.close().catch(() => {});
     await browser.close();
   }
 }
