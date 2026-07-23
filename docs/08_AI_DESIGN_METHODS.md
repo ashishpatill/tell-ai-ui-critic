@@ -213,3 +213,42 @@ AI synthesizes a direction for *this* product without copying any one reference.
 
 ---
 
+## 3. Methods at a glance (UI copy bank)
+
+Use critic voice; no emoji; no third-party names.
+
+| Method | One-liner |
+|---|---|
+| Packaged judgment | “Fast guardrails. Decent. Won’t invent a unique brand for you.” |
+| Build by piece | “You direct; Tell executes one piece at a time. Slowest. Sharpest.” |
+| Reference board | “Your references carry the taste. Faster than piece-by-piece, clearer than a bare preset.” |
+
+**Decision helper**
+
+| Stakes | Default method |
+|---|---|
+| Internal / throwaway | Packaged judgment |
+| Public marketing, demo tomorrow, brand moment | Build by piece (or board → piece fixups) |
+| Has a strong reference set, limited time | Reference board |
+
+---
+
+## 4. Relationship to art-direction styles
+
+**Methods** = *how* we steer execution.  
+**Styles / presets** = *what visual system* we steer toward.
+
+| Style preset (examples) | Fits which methods |
+|---|---|
+| Editorial warm | All three |
+| Precision instrument | All three; strong with compose for data products |
+| Warm minimal | skill / board |
+| Bold contrast | skill / board; compose for hero craft |
+| Classic luxury | compose / board |
+| Brutalist utility | compose (easy to fake badly with skill alone) |
+| Visual textbook (`explainer`) | compose + viz plan; board if references are figure-led |
+
+Adding a **new style** always follows §5 — never “drop in another accent hex.”
+
+---
+
