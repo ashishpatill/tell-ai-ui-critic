@@ -80,6 +80,7 @@ export const DIRECTION_PRESETS = {
       "explainer",
       "essay",
       "textbook",
+      "education",
       "educational",
       "blog",
       "diagram",
@@ -87,6 +88,9 @@ export const DIRECTION_PRESETS = {
       "longform",
       "curious",
       "monochrome",
+      "how-it-works",
+      "interactive",
+      "book",
     ],
     tokenOverrides: {
       "--font-display": "Source Serif 4",

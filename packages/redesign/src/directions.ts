@@ -272,8 +272,8 @@ export const DIRECTIONS: Record<string, Direction> = {
     sig: { h: 204, s: 0.38, l: 0.4 }, band: { s: 0.32, l: 0.38 },
     paperLight: "#F5F5F2", paperDark: "#0E0E0C",
     keywords: [
-      "explainer", "essay", "textbook", "educational", "blog", "diagram", "illustration",
-      "longform", "curious", "monochrome", "how-it-works", "interactive", "book",
+      "explainer", "essay", "textbook", "education", "educational", "blog", "diagram",
+      "illustration", "longform", "curious", "monochrome", "how-it-works", "interactive", "book",
     ],
     recipe: {
       // Cool near-white paper (not warm cream) so custom diagrams carry the color.
