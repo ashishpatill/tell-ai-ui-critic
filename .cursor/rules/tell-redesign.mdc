@@ -10,6 +10,6 @@ alwaysApply: false
 - Reconciliation must improve measured facts, especially readable foreground/background contrast.
 - Only force foreground colors inside surfaces Tell also controls.
 - `OfflineRedesignGenerator` should emit the same contrast-grounded CSS used by the live seam.
-- Direction presets are `editorial`, `precision`, `warm-minimal`, and `bold-contrast`.
+- Direction presets are `editorial`, `precision`, `warm-minimal`, `bold-contrast`, `luxury`, `brutalist`, `explainer`.
 - `buildOverridesPatch` emits reviewable `tell-overrides.css` diffs; never writes files itself.
 - Cursor-SDK-backed patch drafting stays in `apps/web/src/lib/cursor-redesign.ts` and must fall back to deterministic output.
