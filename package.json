@@ -18,6 +18,8 @@
     "pr:diagnose": "pnpm -F @tell/schema build && pnpm -F @tell/core build && pnpm -F @tell/core exec tsx --tsconfig ../../packages/core/tsconfig.json ../../scripts/pr-diagnose.ts",
     "proof:compare": "pnpm -F @tell/schema build && pnpm -F @tell/core build && pnpm -F @tell/core exec tsx --tsconfig ../../packages/core/tsconfig.json ../../scripts/pr-proof-compare.ts",
     "proof:matrix": "pnpm -F @tell/schema build && pnpm -F @tell/core build && pnpm -F @tell/core exec tsx --tsconfig ../../packages/core/tsconfig.json ../../scripts/pr-proof-matrix.ts",
+    "capture:matrix": "pnpm -F @tell/schema build && pnpm -F @tell/core build && pnpm -F @tell/core exec tsx --tsconfig ../../packages/core/tsconfig.json ../../scripts/capture-scenario-matrix.ts",
+    "auth:fixture": "pnpm -F @tell/core exec tsx --tsconfig ../../packages/core/tsconfig.json ../../scripts/mint-fixture-auth.ts",
     "corpus:generate": "python3 scripts/generate-corpus-captures.py",
     "sync:demo-report": "pnpm -F @tell/core exec tsx ../../scripts/sync-demo-report.ts",
     "deploy:vercel": "bash scripts/deploy-vercel.sh"
