@@ -22,6 +22,20 @@ describe("parseDirectionPlan", () => {
     expect(inferPresetId("raw brutalist utility with ink borders")).toBe("brutalist");
   });
 
+  it("maps educational and blog language to the explainer preset", () => {
+    expect(inferPresetId("visual textbook explainer with diagrams")).toBe("explainer");
+    expect(inferPresetId("educational blog essay, illustration-first")).toBe("explainer");
+    expect(inferPresetId("how it works interactive essay")).toBe("explainer");
+    expect(inferPresetId("education platform")).toBe("explainer");
+    expect(inferPresetId("how-it-works book column")).toBe("explainer");
+    expect(inferPresetId("interactive diagram longform")).toBe("explainer");
+  });
+
+  it("does not let monochrome steal the explainer route via mono", () => {
+    expect(inferPresetId("monochrome textbook")).toBe("explainer");
+    expect(inferPresetId("monochrome editorial essay")).toBe("explainer");
+  });
+
   it("assigns categories to action items", () => {
     const items = dissectInstructions("serif headlines, warmer accent, flat cards");
     expect(items.find((item) => item.category === "typography")).toBeTruthy();

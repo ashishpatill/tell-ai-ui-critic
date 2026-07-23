@@ -12,5 +12,7 @@ alwaysApply: true
 - Screen/design prompt details: `docs/03_CLAUDE_DESIGN_BRIEF.md`.
 - Vision, scope, demo script, and compliance: `docs/04_CLAUDE_PROJECT.md`.
 - Genericness definitions and detector methodology: `docs/05_GENERICNESS_METHODOLOGY.md`.
+- Illustration-first educational / interactive visualization plan: `docs/07_VISUALIZATION_PLAN.md` (separate from `PLAN.md` checklists). Do not name external authors, sites, or projects when describing this style.
+- AI design methods + style-addition playbook: `docs/08_AI_DESIGN_METHODS.md` (packaged judgment / build by piece / reference board). Principle-only — no third-party author, site, skill-marketplace, or tool names.
 - If `BUILD.md` and archived `docs/02_*` drift, treat root `BUILD.md` as the working source.
 - Do not read `.env` or `.env.local` for routine work; use `.env.example` and README docs for configuration.

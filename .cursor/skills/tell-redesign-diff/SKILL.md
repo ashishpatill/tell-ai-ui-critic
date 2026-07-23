@@ -22,7 +22,9 @@ description: Implements Tell deterministic redesign reconciliation and patch gen
 
 ## Direction presets
 
-`editorial`, `precision`, `warm-minimal`, `bold-contrast`
+`editorial`, `precision`, `warm-minimal`, `bold-contrast`, `luxury`, `brutalist`, `explainer`
+
+Adding a new preset requires a full recipe (not accent-only) and the playbook in `docs/08_AI_DESIGN_METHODS.md` §5.
 
 ## Output paths
 

@@ -651,4 +651,8 @@ const KNOWN_DIRECTIONS: Record<string, RestyleDirection> = {
     id: "brutalist", label: "Brutalist utility", mood: "utilitarian, raw, structural",
     summary: "Archivo Black display, Work Sans body, mono details, hard 0px radius, ink borders instead of shadow.",
   },
+  explainer: {
+    id: "explainer", label: "Visual textbook", mood: "curious, precise, illustration-first",
+    summary: "Source Serif display, Source Sans body, cool steel accent used sparingly, book-width column, diagram pauses over chrome.",
+  },
 };

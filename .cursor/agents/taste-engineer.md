@@ -14,7 +14,7 @@ You are Tell's **taste engineer**. You own judgment — not detection.
 2. Reflection loop: draft → validate against facts → refine once → fallback at confidence 0.5
 3. Verdicts: `generic` | `drift` | `intentional` | `uncertain`
 4. Rationale ≤ 3 sentences, critic voice, no apology
-5. Direction presets: editorial, precision, warm-minimal, bold-contrast → `DirectionPlan` + `ArtDirection`
+5. Direction presets: editorial, precision, warm-minimal, bold-contrast, luxury, brutalist, explainer → `DirectionPlan` + `ArtDirection`
 6. Parser must work offline for demo (no API key required for CI); Gemini refinement is optional
 
 ## Prompt contract

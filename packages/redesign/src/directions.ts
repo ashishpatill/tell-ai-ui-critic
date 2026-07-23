@@ -196,7 +196,7 @@ export const DIRECTIONS: Record<string, Direction> = {
     headingWeight: 600, bodyWeight: 400, ratio: 1.25, spacingBase: 8, radius: "8px",
     sig: { h: 28, s: 0.5, l: 0.46 }, band: { s: 0.44, l: 0.44 },
     paperLight: "#F6F1E9", paperDark: "#191512",
-    keywords: ["warm", "minimal", "calm", "human", "health", "education", "soft", "friendly"],
+    keywords: ["warm", "minimal", "calm", "human", "health", "soft", "friendly"],
     recipe: {
       paper: "#F6F1E9", paperAlt: "#F6F1E9", cardBg: "#FCF9F3", cardBgAlt: "#FCF9F3",
       ink: "#2A2420", inkMuted: "#8A7C6E", texture: "calm", contentMax: 720, gridGap: 32,
@@ -262,6 +262,35 @@ export const DIRECTIONS: Record<string, Direction> = {
       selection: "ink", numerals: true,
     },
   },
+  explainer: {
+    id: "explainer", label: "Visual textbook", mood: "curious, precise, illustration-first",
+    summary: "Source Serif display, Source Sans body, cool steel accent used sparingly, book-width column, diagram pauses over chrome.",
+    display: "Source Serif 4", displayGF: "Source+Serif+4:opsz,wght@8..60,600;8..60,700",
+    body: "Source Sans 3", bodyGF: "Source+Sans+3:wght@400;500;600",
+    mono: "IBM Plex Mono", monoGF: "IBM+Plex+Mono:wght@400;500",
+    headingWeight: 600, bodyWeight: 400, ratio: 1.25, spacingBase: 8, radius: "2px",
+    sig: { h: 204, s: 0.38, l: 0.4 }, band: { s: 0.32, l: 0.38 },
+    paperLight: "#F5F5F2", paperDark: "#0E0E0C",
+    keywords: [
+      "explainer", "essay", "textbook", "education", "educational", "blog", "diagram",
+      "illustration", "longform", "curious", "monochrome", "how-it-works", "interactive", "book",
+    ],
+    recipe: {
+      // Cool near-white paper (not warm cream) so custom diagrams carry the color.
+      paper: "#F5F5F2", paperAlt: "#FAFAF8", cardBg: "#FFFFFF", cardBgAlt: "#F0F0ED",
+      ink: "#141414", inkMuted: "#6B6B66", texture: "calm", contentMax: 680, gridGap: 40,
+      hero: {
+        px: 52, transform: "none", weight: 600, tracking: "-0.015em", align: "left",
+        italicAccentWord: false,
+        eyebrow: { kind: "small-caps", text: "Chapter" }, decoration: "none",
+      },
+      button: { kind: "outline", transform: "none", tracking: "0.01em", weight: 500 },
+      link: { kind: "soft", thickness: "1px", offset: "3px" },
+      card: { kind: "hairline", titleCase: "none", titleTracking: "0" },
+      section: { padY: 112, divider: "hairline-top", alternate: false },
+      selection: "accent", numerals: true,
+    },
+  },
 };
 
 export const DIRECTION_ALIASES: Record<string, string> = {
@@ -271,6 +300,9 @@ export const DIRECTION_ALIASES: Record<string, string> = {
   "warm-minimal": "warm-minimal",
   "classic-luxury": "luxury",
   "brutalist-utility": "brutalist",
+  "visual-textbook": "explainer",
+  "interactive-essay": "explainer",
+  "explainer-essay": "explainer",
 };
 
 /** Accept reconcile ids, taste-preset ids, or free-text art-direction. §7 */

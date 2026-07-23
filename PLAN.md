@@ -50,6 +50,8 @@ flowchart TB
 | `docs/04_CLAUDE_PROJECT.md` §12 tracker | Live tracker | Keep in sync |
 | `docs/06_REDESIGN_ENGINE_V2.md` | Redesign v2 build spec | **Archived as shipped** → stub |
 | `docs/01`, `03`, `05`, `06_TELL_PROOF`, `DEPLOY*` | Living specs / deploy | **Keep** (not plans) |
+| **`docs/07_VISUALIZATION_PLAN.md`** | Interactive / illustration-first educational viz plan | **Keep — separate plan** |
+| **`docs/08_AI_DESIGN_METHODS.md`** | Methods for designing with AI + how to add styles | **Keep — separate plan** |
 | `DESIGN.md`, `PITCH.md` | Dogfood contract / pitch | **Keep** |
 
 ---
@@ -136,6 +138,9 @@ If blocked: document the blocker in PLAN.md Status log and continue with the nex
 ## Status log
 
 ```
+[2026-07-23] Expanded docs/07_VISUALIZATION_PLAN.md — reusable instruments (median-cut color-space, orthographic wireframes, palette grids, voxel/convolution), vector pipeline, tool-aside narrative; principle-only.
+[2026-07-23] Added docs/08_AI_DESIGN_METHODS.md — three design methods (packaged judgment / build by piece / reference board) and mandatory playbook for adding styles; principle-only, no third-party names.
+[2026-07-23] Added docs/07_VISUALIZATION_PLAN.md — illustration-first educational viz plan (separate from Phase checklists); scrubbed third-party style-name keywords from explainer parsing.
 [2026-07-23] Phase 6 closed — live capture:matrix, auth storageState harness, /pricing+/account fixture, MCP/API/UI matrix, web taste parity.
 [2026-07-19] Phase 5 closed — scenario matrix, marketplace/docs corpus, ResponsiveViewportDrift, proof:matrix CI.
 [2026-07-19] Phase 5 opened — live-site corpus + scenario matrix (route × viewport × theme × interaction).

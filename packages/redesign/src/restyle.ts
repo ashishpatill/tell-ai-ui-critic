@@ -127,7 +127,7 @@ function buildPalette(dir: Direction, accentRaw: string, dna?: BrandDNA): Palett
     hairline: rgbaOf(ink, 0.14), hairlineStrong: rgbaOf(ink, 0.30),
     accent, accentInk, accentText, accentWash,
     headingWeight: dir.headingWeight, bodyWeight: dir.bodyWeight,
-    serifFallback: /playfair|lora|fraunces|serif/i.test(dna?.displayFont || dir.display) ? "Georgia, 'Times New Roman', serif" : "ui-sans-serif, system-ui, sans-serif",
+    serifFallback: /playfair|lora|fraunces|source serif|newsreader|literata|serif/i.test(dna?.displayFont || dir.display) ? "Georgia, 'Times New Roman', serif" : "ui-sans-serif, system-ui, sans-serif",
   };
 }
 
