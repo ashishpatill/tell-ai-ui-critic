@@ -8,7 +8,7 @@
 > requirements only. Do not name external authors, sites, brands, tools-as-products, or
 > third-party projects in code, copy, comments, commits, or docs when referring to this style.
 
-**Status:** Planned (not started) · **Audience:** redesign, taste, UI, fixture agents · **Related:** `packages/redesign` directions (`explainer`), `docs/01_DESIGN_SYSTEM.md`, `docs/05_GENERICNESS_METHODOLOGY.md`
+**Status:** Partially shipped — Visual textbook art direction, voice mapping, and UI chip are live; detector/instrument milestones remain planned · **Audience:** redesign, taste, UI, fixture agents · **Related:** `packages/redesign` directions (`explainer`), `docs/01_DESIGN_SYSTEM.md`, `docs/05_GENERICNESS_METHODOLOGY.md`, `docs/08_AI_DESIGN_METHODS.md`
 
 ---
 
@@ -463,7 +463,7 @@ When implementation begins, freeze a small token set shared by all explainer fig
 | Piece | Location | Role |
 |---|---|---|
 | Visual textbook art direction | `packages/redesign` `explainer`, `packages/taste` presets | Page-level tokens, column, chrome restraint |
-| Voice parsing keywords | `parse-direction.ts` | Maps educational/blog language → explainer |
+| Voice parsing keywords | `parse-direction.ts` | Maps education(al)/blog/diagram/how-it-works/book language → explainer |
 | UI chip | Tell Report preset chips | Manual selection |
 
 ### 9.2 Planned workstreams
