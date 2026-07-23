@@ -9,7 +9,7 @@ description: Implements Tell taste verdicts and voice art-direction parsing in p
 
 - `packages/taste/src/engine.ts` — Gemini + deterministic fallback
 - `packages/taste/src/parse-direction.ts` — voice/text direction parsing
-- `packages/taste/src/presets.ts` — editorial, precision, warm-minimal, bold-contrast
+- `packages/taste/src/presets.ts` — editorial, precision, warm-minimal, bold-contrast, luxury, brutalist, explainer
 - `apps/web/src/app/api/voice/route.ts` — browser voice refinement endpoint
 
 ## Verdict contract
@@ -23,8 +23,9 @@ description: Implements Tell taste verdicts and voice art-direction parsing in p
 
 1. Deterministic parser runs first (`parseDirectionPlan`) so demo works without keys
 2. Gemini refines when `GEMINI_API_KEY` is present
-3. Presets: `editorial`, `precision`, `warm-minimal`, `bold-contrast`
+3. Presets: `editorial`, `precision`, `warm-minimal`, `bold-contrast`, `luxury`, `brutalist`, `explainer`
 4. Output: `ArtDirection` with keywords, token overrides, summary
+5. When adding or steering styles, follow `docs/08_AI_DESIGN_METHODS.md` (methods + style playbook). Never put third-party author/site names in keywords or docs.
 
 ## Path differences
 
