@@ -123,13 +123,24 @@ server.tool(
   },
   async ({ url, routes, compare }) => {
     const planRoutes = routes?.length ? routes : ["/", "/pricing", "/account"];
+    const envAuth = process.env.TELL_AUTH_STORAGE_STATE?.trim();
     const authCandidates = [
-      process.env.TELL_AUTH_STORAGE_STATE?.trim(),
+      envAuth,
       resolve(process.cwd(), "fixtures/generic-app/auth-storage.json"),
       resolve(process.cwd(), "../../fixtures/generic-app/auth-storage.json"),
     ].filter((p): p is string => Boolean(p));
-    const storageState = authCandidates.find((p) => existsSync(p));
-    const matrix = await captureScenarioMatrix(url, liveScenarioPlan(planRoutes), {
+    const candidate = authCandidates.find((p) => existsSync(p));
+    let host = "";
+    try {
+      host = new URL(url).hostname;
+    } catch {
+      host = "";
+    }
+    const localHost = host === "localhost" || host === "127.0.0.1";
+    const storageState = candidate && (envAuth || localHost) ? candidate : undefined;
+    let scenarios = liveScenarioPlan(planRoutes);
+    if (!storageState) scenarios = scenarios.filter((s) => s.authRole !== "authenticated");
+    const matrix = await captureScenarioMatrix(url, scenarios, {
       storageState,
       routes: planRoutes,
       livePlan: true,
