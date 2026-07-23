@@ -35,23 +35,26 @@ The important distinction is independence. A video produced by the same agent th
 9. If the patch cannot apply or the app cannot be recaptured, Tell automatically rolls it back.
 10. The user receives two separate browser captures, measured deltas, and a one-click worktree revert.
 
-## Scenario matrix (Phase 5)
+## Scenario matrix (Phase 5–6)
 
 Beyond the single-route desktop proof, Tell ships a **scenario matrix**:
 
 ```text
-route × viewport × theme × interaction (± authRole schema)
+route × viewport × theme × interaction × authRole
 ```
 
 | Piece | Location |
 |---|---|
 | Schemas | `CaptureScenario`, `ScenarioMatrix`, `ProofMatrixResult` in `@tell/schema` |
-| Capture | `captureScenarioMatrix()` in `@tell/core` |
+| Capture | `captureScenarioMatrix()` / `liveScenarioPlan()` in `@tell/core` |
 | Compare | `compareProofMatrices()` — per-cell pass/review/fail, then aggregate |
-| Fixture | `fixtures/corpus/scenario-matrix.json` |
-| CI | `pnpm proof:matrix` (self-compare smoke on UI/engine PRs) |
+| Offline fixture | `fixtures/corpus/scenario-matrix.json` |
+| Live CLI | `pnpm capture:matrix` (`TELL_MATRIX_URL`, optional `TELL_AUTH_STORAGE_STATE`) |
+| Auth harness | Playwright `storageState` — `pnpm auth:fixture` → `fixtures/generic-app/auth-storage.json` |
+| CI | Offline `pnpm proof:matrix` smoke + live fixture matrix in `pr-proof-compare.yml` |
+| MCP / API / UI | `tell_capture_matrix`, `POST /api/proof/matrix`, Tell Report “Scenario matrix” panel |
 
-Each cell is a replayable `CapturePayload` tagged with scenario dimensions. Auth role is schema-ready (`anonymous` default); login harnesses are out of scope.
+Each cell is a replayable `CapturePayload` tagged with scenario dimensions. Authenticated cells load a disposable Playwright storage state (cookie `tell_session=authenticated` on the generic-app `/account` gate). There is no product login/OAuth flow.
 
 `ResponsiveViewportDrift` fires when tablet/mobile `viewportMatrix` summaries lose ≥40% of desktop headings or buttons.
 

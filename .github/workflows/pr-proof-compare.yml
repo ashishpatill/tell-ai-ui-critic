@@ -16,6 +16,11 @@ on:
       - "packages/taste/**"
       - "fixtures/reports/**"
       - "fixtures/corpus/**"
+      - "fixtures/generic-app/**"
+      - "scripts/capture-scenario-matrix.ts"
+      - "scripts/mint-fixture-auth.ts"
+      - "scripts/pr-proof-*.ts"
+      - "package.json"
       - ".cursor/rules/tell-proof-verify.mdc"
       - ".cursor/skills/tell-proof-verify/**"
 
@@ -62,8 +67,44 @@ jobs:
         run: pnpm proof:matrix
 
       - name: Install Playwright Chromium
-        if: vars.TELL_PREVIEW_URL != '' || github.event.pull_request.body != ''
         run: pnpm -F @tell/core exec playwright install chromium --with-deps
+
+      - name: Start generic-app fixture
+        run: |
+          pnpm -F @tell/generic-app dev > /tmp/tell-fixture.log 2>&1 &
+          echo $! > /tmp/tell-fixture.pid
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:3001/ >/dev/null; then
+              echo "Fixture ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Fixture failed to start"; cat /tmp/tell-fixture.log; exit 1
+
+      - name: Mint fixture auth storage state
+        env:
+          TELL_FIXTURE_URL: http://localhost:3001
+          TELL_AUTH_STORAGE_STATE: fixtures/generic-app/auth-storage.json
+        run: pnpm auth:fixture
+
+      - name: Live scenario matrix against fixture
+        env:
+          TELL_MATRIX_URL: http://localhost:3001
+          TELL_MATRIX_ROUTES: /,/pricing,/account
+          TELL_MATRIX_PLAN: live
+          TELL_AUTH_STORAGE_STATE: fixtures/generic-app/auth-storage.json
+          TELL_MATRIX_OUT: tell-scenario-matrix-live.json
+          TELL_MATRIX_COMPARE: "1"
+          TELL_PROOF_MATRIX_PATH: tell-proof-matrix-live.json
+        run: pnpm capture:matrix
+
+      - name: Stop generic-app fixture
+        if: always()
+        run: |
+          if [ -f /tmp/tell-fixture.pid ]; then
+            kill "$(cat /tmp/tell-fixture.pid)" 2>/dev/null || true
+          fi
 
       - name: Resolve preview URL
         id: preview
@@ -99,6 +140,18 @@ jobs:
           TELL_FAIL_ON: failed
         run: pnpm proof:compare
 
+      - name: Live scenario matrix against preview
+        if: steps.preview.outputs.url != ''
+        env:
+          TELL_MATRIX_URL: ${{ steps.preview.outputs.url }}
+          TELL_MATRIX_ROUTES: /
+          TELL_MATRIX_PLAN: live
+          TELL_MATRIX_OUT: tell-scenario-matrix-preview.json
+          TELL_MATRIX_COMPARE: "1"
+          TELL_PROOF_MATRIX_PATH: tell-proof-matrix-preview.json
+        run: pnpm capture:matrix
+        continue-on-error: true
+
       - name: Upload proof artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -107,4 +160,8 @@ jobs:
           path: |
             tell-proof-compare.json
             tell-proof-matrix.json
+            tell-proof-matrix-live.json
+            tell-scenario-matrix-live.json
+            tell-proof-matrix-preview.json
+            tell-scenario-matrix-preview.json
           if-no-files-found: ignore

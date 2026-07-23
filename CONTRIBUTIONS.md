@@ -21,7 +21,8 @@ Everything under these paths is **original Tell work**:
 
 ## Demo input (NOT our contribution)
 
-- `fixtures/generic-app/` — **deliberately bland** sample app hand-built to trigger Tell detectors for demo purposes. It simulates "Priya's AI-built landing page." Licensed MIT for demo use only. Clearly labeled in UI as demo target.
+- `fixtures/generic-app/` — **deliberately bland** sample app hand-built to trigger Tell detectors for demo purposes. It simulates "Priya's AI-built landing page" (including `/pricing` drift and `/account` demo auth gate). Licensed MIT for demo use only. Clearly labeled in UI as demo target.
+- `fixtures/generic-app/auth-storage.json` — disposable Playwright storageState for authenticated scenario cells (demo cookie only; not a real login system).
 - Public GitHub repositories pasted into Tell during a demo are **external inputs only**. Tell may clone, run, and scan them locally, but they are not part of this repository and are not claimed as original work.
 
 ## Third-party

@@ -148,6 +148,6 @@
     "detect": "packages/core detectFindings — zero LLM",
     "score": "report.measures.score when present; else generic*12 + drift*7",
     "proof": "compareProofReports / compareProofMatrices / verifyProofPatch — disposable checkout only",
-    "scenarioMatrix": "route × viewport × theme × interaction (± authRole schema)"
+    "scenarioMatrix": "route × viewport × theme × interaction × authRole (Playwright storageState harness)"
   }
 }

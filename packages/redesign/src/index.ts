@@ -42,6 +42,7 @@ export class OfflineRedesignGenerator implements RedesignGenerator {
         : buildOverridesPatch(recon, report.capture.url);
 
     return RedesignProposal.parse({
+      id: `proposal_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
       findingId,
       direction,
       reconciliation: recon,

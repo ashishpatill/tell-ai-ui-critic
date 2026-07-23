@@ -20,6 +20,7 @@ flowchart TB
     P3[Phase 3 Viewport matrix + proof API + corpus]
     P4[Phase 4 Taxonomy + corpus + PR automation]
     P5[Phase 5 Live-site corpus + scenario matrix]
+    P6[Phase 6 Live matrix + auth harness]
   end
 ```
 
@@ -31,6 +32,7 @@ flowchart TB
 | Phase 3 (viewport matrix, `/api/proof/verify`, corpus manifest) | ✅ Done | PLAN.md |
 | Phase 4 (taxonomy, more corpus, PR proof automation) | ✅ Done | PLAN.md |
 | Phase 5 (live-site corpus + scenario matrix) | ✅ Done | PLAN.md |
+| Phase 6 (live Playwright matrix + auth storageState harness) | ✅ Done | PLAN.md |
 | Stretch cut earlier | ✅ Share links + state probes shipped | was `docs/04` §10 |
 
 ---
@@ -52,14 +54,17 @@ flowchart TB
 
 ---
 
-## Phase 4 checklist (DoD) — closed
+## Phase 6 checklist (DoD) — closed
 
-- [x] Machine-readable open taxonomy at `fixtures/corpus/taxonomy.json` (+ README)
-- [x] Additional corpus captures: `editorial-calm` (0 tells), `fintech-dense` (dense drift profile)
-- [x] Manifest + golden tests cover new categories
-- [x] GitHub workflow / script for proof-compare on UI PRs
-- [x] Cursor after-edit hook reminds agents to run proof-verify on UI changes
-- [x] Tracker + README Product Status updated; redundant plans archived
+- [x] Auth harness: Playwright `storageState` via `CaptureUrlOptions` / `TELL_AUTH_STORAGE_STATE`
+- [x] Fixture `/account` gate (`tell_session=authenticated`) + `pnpm auth:fixture`
+- [x] Fixture `/pricing` route for multi-page demo drift
+- [x] `captureScenarioMatrix` passes `authRole` through to `captureUrl`
+- [x] Live capture CLI: `pnpm capture:matrix` (+ compact `liveScenarioPlan`)
+- [x] CI: boot fixture, mint auth, live matrix capture + self-compare
+- [x] MCP `tell_capture_matrix` + web `POST /api/proof/matrix` + Tell Report matrix panel
+- [x] Web `/api/diagnose` uses `classifyWithTaste` when `GEMINI_API_KEY` is set (parity with MCP)
+- [x] Tracker + README Product Status updated
 
 ---
 
@@ -76,13 +81,24 @@ flowchart TB
 
 ---
 
+## Phase 4 checklist (DoD) — closed
+
+- [x] Machine-readable open taxonomy at `fixtures/corpus/taxonomy.json` (+ README)
+- [x] Additional corpus captures: `editorial-calm` (0 tells), `fintech-dense` (dense drift profile)
+- [x] Manifest + golden tests cover new categories
+- [x] GitHub workflow / script for proof-compare on UI PRs
+- [x] Cursor after-edit hook reminds agents to run proof-verify on UI changes
+- [x] Tracker + README Product Status updated; redundant plans archived
+
+---
+
 ## Goal prompt (paste into Composer / Cloud Agent)
 
 ```
 @PLAN.md @BUILD.md @USER_STORY.md @ORCHESTRATION.md @README.md @docs/06_TELL_PROOF.md
 
-GOAL: Complete Phase 5 so Tell Proof has a live-site corpus expansion and a
-route × viewport × theme × interaction scenario matrix with zero open PLAN items.
+GOAL: Keep Phase 6 green — live Playwright scenario matrix + auth storageState harness
+remain end-to-end usable (CLI, CI, MCP, web panel) with zero open PLAN checklist items.
 
 Non-negotiables:
 - Deterministic core (packages/core) has zero LLM calls
@@ -90,10 +106,10 @@ Non-negotiables:
 - Schemas via @tell/schema at every boundary
 - pnpm test + schema build + web typecheck must stay green
 - Preserve offline fixture fallback (fixtures/reports/tell-report.json)
-- Auth role may be schema-only (anonymous default) — do not build login flows
+- Auth uses disposable Playwright storageState — do not build product login/OAuth
 
-Done when PLAN.md Phase 5 checklist is all checked and README Product Status lists
-Phase 5 as shipped with no "Next" blockers.
+Done when PLAN.md Phase 6 checklist is all checked and README Product Status lists
+no "Next" blockers for matrix/auth.
 ```
 
 ---
@@ -104,13 +120,13 @@ Phase 5 as shipped with no "Next" blockers.
 @PLAN.md
 
 LOOP:
-1. Read PLAN.md Phase 5 checklist — pick the first unchecked item.
+1. Read PLAN.md Phase 6 checklist — pick the first unchecked item.
 2. Implement the smallest change that satisfies its DoD.
 3. Run: pnpm test && pnpm -F @tell/schema build && pnpm -F @tell/web typecheck
 4. Update PLAN.md checklist + README Product Status + docs/04 §12 tracker + docs/06_TELL_PROOF.md.
 5. Commit with a conventional message; push the feature branch.
 6. If any checklist item remains, go to step 1.
-7. Stop only when all Phase 5 items are checked and tests are green.
+7. Stop only when all Phase 6 items are checked and tests are green.
 
 If blocked: document the blocker in PLAN.md Status log and continue with the next unchecked item.
 ```
@@ -120,6 +136,7 @@ If blocked: document the blocker in PLAN.md Status log and continue with the nex
 ## Status log
 
 ```
+[2026-07-23] Phase 6 closed — live capture:matrix, auth storageState harness, /pricing+/account fixture, MCP/API/UI matrix, web taste parity.
 [2026-07-19] Phase 5 closed — scenario matrix, marketplace/docs corpus, ResponsiveViewportDrift, proof:matrix CI.
 [2026-07-19] Phase 5 opened — live-site corpus + scenario matrix (route × viewport × theme × interaction).
 [2026-07-17] Phase 4 closed — taxonomy, corpus captures, proof:compare workflow, plan consolidation.

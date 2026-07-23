@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "tell_session",
+      "value": "authenticated",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:3001",
+      "localStorage": [
+        {
+          "name": "tell_demo_user",
+          "value": "priya"
+        }
+      ]
+    }
+  ]
+}

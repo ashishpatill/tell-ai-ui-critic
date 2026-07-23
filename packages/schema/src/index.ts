@@ -98,8 +98,9 @@ export const InteractionState = z.enum(["default", "hover", "focus"]);
 export type InteractionState = z.infer<typeof InteractionState>;
 
 /**
- * Auth dimension for scenario cells. Capture does not implement login —
- * authenticated cells are reserved for future disposable-session harnesses.
+ * Auth dimension for scenario cells.
+ * Authenticated captures load a Playwright storage state (cookies / localStorage)
+ * from `TELL_AUTH_STORAGE_STATE` or `CaptureUrlOptions.storageState` — no product login UI.
  */
 export const AuthRole = z.enum(["anonymous", "authenticated"]);
 export type AuthRole = z.infer<typeof AuthRole>;
@@ -349,6 +350,7 @@ export const Reconciliation = z.object({
 export type Reconciliation = z.infer<typeof Reconciliation>;
 
 export const RedesignProposal = z.object({
+  id: z.string().optional(),
   findingId: z.string().optional(),
   direction: ArtDirection,
   reconciliation: Reconciliation.optional(),

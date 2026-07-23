@@ -56,7 +56,8 @@ The authoring agent proposes. Tell measures, critiques, repairs, and verifies.
 | **Visual worktree proof** | Candidate patches run inside a disposable checkout. Tell applies, waits for HMR, recaptures, compares score/focus/structure, and auto-reverts failed attempts. |
 | **GitHub setup runner** | Paste `github.com/owner/repo`; local Tell clones it, reads `README` and `package.json`, installs dependencies, starts the dev server, and captures the reachable URL. |
 | **Multi-page scanning** | Routes discovered from the snapshot can be scanned individually, exposing drift that only appears on pricing, docs, onboarding, or secondary pages. |
-| **Cursor MCP** | `tell_capture`, `tell_diagnose`, `tell_redesign`, and `tell_apply` expose the same engine inside Cursor Agent chat. |
+| **Cursor MCP** | `tell_capture`, `tell_diagnose`, `tell_redesign`, `tell_apply`, `tell_proof_verify`, `tell_proof_revert`, and `tell_capture_matrix` expose the same engine inside Cursor Agent chat. |
+| **Scenario matrix** | Live Playwright capture across route × viewport × theme × interaction × auth (storageState), with CI smoke against the fixture and a Tell Report panel. |
 
 Tell is not a replacement for functional, responsive, accessibility, or security testing. It is a focused visual evidence layer for one rendered route at a time.
 
@@ -110,6 +111,8 @@ pnpm test
 pnpm typecheck
 pnpm capture:fixture
 pnpm diagnose:fixture
+pnpm auth:fixture        # mint Playwright storageState for /account (fixture must be up)
+pnpm capture:matrix      # live scenario matrix (set TELL_MATRIX_URL)
 pnpm verify:directions   # screenshot all 6 reconcile directions (requires Playwright)
 ```
 
@@ -141,6 +144,7 @@ Run tell_diagnose on http://localhost:3001 and draft an editorial redesign.
 | `tell_apply` | Return patch text and instructions; it never writes files for you. |
 | `tell_proof_verify` | Apply a patch, recapture the URL, and return pass/review/fail with measured deltas. |
 | `tell_proof_revert` | Revert the last proof patch in the workspace. |
+| `tell_capture_matrix` | Live Playwright scenario matrix (route × viewport × theme × interaction × auth). |
 
 ---
 
@@ -170,6 +174,7 @@ Key API routes:
 | `POST /api/setup/start` | Local-only GitHub clone/install/run/capture workflow. |
 | `POST /api/proof/apply` | Apply a candidate patch in the disposable checkout and verify it. |
 | `POST /api/proof/verify` | Hosted proof sandbox — compare two reports on Vercel, or apply+recapture on the capture backend. |
+| `POST /api/proof/matrix` | Live scenario-matrix capture (+ optional self-compare). |
 | `POST /api/proof/revert` | Revert the proof checkout. |
 | `POST /api/reports/share` | Persist a Tell report (Neon → Blob → disk) and return a shareable `/report/[id]` link. |
 | `GET /api/reports/[id]` | Load a previously shared report JSON. |
@@ -216,8 +221,14 @@ Shipped:
 
 Next:
 
-- Authenticated scenario cells (schema-ready `authRole`; no login harness yet)
-- Live Playwright capture of the scenario matrix against running previews (fixture matrix ships offline)
+- Optional stretch only — no open PLAN blockers. Hosted public demos still need `TELL_CAPTURE_API_URL` for Playwright-backed matrix/setup.
+
+Shipped in Phase 6:
+
+- Authenticated scenario cells via Playwright `storageState` (`TELL_AUTH_STORAGE_STATE`, `pnpm auth:fixture`)
+- Fixture `/account` auth gate + `/pricing` drift route for multi-page demos
+- Live matrix capture: `pnpm capture:matrix`, CI against fixture, MCP `tell_capture_matrix`, `POST /api/proof/matrix`, Tell Report panel
+- Web diagnose taste parity with MCP when `GEMINI_API_KEY` is set
 
 Shipped in Phase 5:
 
