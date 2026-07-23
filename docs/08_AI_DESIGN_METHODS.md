@@ -338,3 +338,88 @@ Before claiming the style ships:
 
 ---
 
+## 6. Schema / API sketch (planned)
+
+Freeze contracts in `@tell/schema` before splitting agents.
+
+```ts
+// Conceptual — implement when M-D2 starts
+DesignMethodId = "skill" | "compose" | "board"
+
+DirectionBrief = {
+  audience: string
+  problem: string
+  feeling: string
+  representation: string
+  temperament: string[]  // minimal | playful | premium | technical | experimental | educational | …
+  mustKeep: string[]
+  mustAvoid: string[]
+}
+
+ReferenceFragment = {
+  id: string
+  tag: "nav" | "hero" | "pricing" | "cards" | "mobile" | "dashboard" | "motion" | "type" | "diagram" | "other"
+  noteWhy: string  // required: why it works
+  // image or URL handles stay implementation detail
+}
+
+DesignSteerRequest = {
+  method: DesignMethodId
+  stylePresetId?: string
+  brief?: DirectionBrief
+  board?: ReferenceFragment[]
+  scope?: "tokens" | "hero" | "nav" | "cards" | "buttons" | "type" | "figures" | "page"
+}
+```
+
+**Rules**
+
+- Deterministic path must work with brief + preset alone (no keys).
+- Board without `noteWhy` on fragments is rejected or down-ranked.
+- `scope: "page"` disallowed in `compose` mode unless user confirms override (protects the method).
+
+---
+
+## 7. UI / UX plan (Tell Report)
+
+### 7.1 Voice director additions
+
+```
+Method:  ( ) Packaged judgment  ( ) Build by piece  ( ) Reference board
+Style:   [preset chips…]
+Brief:   [interview fields or “Ask me”]
+Board:   [add fragments]   // visible if method = board
+Scope:   [checklist]       // emphasized if method = compose
+```
+
+### 7.2 Empty / helper states
+
+- Packaged: “Pick a style pack. Add one feeling word. Generate.”
+- Compose: “Answer the brief. Map sections. Generate one scope at a time.”
+- Board: “Attach references and say why each matters. We’ll synthesize — not copy.”
+
+### 7.3 Seam behavior
+
+- Compose mode: seam updates after each scope apply preview.
+- Skill / board: full-page preview allowed; still never auto-apply to repo.
+
+### 7.4 Accessibility
+
+- Method control is a radiogroup with visible selected state (not color-only).
+- Board uploads keyboard-reachable; fragment tags as listboxes.
+
+---
+
+## 8. Detector / taste interplay
+
+| Signal | Method implication |
+|---|---|
+| Many generic tells + no brand marks | Recommend Packaged judgment to clear floor, then Compose for hero |
+| Strong BrandDNA / serif intentional | Prefer Board or Compose; avoid overwriting intentional with skill defaults |
+| Educational / long-form tells (viz plan) | Prefer Compose + Visual textbook; figures scoped separately |
+| Time pressure (demo tomorrow copy) | Offer Board with honest ceiling disclaimer |
+
+Taste engine remains fact-bound: skills/presets must not invent findings.
+
+---
+
