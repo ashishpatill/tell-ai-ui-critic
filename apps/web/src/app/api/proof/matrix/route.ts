@@ -11,6 +11,8 @@ import { hasRemoteBackend, proxyRemoteBackend } from "@/lib/remote-api";
 
 export const maxDuration = 180;
 
+const MAX_SCENARIOS = 12;
+
 type Body = {
   url?: string;
   routes?: string[];
@@ -18,7 +20,7 @@ type Body = {
   compare?: boolean;
 };
 
-function defaultAuthStorage(): string | undefined {
+function defaultAuthStoragePath(): string | undefined {
   const fromEnv = process.env.TELL_AUTH_STORAGE_STATE?.trim();
   if (fromEnv) {
     const path = resolve(fromEnv);
@@ -30,6 +32,20 @@ function defaultAuthStorage(): string | undefined {
     resolve(process.cwd(), "../fixtures/generic-app/auth-storage.json"),
   ];
   return candidates.find((p) => existsSync(p));
+}
+
+/** Fixture storageState is localhost-scoped; only attach it for local targets unless env is set. */
+function authStorageForUrl(url: string): string | undefined {
+  const storage = defaultAuthStoragePath();
+  if (!storage) return undefined;
+  if (process.env.TELL_AUTH_STORAGE_STATE?.trim()) return storage;
+  try {
+    const host = new URL(url).hostname;
+    if (host === "localhost" || host === "127.0.0.1") return storage;
+  } catch {
+    return undefined;
+  }
+  return undefined;
 }
 
 /**
@@ -61,6 +77,8 @@ export async function POST(request: Request) {
     ? body.routes.filter((r): r is string => typeof r === "string").map((r) => (r.startsWith("/") ? r : `/${r}`))
     : ["/", "/pricing", "/account"];
 
+  const storageState = authStorageForUrl(url);
+
   let scenarios;
   try {
     scenarios = body.scenarios?.length
@@ -73,9 +91,17 @@ export async function POST(request: Request) {
     );
   }
 
+  // Drop authenticated cells when no applicable storage is available (avoid hard failures).
+  if (!storageState) {
+    scenarios = scenarios.filter((s) => s.authRole !== "authenticated");
+  }
+  if (scenarios.length > MAX_SCENARIOS) {
+    scenarios = scenarios.slice(0, MAX_SCENARIOS);
+  }
+
   try {
     const matrix = await captureScenarioMatrix(url, scenarios, {
-      storageState: defaultAuthStorage(),
+      storageState,
       routes,
       livePlan: true,
     });
@@ -91,7 +117,7 @@ export async function POST(request: Request) {
       meta: {
         live: true,
         cellCount: parsed.cells.length,
-        authStorage: Boolean(defaultAuthStorage()),
+        authStorage: Boolean(storageState),
       },
     });
   } catch (error) {
