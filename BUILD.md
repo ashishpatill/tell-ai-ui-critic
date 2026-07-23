@@ -347,7 +347,7 @@ For each `Finding`, build a grounded request and get a `TasteVerdict`.
    mechanical `verdictHint` with confidence 0.5 and templated rationale.
 
 **Voice / art-direction parsing:**
-- Input: transcript string or preset id (`editorial`, `precision`, `warm-minimal`, `bold-contrast`).
+- Input: transcript string or preset id (`editorial`, `precision`, `warm-minimal`, `bold-contrast`, `luxury`, `brutalist`, `explainer`).
 - Output: `DirectionPlan` with a preset id, plain-English summary, categorized action items, and an
   `ArtDirection`.
 - Deterministic parser runs first so the demo works without keys; `/api/voice` refines with Gemini
@@ -508,7 +508,7 @@ probe) → `ready` | `needs-manual` (user pastes localhost URL) | `error`.
 **`reconcile.ts`** — deterministic token reconciliation from captured CSS variables + findings. Powers
 the live before/after seam and `ReconciliationTable`. No LLM. It computes text/control contrast
 ratios and only forces foreground colors inside surfaces Tell also controls. Direction presets:
-editorial, precision, warm-minimal, bold-contrast.
+editorial, precision, warm-minimal, bold-contrast, luxury, brutalist, explainer.
 
 **`buildOverridesPatch`** — emits a site-wide `tell-overrides.css` with CSS custom properties derived
 from the reconciliation. One apply covers every page in the Pages strip.
