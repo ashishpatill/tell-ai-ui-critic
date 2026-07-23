@@ -93,6 +93,21 @@ type ProofResult = {
     url: string;
   };
 };
+type MatrixCellSummary = {
+  scenarioId: string;
+  status: "passed" | "review" | "failed" | "skipped";
+  scoreDelta: number;
+  focusRegressed: boolean;
+  structureRegressed: boolean;
+};
+type MatrixProofSummary = {
+  status: "passed" | "review" | "failed";
+  matchedCells: number;
+  skippedCells: number;
+  cells: MatrixCellSummary[];
+  cellCount: number;
+  authStorage: boolean;
+};
 
 function isGitHubRepoUrl(url: string) {
   let raw = url.trim();
@@ -172,6 +187,11 @@ export default function HomePage() {
   const [pages, setPages] = useState<DiscoveredRoute[]>([]);
   const [pageInput, setPageInput] = useState("");
   const [scanningAll, setScanningAll] = useState(false);
+
+  // ── Live scenario matrix (route × viewport × theme × interaction × auth) ──
+  const [matrixState, setMatrixState] = useState<"idle" | "scanning" | "done" | "error">("idle");
+  const [matrixProof, setMatrixProof] = useState<MatrixProofSummary | null>(null);
+  const [matrixError, setMatrixError] = useState("");
 
   // ── Brand DNA memory (learned once, used as the redesign target + scoring yardstick) ──
   const [brandDna, setBrandDna] = useState<BrandDNA | null>(null);
@@ -603,6 +623,59 @@ export default function HomePage() {
     setScanningAll(false);
   }
 
+  async function scanScenarioMatrix() {
+    const url = normalizeCaptureUrl(report.capture.url || inputUrl);
+    if (!url) {
+      showNotice({ tone: "error", title: "Need a URL", message: "Capture a live page before scanning the scenario matrix." });
+      return;
+    }
+    setMatrixState("scanning");
+    setMatrixError("");
+    setMatrixProof(null);
+    try {
+      const routePaths = pages.length
+        ? [...new Set(pages.map((p) => p.path.split("?")[0] || "/"))].slice(0, 4)
+        : ["/", "/pricing", "/account"];
+      const res = await fetch("/api/proof/matrix", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: new URL(url).origin, routes: routePaths, compare: true }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(typeof data.error === "string" ? data.error : `Matrix scan failed (${res.status})`);
+      }
+      const cells: MatrixCellSummary[] = Array.isArray(data.proof?.cells)
+        ? data.proof.cells.map((c: MatrixCellSummary) => ({
+            scenarioId: c.scenarioId,
+            status: c.status,
+            scoreDelta: c.scoreDelta,
+            focusRegressed: Boolean(c.focusRegressed),
+            structureRegressed: Boolean(c.structureRegressed),
+          }))
+        : [];
+      setMatrixProof({
+        status: data.proof?.status ?? "review",
+        matchedCells: data.proof?.matchedCells ?? cells.length,
+        skippedCells: data.proof?.skippedCells ?? 0,
+        cells,
+        cellCount: data.meta?.cellCount ?? cells.length,
+        authStorage: Boolean(data.meta?.authStorage),
+      });
+      setMatrixState("done");
+      showNotice({
+        tone: "success",
+        title: "Scenario matrix captured",
+        message: `${data.meta?.cellCount ?? cells.length} live cells · overall ${data.proof?.status ?? "review"}`,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      setMatrixError(message);
+      setMatrixState("error");
+      showNotice({ tone: "error", title: "Matrix scan failed", message });
+    }
+  }
+
   async function draftFix() {
     setDraftState("drafting");
     setDraftError("");
@@ -912,6 +985,16 @@ export default function HomePage() {
               onSelect={(u) => runCapture(u)}
               onAdd={addPage}
               onScanAll={scanAllPages}
+            />
+          ) : null}
+
+          {liveCapture ? (
+            <ScenarioMatrixPanel
+              state={matrixState}
+              proof={matrixProof}
+              error={matrixError}
+              disabled={operationActive || matrixState === "scanning"}
+              onScan={() => { void scanScenarioMatrix(); }}
             />
           ) : null}
 
@@ -1399,6 +1482,94 @@ function SetupPanel({
         </div>
       ) : null}
     </div>
+  );
+}
+
+function ScenarioMatrixPanel({
+  state,
+  proof,
+  error,
+  disabled,
+  onScan,
+}: {
+  state: "idle" | "scanning" | "done" | "error";
+  proof: MatrixProofSummary | null;
+  error: string;
+  disabled: boolean;
+  onScan: () => void;
+}) {
+  return (
+    <section className="rounded-card border border-border bg-surface p-4">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-secondary">
+            <Split className="h-4 w-4 text-accent" /> Scenario matrix
+          </p>
+          <p className="mt-1 text-sm text-secondary">
+            Live Playwright cells across route × viewport × theme × interaction
+            {proof?.authStorage ? " · auth session loaded" : ""}.
+          </p>
+        </div>
+        <button
+          onClick={onScan}
+          disabled={disabled}
+          className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 font-mono text-meta text-secondary transition hover:border-accent hover:text-accent disabled:opacity-50"
+        >
+          {state === "scanning" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Activity className="h-3.5 w-3.5" />}
+          {state === "scanning" ? "Capturing matrix…" : "Scan scenario matrix"}
+        </button>
+      </div>
+      {error ? <p className="font-mono text-xs text-drift">{error}</p> : null}
+      {proof ? (
+        <div className="space-y-3">
+          <div className="flex flex-wrap gap-3 font-mono text-meta text-muted">
+            <span>
+              Overall{" "}
+              <span
+                className={
+                  proof.status === "passed" ? "text-ok" : proof.status === "failed" ? "text-drift" : "text-accent"
+                }
+              >
+                {proof.status}
+              </span>
+            </span>
+            <span>{proof.cellCount} cells</span>
+            <span>{proof.matchedCells} matched</span>
+            {proof.skippedCells ? <span>{proof.skippedCells} skipped</span> : null}
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[420px] border-collapse text-left font-mono text-meta">
+              <thead>
+                <tr className="border-b border-border text-muted">
+                  <th className="py-1.5 pr-3 font-medium">Scenario</th>
+                  <th className="py-1.5 pr-3 font-medium">Status</th>
+                  <th className="py-1.5 pr-3 font-medium">Δ score</th>
+                  <th className="py-1.5 font-medium">Flags</th>
+                </tr>
+              </thead>
+              <tbody>
+                {proof.cells.slice(0, 12).map((cell) => (
+                  <tr key={cell.scenarioId} className="border-b border-border/60 text-secondary">
+                    <td className="py-1.5 pr-3 text-text">{cell.scenarioId}</td>
+                    <td className="py-1.5 pr-3">{cell.status}</td>
+                    <td className="py-1.5 pr-3">{cell.scoreDelta}</td>
+                    <td className="py-1.5">
+                      {[cell.focusRegressed ? "focus" : null, cell.structureRegressed ? "structure" : null]
+                        .filter(Boolean)
+                        .join(" · ") || "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : state === "idle" ? (
+        <p className="font-mono text-meta text-muted">
+          Runs the compact live plan against this origin — including authenticated `/account` when storage state is present.
+        </p>
+      ) : null}
+    </section>
   );
 }
 
