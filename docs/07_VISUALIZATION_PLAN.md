@@ -386,3 +386,73 @@ Visual-textbook articles should occasionally interleave **short “why we built 
 
 ---
 
+## 7. Craft workflow (per figure)
+
+Mandatory sequence — do not skip to interaction.
+
+### Phase A — Domain
+
+1. Research the real mechanism until the team can explain it without slides.
+2. Write the teaching claim in one sentence (“Readers should leave knowing X”).
+3. List misconceptions the figure must prevent.
+4. Decide **draw once** vs **build instrument** (§6A.1).
+
+### Phase B — Static clarity
+
+1. Sketch on paper or in a vector tool.
+2. Produce the clearest static diagram (SVG) that teaches claim X — even if the final form will be interactive.
+3. Label in the article’s voice; remove any label that prose already made unnecessary — or remove the prose.
+4. Validate against reference equations or authoritative domain sources; note simplifications in caption.
+
+### Phase C — Interaction selection
+
+1. Identify 1–3 parameters that change understanding when manipulated.
+2. Reject parameters that only entertain.
+3. Design control placement that does not cover labels at default values.
+4. Define the “home” state (first paint) as the most instructive still.
+
+### Phase D — Implementation
+
+1. Implement at the lowest fidelity level (§5) that preserves accuracy — or implement the §6A instrument if reuse is justified.
+2. If using an editor plugin, export vectors and re-bind tokens; do not leave plugin chrome in the article.
+3. Bind colors/type/stroke to page tokens.
+4. Add keyboard + reduced-motion paths.
+5. Draft the tool-aside if this is the instrument’s first appearance (§6B).
+6. Test with someone who does not already know the topic: can they answer claim X after using only the figure + caption?
+
+### Phase E — Integration
+
+1. Place the figure at the narrative moment of need.
+2. Ensure preceding prose sets up what to look for; following prose deepens, does not re-describe.
+3. Dogfood: run Tell diagnose on the page; Visual textbook direction should not fight the figure styles.
+
+---
+
+## 8. Visual language system (diagram tokens)
+
+When implementation begins, freeze a small token set shared by all explainer figures:
+
+```text
+--viz-ink              /* primary strokes / labels */
+--viz-ink-muted        /* secondary annotations */
+--viz-paper            /* figure background (usually page paper) */
+--viz-accent           /* sparse highlight */
+--viz-accent-soft      /* washes, selection */
+--viz-stroke-hair      /* 1px hairline at 1x */
+--viz-stroke-body      /* 1.5–2px structure */
+--viz-stroke-emphasis  /* 2.5–3px focus path */
+--viz-label-size       /* 12–14px desktop */
+--viz-mono             /* parameter readouts */
+--viz-radius           /* 0–2px; almost never pill */
+--viz-focus            /* keyboard focus ring for controls */
+```
+
+**Consistency rules**
+
+- Same arrowhead, dimension line, and callout styles within an article family.
+- Dash patterns mean the same thing everywhere (e.g. hidden edges vs motion paths).
+- Z-index: structure → highlights → labels → controls.
+- Never reuse marketing card shadows on figures.
+
+---
+
