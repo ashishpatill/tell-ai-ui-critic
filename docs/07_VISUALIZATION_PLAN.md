@@ -456,3 +456,160 @@ When implementation begins, freeze a small token set shared by all explainer fig
 
 ---
 
+## 9. Tell product integration map
+
+### 9.1 Already shipped (adjacent)
+
+| Piece | Location | Role |
+|---|---|---|
+| Visual textbook art direction | `packages/redesign` `explainer`, `packages/taste` presets | Page-level tokens, column, chrome restraint |
+| Voice parsing keywords | `parse-direction.ts` | Maps educational/blog language → explainer |
+| UI chip | Tell Report preset chips | Manual selection |
+
+### 9.2 Planned workstreams
+
+Workstreams are sequenced; later ones depend on earlier contracts freezing.
+
+#### W0 — Policy & docs (this document)
+
+- [x] Principles, patterns, fidelity ladder, workflow
+- [x] Link from `PLAN.md` inventory + docs authority rule
+- [x] Instrument catalog + vector pipeline + tool-aside narrative (§6A–6B)
+- [ ] Copy bank additions in `USER_STORY.md` for educational captures (critic voice; no third-party names)
+
+#### W1 — Detection for educational surfaces
+
+Extend deterministic detectors (or corpus expectations) to name tells that matter on long-form educational pages:
+
+| Candidate tell | Signal (sketch) | Severity |
+|---|---|---|
+| Reading column too wide | Main text measure ≫ 75ch / content max > ~800px with article-like density | medium |
+| Chrome over content | Multiple sticky bars, sidebar TOC + promo, dense header CTAs | medium |
+| Illustration starvation | Long article DOM with near-zero figures/SVG/canvas vs prose length | medium |
+| Decoration-as-cards | Many equal shadow cards in article body | medium |
+| Widget chrome | Interactive regions with heavy borders/shadows/pill controls mismatched to body type | low–medium |
+| Rainbow diagram legend | ≥4 saturated categorical colors in a figure without structural labels | low |
+
+DoD: golden fixtures for at least one educational “before” page; vitest green; zero LLM in core.
+
+#### W2 — Redesign recipe deepening for `explainer`
+
+- [ ] Figure-oriented layout notes in `directionNotes` (breakout width, caption style)
+- [ ] Stronger “no card elevation in article body” recipe rules
+- [ ] Optional caption/figcaption styling in emitted CSS
+- [ ] Ensure dark paper variant remains contrast-safe if enabled later (today’s recipe is light cool paper)
+
+DoD: reconcile distinctness tests still pass; educational fixture after-score improves without harming SaaS fixtures.
+
+#### W3 — Diagram primitive kit (optional stretch)
+
+Ship a minimal internal kit for demos/fixtures — not a public framework:
+
+- `Figure` shell (frame, caption, optional chrome-free control row)
+- `Callout`, `Dimension`, `PartHighlight` SVG helpers
+- `ParamScrub` control bound to CSS variables or React state
+- `PaletteGrid` (I3) data→SVG swatch matrices with grayscale / multi-hue modes
+- One reference interactive figure in `fixtures/` used by demo narrative
+
+DoD: kit uses viz tokens; keyboard + reduced-motion; Tell dogfood on the fixture page reports zero product tells on Tell itself (fixture may still be labeled input).
+
+#### W4 — MDX / article pipeline (stretch)
+
+- MDX pages mixing prose + diagram components
+- Asset optimization script for SVG (preserve separable layers)
+- Static export path for offline demo reliability
+- Optional build-time mesh/grid generator scripts (I2) that emit SVG into `fixtures/`
+
+#### W5 — Advanced instruments lane (future)
+
+- I1 median-cut color-space quantizer (interactive 3-D cloud + swatches)
+- I2 orthographic wireframe scrubber (runtime) atop exported vectors
+- I4 voxel / height-map + convolution kernel pair
+- Shared math utilities; WebGL only with accuracy + performance budgets
+- Tool-aside MDX partial for §6B narrative interleaving
+- Still inherits viz tokens and minimal chrome rules
+- Graceful fallback when WebGL unavailable
+
+---
+
+## 10. Performance budgets
+
+| Budget | Target |
+|---|---|
+| First interactive figure ready | ≤ 2.5s on mid-tier laptop, local fixture |
+| Per-figure asset weight (static SVG) | ≤ 150KB optimized; prefer ≪ 50KB |
+| Active WebGL figure | Sustain 60fps at desktop demo size; degrade gracefully |
+| Simultaneous WebGL figures | Prefer 1 on-screen; pause offscreen |
+| Layout shift | Figures reserved via width/height or aspect-ratio boxes |
+| Prefer | System/font-display swap already handled by redesign font imports |
+
+---
+
+## 11. Accuracy & ethics bar
+
+1. **Accuracy first** — diagrams are technically correct simplifications, not vibes.
+2. **Name the simplification** in caption when geometry, dimensions, or physics are reduced.
+3. **No false precision** — do not show readouts more precise than the model.
+4. **Domain humility** — if the team cannot validate a mechanism, ship a clearer static schematic or cut the figure.
+5. **No scraped branding** — do not reproduce third-party article layouts, trademarks, or distinctive character assets. Principles only.
+
+---
+
+## 12. Quality bar (definition of done per figure)
+
+A figure is done only when all are true:
+
+- [ ] Teaching claim X is answerable from figure + caption alone
+- [ ] Static still (home state) is intelligible without interaction
+- [ ] At most 3 interactive parameters, each justified
+- [ ] Tokens match page viz/explainer system
+- [ ] Keyboard operable; focus visible; reduced-motion path verified
+- [ ] Contrast and label size pass desktop and mobile checks
+- [ ] No marketing-card chrome; no rainbow default palette
+- [ ] Simplifications stated
+- [ ] Performance budget held
+- [ ] Reviewed by someone outside the author set
+
+---
+
+## 13. Anti-patterns (reject in review)
+
+1. Hero marketing collage instead of a teaching figure
+2. Equal-weight card grids of “concepts” with icons
+3. Diagrams as stock illustrations with no labels
+4. Interaction that only animates without changing a variable of meaning
+5. Second design system inside the widget (different fonts, pill CTAs, drop shadows)
+6. Hover-only essential information
+7. Autoplay motion competing with reading
+8. Warm-cream + terracotta + serif default applied as a substitute for real diagram craft
+9. Dense simultaneous callouts that collide at mobile widths
+10. Mentions of external authors, sites, or projects as style shortcuts in code or docs
+11. One-off redraws of the same system after the second variant (build an instrument instead)
+12. Runtime dependency on design-canvas plugins
+13. Cinematic perspective wireframes when orthographic would teach more clearly
+14. Tooling diaries that drown the domain lesson (cap tool-asides)
+
+---
+
+## 14. Testing strategy
+
+| Layer | What to test |
+|---|---|
+| Unit | Token resolution; param scrub clamping; reduced-motion branch |
+| Detector golden | Educational fixture captures → expected tells |
+| Redesign | `explainer` sheet distinctness + contrast guards |
+| Visual | Screenshot stills of home + extreme parameter states (fixture) |
+| a11y | Keyboard path; name/role/value for controls |
+| Demo | Offline fallback still works if interactive figure fails to hydrate |
+
+---
+
+## 15. Documentation & naming rules
+
+1. Refer to the style as **Visual textbook**, **explainer**, or **illustration-first educational** — never by external product or personal names.
+2. Do not add brand names, author names, or site hostnames to keywords, aliases, fixtures, or comments.
+3. Commit messages and PR bodies for this workstream follow the same rule.
+4. If a reference link is required for research, keep it in private notes — not in the repo.
+
+---
+
